@@ -2,6 +2,7 @@ service: nntree-app
 provider:
   name: aws
   runtime: nodejs6.10
+  credentials: ${file(../nntree-config/config/app/env.yml):credentials}
 functions:
   api:
     handler: lambda.handler
