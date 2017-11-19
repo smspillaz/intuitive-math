@@ -45,7 +45,9 @@
     "test": "cross-env NODE_ENV=test jest --coverage",
     "test:watch": "cross-env NODE_ENV=test jest --watchAll",
     "coveralls": "cat ./coverage/lcov.info | coveralls",
-    "prettify": "prettier --write"
+    "prettify": "prettier --write",
+    "serverless-deploy": "serverless deploy",
+    "serverless-logs": "serverless logs"
   },
   "lint-staged": {
     "*.js": [
@@ -230,6 +232,7 @@
     "prettier": "1.13.5",
     "react-test-renderer": "16.4.1",
     "rimraf": "2.6.2",
+    "serverless": "^1.24.1",
     "shelljs": "0.8.2",
     "style-loader": "0.21.0",
     "stylelint": "9.3.0",
