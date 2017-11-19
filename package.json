@@ -42,7 +42,9 @@
     "test:clean": "rimraf ./coverage",
     "test": "cross-env NODE_ENV=test jest --coverage",
     "test:watch": "cross-env NODE_ENV=test jest --watchAll",
-    "coveralls": "cat ./coverage/lcov.info | coveralls"
+    "coveralls": "cat ./coverage/lcov.info | coveralls",
+    "serverless-deploy": "serverless deploy",
+    "serverless-logs": "serverless logs"
   },
   "lint-staged": {
     "*.js": "lint:eslint"
@@ -290,6 +292,7 @@
     "pre-commit": "1.2.2",
     "react-test-renderer": "15.6.1",
     "rimraf": "2.6.1",
+    "serverless": "^1.24.1",
     "shelljs": "0.7.7",
     "style-loader": "0.18.1",
     "url-loader": "0.5.8",
