@@ -1,0 +1,16 @@
+service: nntree-app
+provider:
+  name: aws
+  runtime: nodejs6.10
+functions:
+  api:
+    handler: lambda.handler
+    environment:
+      NODE_ENV: production
+    events:
+      - http:
+          path: /
+          method: ANY
+      - http:
+          path: /{proxy+}
+          method: ANY

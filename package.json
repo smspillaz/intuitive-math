@@ -89,7 +89,10 @@
     "redux-saga": "1.0.5",
     "reselect": "4.0.0",
     "sanitize.css": "10.0.0",
-    "styled-components": "4.3.2"
+    "serverless-http": "^1.5.2",
+    "styled-components": "4.3.2",
+    "warning": "4.0.2",
+    "whatwg-fetch": "2.0.4"
   },
   "devDependencies": {
     "@babel/cli": "7.5.0",

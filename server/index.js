@@ -1,27 +1,14 @@
 /* eslint consistent-return:0 import/order:0 */
-
-const express = require('express');
-const logger = require('./logger');
-
+const app = require('./server');
 const argv = require('./argv');
 const port = require('./port');
-const setup = require('./middlewares/frontendMiddleware');
+const logger = require('./logger');
+
 const isDev = process.env.NODE_ENV !== 'production';
 const ngrok =
   (isDev && process.env.ENABLE_TUNNEL) || argv.tunnel
     ? require('ngrok')
     : false;
-const { resolve } = require('path');
-const app = express();
-
-// If you need a backend, e.g. an API, add your custom backend-specific middleware here
-// app.use('/api', myApi);
-
-// In production we need to pass these values in instead of relying on webpack
-setup(app, {
-  outputPath: resolve(process.cwd(), 'build'),
-  publicPath: '/',
-});
 
 // get the intended host and port number, use localhost and port 3000 if not provided
 const customHost = argv.host || process.env.HOST;
@@ -53,4 +40,6 @@ app.listen(port, host, async err => {
   } else {
     logger.appStarted(port, prettyHost);
   }
+
+  return null;
 });
