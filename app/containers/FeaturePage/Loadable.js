@@ -1,11 +1,11 @@
 /**
  * Asynchronously loads the component for FeaturePage
  */
-import Loadable from 'react-loadable';
+import React from 'react';
 
-import LoadingIndicator from 'components/LoadingIndicator';
+import Loadable from 'react-loadable';
 
 export default Loadable({
   loader: () => import('./index'),
-  loading: LoadingIndicator,
+  loading: () => <div><p>Loading</p></div>,
 });
