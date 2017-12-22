@@ -1,10 +1,10 @@
 {
-  "name": "react-boilerplate",
-  "version": "3.6.0",
-  "description": "A highly scalable, offline-first foundation with the best DX and a focus on performance and best practices",
+  "name": "intuimath",
+  "version": "0.0.1",
+  "description": "Intuitive math demos",
   "repository": {
     "type": "git",
-    "url": "git://github.com/react-boilerplate/react-boilerplate.git"
+    "url": "git://github.com/smspillaz/intuimath"
   },
   "engines": {
     "npm": ">=5",
