@@ -56,10 +56,10 @@ export default function App() {
   return (
     <AppWrapper>
       <Helmet
-        titleTemplate="%s - React.js Boilerplate"
-        defaultTitle="React.js Boilerplate"
+        titleTemplate="%s - Intuitive Math"
+        defaultTitle="Intuitive Math"
       >
-        <meta name="description" content="A React.js Boilerplate application" />
+        <meta name="description" content="Intuitive Math Explainers" />
       </Helmet>
       <Navigator>
         <Switch>
