@@ -54,6 +54,10 @@ const sections = [
     title: 'Linear Algebra',
     children: [
       {
+        text: 'Co-ordinate Systems',
+        href: '/linear-algebra#spaces',
+      },
+      {
         text: 'Vectors',
         href: '/linear-algebra#vectors',
       },
