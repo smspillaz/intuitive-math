@@ -157,6 +157,15 @@
     react-transition-group "^1.2.0"
     styled-components "^1.4.6"
 
+"@atlaskit/page":
+  version "5.0.5"
+  resolved "https://registry.yarnpkg.com/@atlaskit/page/-/page-5.0.5.tgz#ca30d887b0bfab2c40b97e4e51ab5d863501017a"
+  dependencies:
+    "@atlaskit/util-shared-styles" "^2.10.5"
+    babel-runtime "^6.11.6"
+    prop-types "^15.5.10"
+    styled-components "^1.4.6"
+
 "@atlaskit/polyfills@^1.0.0", "@atlaskit/polyfills@^1.2.4":
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/@atlaskit/polyfills/-/polyfills-1.2.4.tgz#ba3530e2a92763c3f4e26f010dd6e81e373bd66d"
@@ -177,7 +186,7 @@
     react-transition-group "^2.2.1"
     styled-components "^1.4.6"
 
-"@atlaskit/theme@^2.0.0", "@atlaskit/theme@^2.0.1", "@atlaskit/theme@^2.1.0", "@atlaskit/theme@^2.2.0", "@atlaskit/theme@^2.2.9":
+"@atlaskit/theme", "@atlaskit/theme@^2.0.0", "@atlaskit/theme@^2.0.1", "@atlaskit/theme@^2.1.0", "@atlaskit/theme@^2.2.0", "@atlaskit/theme@^2.2.9":
   version "2.2.9"
   resolved "https://registry.yarnpkg.com/@atlaskit/theme/-/theme-2.2.9.tgz#10243d606957f1e1ce8d20247b2f92807dd571d7"
   dependencies:
@@ -202,7 +211,7 @@
     create-error "^0.3.1"
     keycode "^2.1.2"
 
-"@atlaskit/util-shared-styles@^2.10.3":
+"@atlaskit/util-shared-styles@^2.10.3", "@atlaskit/util-shared-styles@^2.10.5":
   version "2.10.6"
   resolved "https://registry.yarnpkg.com/@atlaskit/util-shared-styles/-/util-shared-styles-2.10.6.tgz#56aa25d59cef0324f653a6e857d512a70be47c65"
   dependencies:

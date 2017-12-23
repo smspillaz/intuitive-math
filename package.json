@@ -215,6 +215,8 @@
   },
   "dependencies": {
     "@atlaskit/navigation": "^27.0.4",
+    "@atlaskit/page": "^5.0.5",
+    "@atlaskit/theme": "^2.2.9",
     "babel-polyfill": "6.23.0",
     "chalk": "1.1.3",
     "compression": "1.6.2",

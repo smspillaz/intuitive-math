@@ -8,66 +8,155 @@
 
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import styled from 'styled-components';
 import { Switch, Route } from 'react-router-dom';
+
+import PropTypes from 'prop-types';
 
 import HomePage from 'containers/HomePage/Loadable';
 import LinearAlgebraPage from 'containers/LinearAlgebraPage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 
+import NavigationState from 'components/NavigationState';
+
+import { AtlaskitThemeProvider } from '@atlaskit/theme';
+import Page from '@atlaskit/page';
 import Navigation, { AkNavigationItemGroup, AkNavigationItem, AkContainerTitle } from '@atlaskit/navigation';
 
-const AppWrapper = styled.div`
-  max-width: calc(768px + 16px * 2);
-  margin: 0 auto;
-  display: flex;
-  min-height: 100%;
-  padding: 0 16px;
-  flex-direction: column;
-`;
-
-const Navigator = () => (
+const Navigator = ({ title, sections }) => (
   <Navigation
     containerHeaderComponent={() => (
-      <AkContainerTitle text="Intuitive Math" />
+      <AkContainerTitle text={title} />
     )}
   >
-    <AkNavigationItemGroup title="Linear Algebra">
-      <AkNavigationItem text="Vectors" href="/linear-algebra#vectors" />
-      <AkNavigationItem text="Matrices" href="/linear-algebra#matrices" />
-      <AkNavigationItem text="Linear Independence" href="/linear-algebra#linear-independence" />
-      <AkNavigationItem text="Subspaces" href="/linear-algebra#subspaces" />
-      <AkNavigationItem text="Spans" href="/linear-algebra#spans" />
-      <AkNavigationItem text="Basis" href="/linear-algebra#basis" />
-      <AkNavigationItem text="Row Space" href="/linear-algebra#row-space" />
-      <AkNavigationItem text="Column Space / Range" href="/linear-algebra#column-space" />
-      <AkNavigationItem text="Null Space / Kernels" href="/linear-algebra#null-space" />
-      <AkNavigationItem text="Determinant" href="/linear-algebra#determinant" />
-      <AkNavigationItem text="Inverses" href="/linear-algebra#inverses" />
-      <AkNavigationItem text="Eigenvalues" href="/linear-algebra#eigenvalues" />
-      <AkNavigationItem text="Eigenvectors" href="/linear-algebra#eigenvectors" />
-      <AkNavigationItem text="Eigenbasis" href="/linear-algebra#eigenbasis" />
-      <AkNavigationItem text="Diagonalization" href="/linear-algebra#diagonalization" />
-    </AkNavigationItemGroup>
+    {sections.map((section) => (
+      <AkNavigationItemGroup title={section.title} key={section.title}>
+        {section.children.map((child) => (
+          <AkNavigationItem text={child.text} href={child.href} key={child.href} />
+         ))}
+      </AkNavigationItemGroup>
+     ))}
   </Navigation>
 );
 
+Navigator.propTypes = {
+  title: PropTypes.string.isRequired,
+  sections: PropTypes.arrayOf(PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    children: PropTypes.arrayOf(PropTypes.shape({
+      text: PropTypes.string.isRequired,
+      href: PropTypes.string.isRequired,
+    })),
+  })),
+};
+
+const sections = [
+  {
+    title: 'Linear Algebra',
+    children: [
+      {
+        text: 'Vectors',
+        href: '/linear-algebra#vectors',
+      },
+      {
+        text: 'Matrices',
+        href: '/linear-algebra#matrices',
+      },
+      {
+        text: 'Linear Independence',
+        href: '/linear-algebra#linear-independence',
+      },
+      {
+        text: 'Subspaces',
+        href: '/linear-algebra#subspaces',
+      },
+      {
+        text: 'Matrices',
+        href: '/linear-algebra#matrices',
+      },
+      {
+        text: 'Spans',
+        href: '/linear-algebra#spans',
+      },
+      {
+        text: 'Basis',
+        href: '/linear-algebra#basis',
+      },
+      {
+        text: 'Row Space',
+        href: '/linear-algebra#row-space',
+      },
+      {
+        text: 'Column Space / Range',
+        href: '/linear-algebra#column-space',
+      },
+      {
+        text: 'Null Space / Kernels',
+        href: '/linear-algebra#null-space',
+      },
+      {
+        text: 'Determinant',
+        href: '/linear-algebra#determinant',
+      },
+      {
+        text: 'Inverses',
+        href: '/linear-algebra#inverses',
+      },
+      {
+        text: 'Eigenvalues',
+        href: '/linear-algebra#eigenvalues',
+      },
+      {
+        text: 'Eigenvectors',
+        href: '/linear-algebra#eigenvectors',
+      },
+      {
+        text: 'Eigenbasis',
+        href: '/linear-algebra#eigenbasis',
+      },
+      {
+        text: 'Diagonalization',
+        href: '/linear-algebra#diagonalization',
+      },
+    ],
+  },
+];
+
+class NavigatablePage extends React.PureComponent {
+  static contextTypes = {
+    navOpenState: PropTypes.object,
+    router: PropTypes.object,
+  };
+
+  render() {
+    return (
+      <Page
+        navigationWidth={this.context.navOpenState.width}
+        navigation={<Navigator title={'Intuitive Math'} sections={sections} />}
+      >
+        <AtlaskitThemeProvider>
+          <Switch>
+            <Route exact path="/" component={HomePage} />
+            <Route path="/linear-algebra" component={LinearAlgebraPage} />
+            <Route path="" component={NotFoundPage} />
+          </Switch>
+        </AtlaskitThemeProvider>
+      </Page>
+    );
+  }
+}
+
 export default function App() {
   return (
-    <AppWrapper>
+    <div>
       <Helmet
         titleTemplate="%s - Intuitive Math"
         defaultTitle="Intuitive Math"
       >
         <meta name="description" content="Intuitive Math Explainers" />
       </Helmet>
-      <Navigator>
-        <Switch>
-          <Route exact path="/" component={HomePage} />
-          <Route path="/linear-algebra" component={LinearAlgebraPage} />
-          <Route path="" component={NotFoundPage} />
-        </Switch>
-      </Navigator>
-    </AppWrapper>
+      <NavigationState
+        renderNavigable={({ onNavResize }) => <NavigatablePage onNavResize={onNavResize} />}
+      />
+    </div>
   );
 }
