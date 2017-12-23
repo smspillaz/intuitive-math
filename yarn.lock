@@ -162,6 +162,13 @@
     react-transition-group "^2.2.1"
     styled-components "^1.4.6"
 
+"@atlaskit/page@^5.0.5":
+  version "5.1.2"
+  resolved "http://registry.npmjs.org/@atlaskit/page/-/page-5.1.2.tgz#d67a99a7c3145f7cdc4831a5b9200667098cdf45"
+  dependencies:
+    "@atlaskit/util-shared-styles" "^2.10.3"
+    styled-components "1.4.6 - 3"
+
 "@atlaskit/polyfills@^1.4.1":
   version "1.4.3"
   resolved "http://registry.npmjs.org/@atlaskit/polyfills/-/polyfills-1.4.3.tgz#4e955c552f9426c7654c8b81cbb8edb158f65378"
