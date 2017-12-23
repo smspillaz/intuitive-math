@@ -13,11 +13,12 @@ import { createStructuredSelector } from 'reselect';
 import styled from 'styled-components';
 import MathJax from 'react-mathjax';
 
-import { Euler } from 'three';
+import { Euler, Vector3 } from 'three';
 
 import { XAxis, YAxis, ZAxis } from 'components/Axis';
 import Animation from 'components/Animation';
 import Section from 'components/Section';
+import Vector from 'components/Vector';
 import Visualization from 'components/Visualization';
 
 import injectReducer from 'utils/injectReducer';
@@ -116,7 +117,97 @@ const SpacesSection = () => (
 
 const VectorsSection = () => (
   <Section title="Vectors" anchor="vectors">
-    <div>Hello, world</div>
+    <p>The fundamental building block of linear systems is the humble <Strong>Vector</Strong></p>
+    <Animation
+      initial={{ rotation: new Euler(0.5, 0.5, 0) }}
+      update={(state) => ({
+        rotation: new Euler(state.rotation.x,
+                            state.rotation.y + 0.001,
+                            state.rotation.z),
+      })}
+      render={(state) => (
+        <Visualization width={320} height={240} rotation={state.rotation}>
+          <XAxis />
+          <YAxis />
+          <ZAxis />
+          <Vector position={new Vector3(2, 2, 2)} color={0xff8800} />
+        </Visualization>
+      )}
+    />
+    <p>
+      There is a few different ways to think about vectors. It is not quite right
+      to call them a point, because vectors have a direction that is actually
+      computable. But then they are not just a pure direction with no associated
+      point.
+    </p>
+    <p>
+      Personally, I find it best to think of them as a recipie to get to a point
+      based on our understanding of dimensions above. When you plot the vector,
+      it shows you the fastest way of getting to that point in space.
+    </p>
+    <p>
+      For instance, the vector above is at the position <MathJax.Node inline>{'(5, 5, 5)'}</MathJax.Node>{' '}.
+      Another way to think about it might be that it is <MathJax.Node inline>{'5'}</MathJax.Node>{' '}
+      steps in the <MathJax.Node inline>{'x'}</MathJax.Node>{' '} direction,{' '}
+      <MathJax.Node inline>{'5'}</MathJax.Node>{' '}
+      steps in the <MathJax.Node inline>{'y'}</MathJax.Node>{' '} and{' '}
+      <MathJax.Node inline>{'5'}</MathJax.Node>{' '}
+      steps in the <MathJax.Node inline>{'z'}</MathJax.Node>{' '} direction.
+    </p>
+    <p>
+      This makes more sense if you look at the most degenerate case and then
+      build up. For instance, take a one-dimensional space, the number line,
+      where we only have an <MathJax.Node inline>{'x'}</MathJax.Node> axis.
+    </p>
+    <Animation
+      initial={{ time: 0 }}
+      update={(state) => ({
+        time: state.time + 1,
+      })}
+      render={(state) => {
+        const xPosition = Math.trunc(Math.sin(state.time * 0.05) * 100) / 100;
+        return (
+          <div>
+            <Visualization width={320} height={240}>
+              <XAxis />
+              <Vector position={new Vector3(2 * xPosition, 0, 0)} color={0xff8800} />
+            </Visualization>
+            <div>
+              <MathJax.Node inline>{'x ='}</MathJax.Node>{' '}<span>{xPosition}</span>
+            </div>
+          </div>
+        );
+      }}
+    />
+    <p>
+      Now let us have a look at a vector which ranges around a circle on the
+      <MathJax.Node inline>{'x'}</MathJax.Node> and <MathJax.Node inline>{'y'}</MathJax.Node> axis.
+    </p>
+    <Animation
+      initial={{ time: 0 }}
+      update={(state) => ({
+        time: state.time + 1,
+      })}
+      render={(state) => {
+        const xPosition = Math.trunc(Math.sin(state.time * 0.05) * 100) / 100;
+        const yPosition = Math.trunc(Math.cos(state.time * 0.05) * 100) / 100;
+        return (
+          <div>
+            <Visualization width={320} height={240}>
+              <XAxis />
+              <YAxis />
+              <Vector position={new Vector3(2 * xPosition, 2 * yPosition, 0)} color={0xff8800} />
+            </Visualization>
+            <div>
+              <MathJax.Node inline>{'x ='}</MathJax.Node>{' '}<span>{xPosition}</span>
+            </div>
+            <div>
+              <MathJax.Node inline>{'y ='}</MathJax.Node>{' '}<span>{yPosition}</span>
+            </div>
+          </div>
+        );
+      }}
+    />
   </Section>
 );
 
