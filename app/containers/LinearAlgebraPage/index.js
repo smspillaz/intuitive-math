@@ -10,33 +10,15 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 
-import PropTypes from 'prop-types';
+import Section from 'components/Section';
 
 import injectReducer from 'utils/injectReducer';
 
 import reducer from './reducer';
 
-const Section = ({ title, anchor, children }) => (
-  <div>
-    <a  // eslint-disable-line jsx-a11y/anchor-has-content
-      name={anchor}
-      aria-hidden
-    />
-    <h1>{title}</h1>
-    <div>
-      {children}
-    </div>
-  </div>
-);
-
-Section.propTypes = {
-  title: PropTypes.string.isRequired,
-  anchor: PropTypes.string.isRequired,
-  children: PropTypes.arrayOf(PropTypes.element).isRequired,
-};
-
 const VectorsSection = () => (
   <Section title="Vectors" anchor="vectors">
+    <div>Hello, world</div>
   </Section>
 );
 
