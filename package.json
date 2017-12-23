@@ -191,6 +191,7 @@
     "react-helmet": "5.2.0",
     "react-intl": "2.4.0",
     "react-loadable": "5.4.0",
+    "react-mathjax": "^0.1.1",
     "react-metrics": "^2.4.0",
     "react-redux": "5.0.7",
     "react-router-dom": "4.3.1",
