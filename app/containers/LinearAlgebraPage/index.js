@@ -31,7 +31,12 @@ export class LinearAlgebraPage extends React.PureComponent { // eslint-disable-l
           <meta name="description" content="A primer on linear algebra" />
         </Helmet>
         <div>
-          <VectorsSection />
+          <MathJax.Context>
+            <div>
+              <SpacesSection />
+              <VectorsSection />
+            </div>
+          </MathJax.Context>
         </div>
       </article>
     );
