@@ -13,7 +13,12 @@ import { createStructuredSelector } from 'reselect';
 import styled from 'styled-components';
 import MathJax from 'react-mathjax';
 
+import { Euler } from 'three';
+
+import { XAxis, YAxis, ZAxis } from 'components/Axis';
+import Animation from 'components/Animation';
 import Section from 'components/Section';
+import Visualization from 'components/Visualization';
 
 import injectReducer from 'utils/injectReducer';
 
@@ -40,6 +45,21 @@ const SpacesSection = () => (
         <MathJax.Node inline>{'x'}</MathJax.Node>, <MathJax.Node inline>{'y'}</MathJax.Node>,{' '}
         <MathJax.Node inline>{'z'}</MathJax.Node> and so on.
       </p>
+      <Animation
+        initial={{ rotation: new Euler(0.5, 0.5, 0) }}
+        update={(state) => ({
+          rotation: new Euler(state.rotation.x,
+                              state.rotation.y + 0.001,
+                              state.rotation.z),
+        })}
+        render={(state) => (
+          <Visualization width={320} height={240} rotation={state.rotation}>
+            <XAxis />
+            <YAxis />
+            <ZAxis />
+          </Visualization>
+        )}
+      />
       <p>
         There exist infinitely many points in the other corresponding
         dimensions for a single point on one dimension. For instance, if you
@@ -52,6 +72,38 @@ const SpacesSection = () => (
         dimension, and then after that, there are infinitely many points you could
         choose in the <MathJax.Node inline>{'z'}</MathJax.Node> dimension.
       </p>
+      <p>
+        In the <Strong>first</Strong> dimension you would just have a number
+        line made up of every possible point
+      </p>
+      <Visualization width={320} height={240}>
+        <XAxis />
+      </Visualization>
+      <p>
+        In <Strong>two</Strong> dimensional space, you have a co-ordinate plane
+        made up of every possible line
+      </p>
+      <Visualization width={320} height={240}>
+        <XAxis />
+        <YAxis />
+      </Visualization>
+      <p>
+        In <Strong>three</Strong> dimensional space, you have a volume
+        made up of every possible plane
+      </p>
+      <Visualization width={320} height={240} rotation={new Euler(0.5, 0.5, 0)}>
+        <XAxis />
+        <YAxis />
+        <ZAxis />
+      </Visualization>
+      <p>
+        Dimensions above the fourth are a little tricky to visualize, but the
+        pattern continues. If two-dimensional space is a plane consisting of
+        consists of every possible line and three-dimensional space is a volume
+        consisting of every possible plane, then think about what that means
+        for four-dimensional space. Or even five-dimensional space.
+      </p>
+      <p>The logic will generalize to an n-dimensional space</p>
       <p>
         For the sake of simplicitly, we will assume
         that all co-ordinate systems use the same units, meaning that movement
