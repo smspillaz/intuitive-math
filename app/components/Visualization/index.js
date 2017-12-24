@@ -10,6 +10,7 @@ import THREE, {
   Vector3,
   WebGLRenderer,
 } from 'three';
+import TrackVisibility from 'react-on-screen';
 
 import memoize from 'memoize-one';
 
@@ -156,22 +157,33 @@ const Centered = styled.div`
   text-align: center;
 `;
 
-const Visualization = ({ width, height, rotation, position, children }) => (
+const Box = styled.div`
+  width: ${(props) => props.width}px;
+  height: ${(props) => props.height}px;
+  background-color: #000000;
+  text-align: center;
+  display: inline-block;
+`;
+
+const Visualization = ({ width, height, rotation, position, children, animationIsRunning = false }) => (
   <Centered>
-    <ThreeJSRenderer
-      camera={(() => {
-        const camera = new PerspectiveCamera(75, width / height, 0.1, 1000);
-        camera.position = position || new Vector3(0, 0, 5);
-      })()}
-      width={width}
-      height={height}
-    >
-      <Group rotation={rotation || new Euler(0, 0, 0)}>{children}</Group>
-    </ThreeJSRenderer>
+    {animationIsRunning ? (
+      <ThreeJSRenderer
+        camera={(() => {
+          const camera = new PerspectiveCamera(75, width / height, 0.1, 1000);
+          camera.position = position || new Vector3(0, 0, 5);
+        })()}
+        width={width}
+        height={height}
+      >
+        <Group rotation={rotation || new Euler(0, 0, 0)}>{children}</Group>
+      </ThreeJSRenderer>
+    ) : (<Box width={width} height={height} />)}
   </Centered>
 );
 
 Visualization.propTypes = {
+  animationIsRunning: PropTypes.bool,
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
   rotation: PropTypes.object,
@@ -179,4 +191,18 @@ Visualization.propTypes = {
   children: PropTypes.element,
 };
 
-export default Visualization;
+export const BlankableVisualization = (props) => (
+  <TrackVisibility offset={100}>
+    {({ isVisible }) => <Visualization {...props} animationIsRunning={isVisible} />}
+  </TrackVisibility>
+);
+
+const BlankableByContextVisualization = (props, { animationIsRunning = true }) => (
+  <Visualization animationIsRunning={animationIsRunning} {...props} />
+);
+
+BlankableByContextVisualization.contextTypes = {
+  animationIsRunning: PropTypes.bool,
+};
+
+export default BlankableByContextVisualization;
