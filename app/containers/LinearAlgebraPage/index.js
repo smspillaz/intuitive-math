@@ -182,6 +182,9 @@ const VectorsSection = () => (
     <p>
       Now let us have a look at a vector which ranges around a circle on the
       <MathJax.Node inline>{'x'}</MathJax.Node> and <MathJax.Node inline>{'y'}</MathJax.Node> axis.
+      Notice that we are still doing the same thing along the x axis, but we are
+      sort of translating the whole line up and down whilst the vector
+      move along the same line.
     </p>
     <Animation
       initial={{ time: 0 }}
@@ -197,12 +200,50 @@ const VectorsSection = () => (
               <XAxis />
               <YAxis />
               <Vector position={new Vector3(2 * xPosition, 2 * yPosition, 0)} color={0xff8800} />
+              <Vector position={new Vector3(2 * xPosition, 2 * yPosition, 0)} color={0xff8800} base={new Vector3(0, 2 * yPosition, 0)} />
             </Visualization>
             <div>
               <MathJax.Node inline>{'x ='}</MathJax.Node>{' '}<span>{xPosition}</span>
             </div>
             <div>
               <MathJax.Node inline>{'y ='}</MathJax.Node>{' '}<span>{yPosition}</span>
+            </div>
+          </div>
+        );
+      }}
+    />
+    <p>
+      Extending this to the third dimension is fairly straightforward. If we can
+      imagine our 2D animation running on a flat surface, then in 3D all we are
+      really doing is moving the plane which is that flat surface, around.
+    </p>
+    <Animation
+      initial={{ time: 0 }}
+      update={(state) => ({
+        time: state.time + 1,
+      })}
+      render={(state) => {
+        const xPosition = Math.trunc(Math.sin(state.time * 0.05) * 100) / 100;
+        const yPosition = Math.trunc(Math.cos(state.time * 0.05) * 100) / 100;
+        const zPosition = Math.trunc(Math.sin(state.time * 0.005) * 100) / 100;
+        return (
+          <div>
+            <Visualization width={320} height={240} rotation={new Euler(0.5, 0.5, 0)}>
+              <XAxis />
+              <YAxis />
+              <ZAxis />
+              <Vector position={new Vector3(2 * xPosition, 2 * yPosition, 2 * zPosition)} color={0xff8800} base={new Vector3(2 * xPosition, 0, 2 * zPosition)} />
+              <Vector position={new Vector3(2 * xPosition, 2 * yPosition, 2 * zPosition)} color={0xff8800} base={new Vector3(0, 2 * yPosition, 2 * zPosition)} />
+              <Vector position={new Vector3(2 * xPosition, 2 * yPosition, 2 * zPosition)} color={0xff8800} />
+            </Visualization>
+            <div>
+              <MathJax.Node inline>{'x ='}</MathJax.Node>{' '}<span>{xPosition}</span>
+            </div>
+            <div>
+              <MathJax.Node inline>{'y ='}</MathJax.Node>{' '}<span>{yPosition}</span>
+            </div>
+            <div>
+              <MathJax.Node inline>{'z ='}</MathJax.Node>{' '}<span>{zPosition}</span>
             </div>
           </div>
         );
