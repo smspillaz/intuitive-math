@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import styled from 'styled-components';
+
 import THREE, {
   Euler,
   PerspectiveCamera,
@@ -150,17 +152,23 @@ export const Group = asSceneElement(
   props => constructConstructorlessThreeObject(THREE.Group, props)
 );
 
+const Centered = styled.div`
+  text-align: center;
+`;
+
 const Visualization = ({ width, height, rotation, position, children }) => (
-  <ThreeJSRenderer
-    camera={(() => {
-      const camera = new PerspectiveCamera(75, width / height, 0.1, 1000);
-      camera.position = position || new Vector3(0, 0, 5);
-    })()}
-    width={width}
-    height={height}
-  >
-    <Group rotation={rotation || new Euler(0, 0, 0)}>{children}</Group>
-  </ThreeJSRenderer>
+  <Centered>
+    <ThreeJSRenderer
+      camera={(() => {
+        const camera = new PerspectiveCamera(75, width / height, 0.1, 1000);
+        camera.position = position || new Vector3(0, 0, 5);
+      })()}
+      width={width}
+      height={height}
+    >
+      <Group rotation={rotation || new Euler(0, 0, 0)}>{children}</Group>
+    </ThreeJSRenderer>
+  </Centered>
 );
 
 Visualization.propTypes = {
