@@ -10,6 +10,8 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 
+import PropTypes from 'prop-types';
+
 import styled from 'styled-components';
 import MathJax from 'react-mathjax';
 
@@ -28,6 +30,14 @@ import reducer from './reducer';
 const Strong = styled.span`
   font-weight: bold
 `;
+
+const MathJaxMatrix = ({ matrix, ...props }) => (
+  <MathJax.Node {...props}>{`\\begin{bmatrix} ${matrix.map((row) => row.join(' & ')).join(' \\\\ ')} \\end{bmatrix}`}</MathJax.Node>
+);
+
+MathJaxMatrix.propTypes = {
+  matrix: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
+};
 
 const SpacesSection = () => (
   <Section title="Co-ordinate Systems" anchor="spaces">
@@ -161,7 +171,7 @@ const VectorsSection = () => (
       etc and just replaces them with a series of numbers in vertical square
       brackets, each slot representing a different dimension:
     </p>
-    <MathJax.Node>{'\\begin{bmatrix} 1 \\\\ 2 \\\\ 3 \\end{bmatrix}'}</MathJax.Node>
+    <MathJaxMatrix matrix={[[1], [2], [3]]} />
     <p>
       This makes more sense if you look at the most degenerate case and then
       build up. For instance, take a one-dimensional space, the number line,
