@@ -917,6 +917,40 @@ const LinearIndependenceSection = () => (
       other two does not get you outside of the plane that the other
       two are describing. So they are linearly dependent.
     </p>
+    <p>
+      So we can get rid of the third vector and still be describing the same
+      plane.
+    </p>
+    <MathJaxMatrix inline matrix={[[1], [1], [1]]} />
+    <MathJaxMatrix inline matrix={[[1], [0], [1]]} />
+    <Animation
+      initial={{ rotation: new Euler(0.5, 0.5, 0) }}
+      update={(state) => ({
+        rotation: new Euler(state.rotation.x,
+                            state.rotation.y + 0.001,
+                            state.rotation.z),
+      })}
+      render={(state) => (
+        <Visualization width={320} height={240} rotation={state.rotation}>
+          <XAxis />
+          <YAxis />
+          <ZAxis />
+          <Vector position={new Vector3(1, 1, 1)} color={0xffff00} />
+          <Vector position={new Vector3(1, 0, 1)} color={0xff00ff} />
+          <mesh>
+            <parametricGeometry
+              parametricFunction={(u, v) =>
+                new Vector3(u + v,
+                            u,
+                            u + v)}
+              slices={1}
+              stacks={1}
+            />
+            <meshBasicMaterial color={0x009900} side={DoubleSide} />
+          </mesh>
+        </Visualization>
+      )}
+    />
   </Section>
 );
 
