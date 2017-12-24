@@ -411,6 +411,91 @@ const MatricesSection = () => (
       <Vector position={new Vector3(100, -65.3, 0)} color={0xff00ff} />
       <Vector position={new Vector3(100, -299.5, 0)} color={0xffff00} />
     </Visualization>
+    <p>
+      A matrix is just a shorthand way of expressing such a system of equations
+      where we take away the variables and put the entire system in square
+      brackets.
+    </p>
+    <MathJaxMatrix matrix={[[2, 3], [6, 2]]} />
+    <p>
+      Comparing this matrix to the system of equations above, it is now possible
+      to see what is being represented here. Since each row contains
+      an <MathJax.Node inline>{'x'}</MathJax.Node> and a{' '}
+      <MathJax.Node inline>{'y'}</MathJax.Node>, you could say that each row
+      itself is a vector. But then, like with the number of equations above, the
+      number of rows tells you at most how many variables you can solve for. In
+      some cases you will not always be able to solve for a variable, despite
+      there being enough rows to be able to solve for it, but that actually
+      tells you something about the underlying equations themselves.
+    </p>
+    <p>
+      Generalizing a little bit further, the each row gives you a piece of
+      information about the input space and each column gives you a piece
+      of information about the output space.
+    </p>
+    <p>
+      If we were to visualize the rows of that matrix, we have these vectors:
+    </p>
+    <Visualization width={320} height={240}>
+      <XAxis />
+      <YAxis />
+      <Vector position={new Vector3(2, 3, 0)} color={0xff00ff} />
+      <Vector position={new Vector3(6, 2, 0)} color={0xffff00} />
+    </Visualization>
+    <p>
+      And if we were to visualize the columns of that matrix, we have these vectors:
+    </p>
+    <Visualization width={320} height={240}>
+      <XAxis />
+      <YAxis />
+      <Vector position={new Vector3(2, 6, 0)} color={0xff00ff} />
+      <Vector position={new Vector3(3, 2, 0)} color={0xffff00} />
+    </Visualization>
+    <p>
+      Matrix-matrix addition and subtraction is not very interesting - you just
+      add up all the components. Again, the two matrices need to be the same
+      size in order for this to work. So for instance, if we wanted to add
+      the following matrices:
+    </p>
+    <p>
+      <MathJaxMatrix inline matrix={[[1, 1], [2, 0]]} />{' + '}
+      <MathJaxMatrix inline matrix={[[2, 1], [1, 1]]} />
+    </p>
+    <p>
+      You would end up adding each separate vector component together, which
+      we would visualize like so:
+    </p>
+    <Animation
+      initial={{ time: 0 }}
+      update={(state) => ({
+        time: state.time + 1,
+      })}
+      render={(state) => {
+        const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
+        const a1 = new Vector3(1, 1, 0);
+        const b1 = new Vector3(2 * lerp, 1 * lerp, 0);
+        const c1 = new Vector3(a1.x + b1.x, a1.y + b1.y, 0);
+
+        const a2 = new Vector3(2, 0, 0);
+        const b2 = new Vector3(1 * lerp, 1 * lerp, 0);
+        const c2 = new Vector3(a2.x + b2.x, a2.y + b2.y, 0);
+
+        return (
+          <div>
+            <Visualization width={320} height={240}>
+              <XAxis />
+              <YAxis />
+              <Vector position={a1} color={0xffff00} />
+              <Vector position={c1} color={0xffff00} base={a1} />
+              <Vector position={c1} color={0xffff00} />
+              <Vector position={a2} color={0x00ff00} />
+              <Vector position={c2} color={0x00ff00} base={a2} />
+              <Vector position={c2} color={0x00ff00} />
+            </Visualization>
+          </div>
+        );
+      }}
+    />
   </Section>
 );
 
