@@ -588,6 +588,13 @@ const MatricesSection = () => (
       }}
     />
     <p>
+      As we do these transformations, pay attention to the two yellow vectors
+      and their relationship with the magenta vector. The two yellow vectors
+      are something called a <Strong>basis</Strong> for the 2D space, something
+      we will revisit later. They are being interpolated from their default
+      position to the position specified in the matrix.
+    </p>
+    <p>
       This one just takes every step in the x direction and translates
       the vector that much in the y direction and vice versa. As such, it is
       a reflection.
@@ -661,6 +668,111 @@ const MatricesSection = () => (
               <Vector position={new Vector3(mat.elements[0], mat.elements[1], 0)} color={0xffff00} />
               <Vector position={new Vector3(mat.elements[3], mat.elements[4], 0)} color={0xffff00} />
               <Vector position={output} color={0xff00ff} />
+            </Visualization>
+          </div>
+        );
+      }}
+    />
+    <p>
+      What about multiplying two matrices? Well, we can take what we know about
+      matrices - the fact that they are sets of vectors, the rows represent
+      the input space and the columsn represent the output space and our
+      definition of matrix-vector multiplication to multiply two matricies by{' '}
+      ...multiplying each column vector in the right hand
+      matrix by the left hand side matrix.
+    </p>
+    <p>
+      To make things a little simpler, I have color-coded the the vectors
+      in the right hand matrix. The yellow vector represents
+      first column and the magenta vector represents the second column.
+    </p>
+    <p>
+      <MathJaxMatrix matrix={[[2, 0], [0, 2]]} inline />
+      <MathJaxMatrix matrix={[[3, 1], [1, 1]]} inline />
+      {' = '}<MathJaxMatrix matrix={[[6, 2], [2, 2]]} inline />
+    </p>
+    <Animation
+      initial={{ time: 0 }}
+      update={(state) => ({
+        time: state.time + 1,
+      })}
+      render={(state) => {
+        const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
+        const mat = new Matrix3();
+        const input = new Matrix3();
+
+        input.set(3, 1, 0,
+                  1, 1, 0,
+                  0, 0, 0);
+        mat.set(1 + (1 * lerp), 0, 0,
+                0, 1 + (1 * lerp), 0,
+                0, 0, 0);
+
+        const output = input.clone().multiply(mat);
+
+        return (
+          <div>
+            <Visualization width={320} height={240}>
+              <XAxis />
+              <YAxis />
+              <Vector position={new Vector3(mat.elements[0], mat.elements[1], 0)} color={0x00ffff} />
+              <Vector position={new Vector3(mat.elements[3], mat.elements[4], 0)} color={0x00ffff} />
+              <Vector position={new Vector3(output.elements[0], output.elements[1], 0)} color={0xff00ff} />
+              <Vector position={new Vector3(output.elements[3], output.elements[4], 0)} color={0xffff00} />
+            </Visualization>
+          </div>
+        );
+      }}
+    />
+    <p>
+      Again, notice what happens to each vector in the second matrix as the
+      transformation in the first is applied to it. In the second matrix,
+      we had the vector <MathJax.Node inline>{'(1, 1)'}</MathJax.Node>, which got scaled
+      2 in the x-direction for every component of its x-direction and 2 in
+      the y-direction for every component in the y direction. So it ended
+      up on <MathJax.Node inline>{'(2, 2)'}</MathJax.Node>.
+    </p>
+    <p>
+      Similarly, for the vector <MathJax.Node inline>{'(3, 1)'}</MathJax.Node>, it was also scaled
+      2 in the x-direction for every component of its x-direction and 2 in
+      the y-direction for every component in the y direction. So it ended
+      up on <MathJax.Node inline>{'(6, 2)'}</MathJax.Node>.
+    </p>
+    <p>
+      Here is something a little more complicated - we will apply the same
+      rotation that we did earlier.
+    </p>
+    <MathJaxMatrix matrix={[[0, 1], [-1, 0]]} inline />
+    <MathJaxMatrix matrix={[[3, 1], [1, 1]]} inline />
+    {' = '}<MathJaxMatrix matrix={[[1, 1], [-3, -1]]} inline />
+    <Animation
+      initial={{ time: 0 }}
+      update={(state) => ({
+        time: state.time + 1,
+      })}
+      render={(state) => {
+        const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
+        const mat = new Matrix3();
+        const input = new Matrix3();
+
+        input.set(3, 1, 0,
+                  1, 1, 0,
+                  0, 0, 0);
+        mat.set(1 - (1 * lerp), (1 * lerp), 0,
+                -lerp, 1 - (1 * lerp), 0,
+                0, 0, 0);
+
+        const output = mat.clone().multiply(input);
+
+        return (
+          <div>
+            <Visualization width={320} height={240}>
+              <XAxis />
+              <YAxis />
+              <Vector position={new Vector3(mat.elements[0], mat.elements[1], 0)} color={0x00ffff} />
+              <Vector position={new Vector3(mat.elements[3], mat.elements[4], 0)} color={0x00ffff} />
+              <Vector position={new Vector3(output.elements[0], output.elements[1], 0)} color={0xff00ff} />
+              <Vector position={new Vector3(output.elements[3], output.elements[4], 0)} color={0xffff00} />
             </Visualization>
           </div>
         );
