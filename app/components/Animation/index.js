@@ -60,7 +60,7 @@ class Animation extends React.Component {
 
   startAnimationCountdown() {
     if (this.animationCountdownId === -1) {
-      this.animationCountdownId = setTimeout(() => this.animate(), 200);
+      this.animationCountdownId = setTimeout(() => this.animate(), 50);
     }
   }
 
