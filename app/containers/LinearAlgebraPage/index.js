@@ -15,7 +15,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import MathJax from 'react-mathjax';
 
-import { Euler, Matrix3, Vector3 } from 'three';
+import { DoubleSide, Euler, Matrix3, Vector3 } from 'three';
 
 import { XAxis, YAxis, ZAxis } from 'components/Axis';
 import Animation from 'components/Animation';
@@ -907,7 +907,7 @@ const LinearIndependenceSection = () => (
               slices={1}
               stacks={1}
             />
-            <meshBasicMaterial color={0x009900} />
+            <meshBasicMaterial color={0x009900} side={DoubleSide} />
           </mesh>
         </Visualization>
       )}
