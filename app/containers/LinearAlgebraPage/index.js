@@ -882,7 +882,7 @@ const LinearIndependenceSection = () => (
     <p>But you might also get a case where they, represent the same plane</p>
     <MathJaxMatrix inline matrix={[[1], [1], [1]]} />
     <MathJaxMatrix inline matrix={[[1], [0], [1]]} />
-    <MathJaxMatrix inline matrix={[[0], [1], [0]]} />
+    <MathJaxMatrix inline matrix={[[2], [1], [2]]} />
     <Animation
       initial={{ rotation: new Euler(0.5, 0.5, 0) }}
       update={(state) => ({
@@ -897,7 +897,7 @@ const LinearIndependenceSection = () => (
           <ZAxis />
           <Vector position={new Vector3(1, 1, 1)} color={0xffff00} />
           <Vector position={new Vector3(1, 0, 1)} color={0xff00ff} />
-          <Vector position={new Vector3(0, 1, 0)} color={0x00ffff} />
+          <Vector position={new Vector3(2, 1, 2)} color={0x00ffff} />
           <mesh>
             <parametricGeometry
               parametricFunction={(u, v) =>
