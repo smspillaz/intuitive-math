@@ -39,6 +39,11 @@ MathJaxMatrix.propTypes = {
   matrix: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
 };
 
+const truncate = (num, precision) => {
+  const power = 10 ** precision;
+  return Math.floor(num * power) / power;
+};
+
 const SpacesSection = () => (
   <Section title="Co-ordinate Systems" anchor="spaces">
     <div>
@@ -183,7 +188,7 @@ const VectorsSection = () => (
         time: state.time + 1,
       })}
       render={(state) => {
-        const xPosition = Math.trunc(Math.sin(state.time * 0.05) * 100) / 100;
+        const xPosition = truncate(Math.sin(state.time * 0.05), 2);
         return (
           <div>
             <Visualization width={320} height={240}>
@@ -210,8 +215,8 @@ const VectorsSection = () => (
         time: state.time + 1,
       })}
       render={(state) => {
-        const xPosition = Math.trunc(Math.sin(state.time * 0.05) * 100) / 100;
-        const yPosition = Math.trunc(Math.cos(state.time * 0.05) * 100) / 100;
+        const xPosition = truncate(Math.sin(state.time * 0.05), 2);
+        const yPosition = truncate(Math.cos(state.time * 0.05), 2);
         return (
           <div>
             <Visualization width={320} height={240}>
@@ -241,9 +246,9 @@ const VectorsSection = () => (
         time: state.time + 1,
       })}
       render={(state) => {
-        const xPosition = Math.trunc(Math.sin(state.time * 0.05) * 100) / 100;
-        const yPosition = Math.trunc(Math.cos(state.time * 0.05) * 100) / 100;
-        const zPosition = Math.trunc(Math.sin(state.time * 0.005) * 100) / 100;
+        const xPosition = truncate(Math.sin(state.time * 0.05), 2);
+        const yPosition = truncate(Math.cos(state.time * 0.05), 2);
+        const zPosition = truncate(Math.sin(state.time * 0.005), 2);
         return (
           <div>
             <Visualization width={320} height={240} rotation={new Euler(0.5, 0.5, 0)}>
@@ -304,10 +309,10 @@ const VectorsSection = () => (
               <Vector position={c} color={0x00ffff} />
             </Visualization>
             <div>
-              <MathJax.Node inline>{'x ='}</MathJax.Node>{' '}<span>{a.x}{' + '}{Math.floor(b.x * 100) / 100}{' = '}{Math.floor(c.x * 100) / 100}</span>
+              <MathJax.Node inline>{'x ='}</MathJax.Node>{' '}<span>{a.x}{' + '}{truncate(b.x, 2)}{' = '}{truncate(c.x, 2)}</span>
             </div>
             <div>
-              <MathJax.Node inline>{'y ='}</MathJax.Node>{' '}<span>{a.y}{' + '}{Math.floor(b.y * 100) / 100}{' = '}{Math.floor(c.y * 100) / 100}</span>
+              <MathJax.Node inline>{'y ='}</MathJax.Node>{' '}<span>{a.y}{' + '}{truncate(b.y, 2)}{' = '}{truncate(c.y, 2)}</span>
             </div>
           </div>
         );
@@ -345,10 +350,10 @@ const VectorsSection = () => (
               <Vector position={c} color={0x00ffff} />
             </Visualization>
             <div>
-              <MathJax.Node inline>{'x ='}</MathJax.Node>{' '}<span>{a.x}{' * '}{Math.floor(b.x * 100) / 100}{' = '}{Math.floor(c.x * 100) / 100}</span>
+              <MathJax.Node inline>{'x ='}</MathJax.Node>{' '}<span>{a.x}{' * '}{truncate(b.x, 2)}{' = '}{truncate(c.x, 2)}</span>
             </div>
             <div>
-              <MathJax.Node inline>{'y ='}</MathJax.Node>{' '}<span>{a.y}{' * '}{Math.floor(b.y * 100) / 100}{' = '}{Math.floor(c.y * 100) / 100}</span>
+              <MathJax.Node inline>{'y ='}</MathJax.Node>{' '}<span>{a.y}{' * '}{truncate(b.y, 2)}{' = '}{truncate(c.y, 2)}</span>
             </div>
           </div>
         );
