@@ -13,14 +13,15 @@ class Animation extends React.Component {
     this.state = {
       ...props.initial,
     };
+    this.frameId = -1;
   }
 
   componentDidMount() {
     const updater = () => {
       this.setState(this.props.update(this.state));
-      requestAnimationFrame(updater);
+      this.frameId = requestAnimationFrame(updater);
     };
-    requestAnimationFrame(updater);
+    this.frameId = requestAnimationFrame(updater);
   }
 
   render() {
