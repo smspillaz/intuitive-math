@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import styled from 'styled-components';
 
+import TrackVisibility from 'react-on-screen';
 import React3 from 'react-three-renderer';
 import { Euler, Vector3 } from 'three';
 
@@ -23,7 +24,7 @@ Box.propTypes = {
   height: PropTypes.number.isRequired,
 };
 
-const Visualization = ({ width, height, rotation, position, children }, { animationIsRunning = true }) => (
+const Visualization = ({ width, height, rotation, position, children, animationIsRunning = false }) => (
   <Centered>
     {animationIsRunning ? (
       <React3
@@ -52,6 +53,7 @@ const Visualization = ({ width, height, rotation, position, children }, { animat
 );
 
 Visualization.propTypes = {
+  animationIsRunning: PropTypes.bool,
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
   rotation: PropTypes.object,
@@ -59,8 +61,18 @@ Visualization.propTypes = {
   children: PropTypes.element,
 };
 
-Visualization.contextTypes = {
+export const BlankableVisualization = (props) => (
+  <TrackVisibility offset={100}>
+    {({ isVisible }) => <Visualization {...props} animationIsRunning={isVisible} />}
+  </TrackVisibility>
+);
+
+const BlankableByContextVisualization = (props, { animationIsRunning = true }) => (
+  <Visualization animationIsRunning={animationIsRunning} {...props} />
+);
+
+BlankableByContextVisualization.contextTypes = {
   animationIsRunning: PropTypes.bool,
 };
 
-export default Visualization;
+export default BlankableByContextVisualization;
