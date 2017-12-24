@@ -362,6 +362,58 @@ const VectorsSection = () => (
   </Section>
 );
 
+const MatricesSection = () => (
+  <Section title="Matrices" anchor="matrices">
+    <p>
+      The traditional way of thinking about matrices is as systems of linear
+      equations. For instance, you might have the following two equations:
+    </p>
+    <MathJax.Node>{'2x + 3y = 4'}</MathJax.Node>
+    <MathJax.Node>{'6x + 2y = 1'}</MathJax.Node>
+    <p>
+      Those two equations are telling you about two relationships between
+      the variables <MathJax.Node inline>{'x'}</MathJax.Node> and{' '}
+      <MathJax.Node inline>{'y'}</MathJax.Node>. With those two relationships, you
+      can solve for what those variables are.
+    </p>
+    <p>
+      If you only had one equation, you do not have enough information to
+      solve for both <MathJax.Node inline>{'x'}</MathJax.Node> and{' '}
+      <MathJax.Node inline>{'y'}</MathJax.Node>. In fact, they could be anything
+      that satisfies the relationship, or anything on the line
+      <MathJax.Node inline>{'2x + 3y = 4'}</MathJax.Node>, which after
+      a little bit of algebra, we can represent like this:
+    </p>
+    <MathJax.Node>{'2x + 3y = 4'}</MathJax.Node>
+    <MathJax.Node>{'3y = 4 - 2x'}</MathJax.Node>
+    <MathJax.Node>{'y = \\frac{4 - 2x}{3}'}</MathJax.Node>
+    <p>
+      And if you graphed that line, you would see that valid solution that
+      satisfies that relationship exists anywhere on that line
+    </p>
+    <Visualization width={320} height={240}>
+      <XAxis />
+      <YAxis />
+      <Vector position={new Vector3(100, -65.3, 0)} color={0xffff00} />
+    </Visualization>
+    <p>
+      However, once we add the other line, as long as they are not parallel,
+      then the two will intersect in one place and we will have a single
+      solution for both <MathJax.Node inline>{'x'}</MathJax.Node> and{' '}
+      <MathJax.Node inline>{'y'}</MathJax.Node>.
+    </p>
+    <MathJax.Node>{'6x + 2y = 1'}</MathJax.Node>
+    <MathJax.Node>{'2y = 1 - 6x'}</MathJax.Node>
+    <MathJax.Node>{'y = \\frac{1 - 6x}{2}'}</MathJax.Node>
+    <Visualization width={320} height={240}>
+      <XAxis />
+      <YAxis />
+      <Vector position={new Vector3(100, -65.3, 0)} color={0xff00ff} />
+      <Vector position={new Vector3(100, -299.5, 0)} color={0xffff00} />
+    </Visualization>
+  </Section>
+);
+
 export class LinearAlgebraPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   render() {
     return (
@@ -375,6 +427,7 @@ export class LinearAlgebraPage extends React.PureComponent { // eslint-disable-l
             <div>
               <SpacesSection />
               <VectorsSection />
+              <MatricesSection />
             </div>
           </MathJax.Context>
         </div>
