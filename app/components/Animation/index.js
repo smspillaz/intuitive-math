@@ -11,6 +11,10 @@ class Animation extends React.Component {
     isVisible: PropTypes.bool.isRequired,
   };
 
+  static childContextTypes = {
+    animationIsRunning: PropTypes.bool,
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -18,6 +22,12 @@ class Animation extends React.Component {
     };
     this.frameId = -1;
     this.animationCountdownId = -1;
+  }
+
+  getChildContext() {
+    return {
+      animationIsRunning: this.frameId !== -1,
+    };
   }
 
   componentDidMount() {
