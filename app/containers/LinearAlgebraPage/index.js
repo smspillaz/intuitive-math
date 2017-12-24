@@ -155,6 +155,14 @@ const VectorsSection = () => (
       steps in the <MathJax.Node inline>{'z'}</MathJax.Node>{' '} direction.
     </p>
     <p>
+      As a slight notational detour, we represent vectors using a kind of shorthand
+      that takes away the <MathJax.Node inline>{'x'}</MathJax.Node>,{' '}
+      <MathJax.Node inline>{'y'}</MathJax.Node>{' '}, <MathJax.Node inline>{'z'}</MathJax.Node>{' '}
+      etc and just replaces them with a series of numbers in vertical square
+      brackets, each slot representing a different dimension:
+    </p>
+    <MathJax.Node>{'\\begin{bmatrix} 1 \\\\ 2 \\\\ 3 \\end{bmatrix}'}</MathJax.Node>
+    <p>
       This makes more sense if you look at the most degenerate case and then
       build up. For instance, take a one-dimensional space, the number line,
       where we only have an <MathJax.Node inline>{'x'}</MathJax.Node> axis.
