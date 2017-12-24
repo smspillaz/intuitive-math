@@ -5955,6 +5955,10 @@ lodash.templatesettings@^3.0.0:
     lodash._reinterpolate "^3.0.0"
     lodash.escape "^3.0.0"
 
+lodash.throttle@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/lodash.throttle/-/lodash.throttle-4.1.1.tgz#c23e91b710242ac70c37f1e1cda9274cc39bf2f4"
+
 lodash.uniq@^4.5.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
@@ -7303,7 +7307,7 @@ prop-types@^15.5.10, prop-types@^15.5.4, prop-types@15.5.10:
     fbjs "^0.8.9"
     loose-envify "^1.3.1"
 
-prop-types@^15.5.6, prop-types@^15.5.8:
+prop-types@^15.5.6, prop-types@^15.5.8, prop-types@^15.6.0:
   version "15.6.0"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.6.0.tgz#ceaf083022fc46b4a35f69e13ef75aed0d639856"
   dependencies:
@@ -7509,6 +7513,13 @@ react-mathjax:
     babel-preset-es2015 "^6.18.0"
     babel-preset-react "^6.16.0"
     load-script "^1.0.0"
+
+react-on-screen:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/react-on-screen/-/react-on-screen-2.0.1.tgz#48c6f5fa823c4e02064417e5b9fa775c36d08b43"
+  dependencies:
+    lodash.throttle "^4.1.1"
+    prop-types "^15.6.0"
 
 react-redux@5.0.5:
   version "5.0.5"
