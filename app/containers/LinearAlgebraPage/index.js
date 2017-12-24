@@ -901,9 +901,9 @@ const LinearIndependenceSection = () => (
           <mesh>
             <parametricGeometry
               parametricFunction={(u, v) =>
-                new Vector3(u,
-                            v,
-                            1)}
+                new Vector3(u + v,
+                            u,
+                            u + v)}
               slices={1}
               stacks={1}
             />
