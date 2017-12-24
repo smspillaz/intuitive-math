@@ -313,6 +313,47 @@ const VectorsSection = () => (
         );
       }}
     />
+    <p>
+      Of course, note that this only works if the two vectors have the same
+      number of dimensions.
+    </p>
+    <p>
+      Also note that vector multiplication is not defined in the usual sense -
+      you cannot just take the components of each vector and multiply them together.
+      If you did that, you would lose directional information, because what you
+      are really doing in that case is scaling each component by a different
+      number.
+    </p>
+    <Animation
+      initial={{ time: 0 }}
+      update={(state) => ({
+        time: state.time + 1,
+      })}
+      render={(state) => {
+        const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
+        const a = new Vector3(1, 2, 0);
+        const b = new Vector3(2 * lerp, 1 * lerp, 0);
+        const c = new Vector3(a.x * b.x, a.y * b.y, 0);
+
+        return (
+          <div>
+            <Visualization width={320} height={240}>
+              <XAxis />
+              <YAxis />
+              <Vector position={a} color={0xffff00} />
+              <Vector position={b} color={0xff00ff} />
+              <Vector position={c} color={0x00ffff} />
+            </Visualization>
+            <div>
+              <MathJax.Node inline>{'x ='}</MathJax.Node>{' '}<span>{a.x}{' * '}{Math.floor(b.x * 100) / 100}{' = '}{Math.floor(c.x * 100) / 100}</span>
+            </div>
+            <div>
+              <MathJax.Node inline>{'y ='}</MathJax.Node>{' '}<span>{a.y}{' * '}{Math.floor(b.y * 100) / 100}{' = '}{Math.floor(c.y * 100) / 100}</span>
+            </div>
+          </div>
+        );
+      }}
+    />
   </Section>
 );
 
