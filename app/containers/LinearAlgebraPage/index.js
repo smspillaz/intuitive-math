@@ -21,7 +21,7 @@ import { XAxis, YAxis, ZAxis } from 'components/Axis';
 import Animation from 'components/Animation';
 import Section from 'components/Section';
 import Vector from 'components/Vector';
-import Visualization from 'components/Visualization';
+import Visualization, { BlankableVisualization } from 'components/Visualization';
 
 import injectReducer from 'utils/injectReducer';
 
@@ -92,26 +92,26 @@ const SpacesSection = () => (
         In the <Strong>first</Strong> dimension you would just have a number
         line made up of every possible point
       </p>
-      <Visualization width={320} height={240}>
+      <BlankableVisualization width={320} height={240}>
         <XAxis />
-      </Visualization>
+      </BlankableVisualization>
       <p>
         In <Strong>two</Strong> dimensional space, you have a co-ordinate plane
         made up of every possible line
       </p>
-      <Visualization width={320} height={240}>
+      <BlankableVisualization width={320} height={240}>
         <XAxis />
         <YAxis />
-      </Visualization>
+      </BlankableVisualization>
       <p>
         In <Strong>three</Strong> dimensional space, you have a volume
         made up of every possible plane
       </p>
-      <Visualization width={320} height={240} rotation={new Euler(0.5, 0.5, 0)}>
+      <BlankableVisualization width={320} height={240} rotation={new Euler(0.5, 0.5, 0)}>
         <XAxis />
         <YAxis />
         <ZAxis />
-      </Visualization>
+      </BlankableVisualization>
       <p>
         Dimensions above the fourth are a little tricky to visualize, but the
         pattern continues. If two-dimensional space is a plane consisting of
@@ -391,11 +391,11 @@ const MatricesSection = () => (
       And if you graphed that line, you would see that valid solution that
       satisfies that relationship exists anywhere on that line
     </p>
-    <Visualization width={320} height={240}>
+    <BlankableVisualization width={320} height={240}>
       <XAxis />
       <YAxis />
       <Vector position={new Vector3(100, -65.3, 0)} color={0xffff00} />
-    </Visualization>
+    </BlankableVisualization>
     <p>
       However, once we add the other line, as long as they are not parallel,
       then the two will intersect in one place and we will have a single
@@ -405,12 +405,12 @@ const MatricesSection = () => (
     <MathJax.Node>{'6x + 2y = 1'}</MathJax.Node>
     <MathJax.Node>{'2y = 1 - 6x'}</MathJax.Node>
     <MathJax.Node>{'y = \\frac{1 - 6x}{2}'}</MathJax.Node>
-    <Visualization width={320} height={240}>
+    <BlankableVisualization width={320} height={240}>
       <XAxis />
       <YAxis />
       <Vector position={new Vector3(100, -65.3, 0)} color={0xff00ff} />
       <Vector position={new Vector3(100, -299.5, 0)} color={0xffff00} />
-    </Visualization>
+    </BlankableVisualization>
     <p>
       A matrix is just a shorthand way of expressing such a system of equations
       where we take away the variables and put the entire system in square
@@ -436,21 +436,21 @@ const MatricesSection = () => (
     <p>
       If we were to visualize the rows of that matrix, we have these vectors:
     </p>
-    <Visualization width={320} height={240}>
+    <BlankableVisualization width={320} height={240}>
       <XAxis />
       <YAxis />
       <Vector position={new Vector3(2, 3, 0)} color={0xff00ff} />
       <Vector position={new Vector3(6, 2, 0)} color={0xffff00} />
-    </Visualization>
+    </BlankableVisualization>
     <p>
       And if we were to visualize the columns of that matrix, we have these vectors:
     </p>
-    <Visualization width={320} height={240}>
+    <BlankableVisualization width={320} height={240}>
       <XAxis />
       <YAxis />
       <Vector position={new Vector3(2, 6, 0)} color={0xff00ff} />
       <Vector position={new Vector3(3, 2, 0)} color={0xffff00} />
-    </Visualization>
+    </BlankableVisualization>
     <p>
       Matrix-matrix addition and subtraction is not very interesting - you just
       add up all the components. Again, the two matrices need to be the same
@@ -804,12 +804,12 @@ const LinearIndependenceSection = () => (
       best illustrated in the two dimensional case with a visual explanation.
     </p>
     <MathJaxMatrix inline matrix={[[1, 2], [2, 4]]} />
-    <Visualization width={320} height={240}>
+    <BlankableVisualization width={320} height={240}>
       <XAxis />
       <YAxis />
       <Vector position={new Vector3(1, 2, 0)} color={0xffff00} />
       <Vector position={new Vector3(2, 4, 0)} color={0xff00ff} />
-    </Visualization>
+    </BlankableVisualization>
     <p>
       These two vectors are not linearly independent. The reason why is that
       the first vector describes the line <MathJax.Node inline>{'y = 2x'}</MathJax.Node>{' '}
@@ -829,13 +829,13 @@ const LinearIndependenceSection = () => (
     <MathJaxMatrix inline matrix={[[1], [2]]} />
     <MathJaxMatrix inline matrix={[[1], [1]]} />
     <MathJaxMatrix inline matrix={[[4], [5]]} />
-    <Visualization width={320} height={240}>
+    <BlankableVisualization width={320} height={240}>
       <XAxis />
       <YAxis />
       <Vector position={new Vector3(1, 1, 0)} color={0xffff00} />
       <Vector position={new Vector3(1, 2, 0)} color={0xff00ff} />
       <Vector position={new Vector3(4, 5, 0)} color={0x00fff} />
-    </Visualization>
+    </BlankableVisualization>
     <p>
       These vectors are still linearly dependent, even though none of them
       line on the same line. The reason is that now instead of lying on the
