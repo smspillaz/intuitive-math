@@ -267,6 +267,52 @@ const VectorsSection = () => (
         );
       }}
     />
+    <p>
+      Addition and subtraction on vectors is defined in the usual sense. Analytically
+      we just add each component and create a new vector.
+    </p>
+    <p>
+      <MathJaxMatrix matrix={[[1], [2], [3]]} inline />{'+ '}
+      <MathJaxMatrix matrix={[[1], [2], [3]]} inline />{'= '}
+      <MathJaxMatrix matrix={[[2], [4], [6]]} inline />
+    </p>
+    <p>
+      Geometrically you can think of this as adding head to tail, or following
+      the steps indicated by the first vector, then following the steps
+      indicated by the second
+    </p>
+    <Animation
+      initial={{ time: 0 }}
+      update={(state) => ({
+        time: state.time + 1,
+      })}
+      render={(state) => {
+        const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
+        const a = new Vector3(1, 2, 0);
+        const b = new Vector3(2 * lerp, 1 * lerp, 0);
+        const c = new Vector3();
+
+        c.addVectors(a, b);
+
+        return (
+          <div>
+            <Visualization width={320} height={240}>
+              <XAxis />
+              <YAxis />
+              <Vector position={a} color={0xffff00} />
+              <Vector position={c} color={0xff00ff} base={a} />
+              <Vector position={c} color={0x00ffff} />
+            </Visualization>
+            <div>
+              <MathJax.Node inline>{'x ='}</MathJax.Node>{' '}<span>{a.x}{' + '}{Math.floor(b.x * 100) / 100}{' = '}{Math.floor(c.x * 100) / 100}</span>
+            </div>
+            <div>
+              <MathJax.Node inline>{'y ='}</MathJax.Node>{' '}<span>{a.y}{' + '}{Math.floor(b.y * 100) / 100}{' = '}{Math.floor(c.y * 100) / 100}</span>
+            </div>
+          </div>
+        );
+      }}
+    />
   </Section>
 );
 
