@@ -782,7 +782,7 @@ const MatricesSection = () => (
 );
 
 const LinearIndependenceSection = () => (
-  <Section title="Linear Independence" href="linear-independence">
+  <Section title="Linear Independence" anchor="linear-independence">
     <p>
       Much ado gets made about linear independence, probably because it makes up
       quite a few questions where the answer is not immediately obvious. It is
