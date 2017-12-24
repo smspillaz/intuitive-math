@@ -15,7 +15,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import MathJax from 'react-mathjax';
 
-import { Euler, Vector3 } from 'three';
+import { Euler, Matrix3, Vector3 } from 'three';
 
 import { XAxis, YAxis, ZAxis } from 'components/Axis';
 import Animation from 'components/Animation';
@@ -491,6 +491,176 @@ const MatricesSection = () => (
               <Vector position={a2} color={0x00ff00} />
               <Vector position={c2} color={0x00ff00} base={a2} />
               <Vector position={c2} color={0x00ff00} />
+            </Visualization>
+          </div>
+        );
+      }}
+    />
+    <p>
+      Matrix-vector multiplication is where things get a little more interesting
+      since what we are doing here is transforming the vector by putting it
+      into the output space described by the vectors in the matrix.
+    </p>
+    <p>
+      This is defined by, for each row, multiplying each entry in each column
+      by each entry in each row of the vector and then adding up the result
+      into the output row. Remember that the output space is described by
+      the number of rows in the matrix, so you will end up with a vector that
+      has as many dimensions as the matrix has rows. In order for the operation
+      to work, you need to have as many as you have rows in the vector
+      you will be multiplying by. For instance, this transformation is going
+      to scale the existing vector by 2 units in the <MathJax.Node inline>{'x'}</MathJax.Node>
+      direction and 2 units in the y direction <MathJax.Node inline>{'y'}</MathJax.Node>:
+    </p>
+    <p>
+      <MathJaxMatrix matrix={[[2, 0], [0, 2]]} inline />
+      <MathJaxMatrix matrix={[[3], [1]]} inline />
+      {' = '}<MathJaxMatrix matrix={[[6 + 0], [0 + 2]]} inline />
+    </p>
+    <Animation
+      initial={{ time: 0 }}
+      update={(state) => ({
+        time: state.time + 1,
+      })}
+      render={(state) => {
+        const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
+        const mat = new Matrix3();
+        const input = new Vector3(3, 1, 0);
+
+        mat.set(1 + (1 * lerp), 0, 0,
+                0, 1 + (1 * lerp), 0,
+                0, 0, 0);
+
+        const output = input.clone().applyMatrix3(mat);
+
+        return (
+          <div>
+            <Visualization width={320} height={240}>
+              <XAxis />
+              <YAxis />
+              <Vector position={new Vector3(mat.elements[0], mat.elements[1], 0)} color={0xffff00} />
+              <Vector position={new Vector3(mat.elements[3], mat.elements[4], 0)} color={0xffff00} />
+              <Vector position={output} color={0xff00ff} />
+            </Visualization>
+          </div>
+        );
+      }}
+    />
+    <p>
+      What is more interesting is when you have transformations that are not
+      purely scalar. For instance, this transformation is going to move
+      the vector 1 unit in the <MathJax.Node inline>{'x'}</MathJax.Node> direction
+      for every unit that it has in the <MathJax.Node inline>{'y'}</MathJax.Node>{' '}
+      direction.
+    </p>
+    <p>
+      <MathJaxMatrix matrix={[[1, 1], [0, 1]]} inline />
+      <MathJaxMatrix matrix={[[2], [3]]} inline />
+      {' = '}<MathJaxMatrix matrix={[[5 + 0], [0 + 3]]} inline />
+    </p>
+    <Animation
+      initial={{ time: 0 }}
+      update={(state) => ({
+        time: state.time + 1,
+      })}
+      render={(state) => {
+        const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
+        const mat = new Matrix3();
+        const input = new Vector3(2, 3, 0);
+
+        mat.set(1, (1 * lerp), 0,
+                0, 1, 0,
+                0, 0, 0);
+
+        const output = input.clone().applyMatrix3(mat);
+
+        return (
+          <div>
+            <Visualization width={320} height={240}>
+              <XAxis />
+              <YAxis />
+              <Vector position={new Vector3(mat.elements[0], mat.elements[1], 0)} color={0xffff00} />
+              <Vector position={new Vector3(mat.elements[3], mat.elements[4], 0)} color={0xffff00} />
+              <Vector position={output} color={0xff00ff} />
+            </Visualization>
+          </div>
+        );
+      }}
+    />
+    <p>
+      This one just takes every step in the x direction and translates
+      the vector that much in the y direction and vice versa. As such, it is
+      a reflection.
+    </p>
+    <p>
+      <MathJaxMatrix matrix={[[0, 1], [1, 0]]} inline />
+      <MathJaxMatrix matrix={[[2], [3]]} inline />
+      {' = '}<MathJaxMatrix matrix={[[3], [2]]} inline />
+    </p>
+    <Animation
+      initial={{ time: 0 }}
+      update={(state) => ({
+        time: state.time + 1,
+      })}
+      render={(state) => {
+        const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
+        const mat = new Matrix3();
+        const input = new Vector3(2, 3, 0);
+
+        mat.set(1 - (1 * lerp), (1 * lerp), 0,
+                (1 * lerp), 1 - (1 * lerp), 0,
+                0, 0, 0);
+
+        const output = input.clone().applyMatrix3(mat);
+
+        return (
+          <div>
+            <Visualization width={320} height={240}>
+              <XAxis />
+              <YAxis />
+              <Vector position={new Vector3(mat.elements[0], mat.elements[1], 0)} color={0xffff00} />
+              <Vector position={new Vector3(mat.elements[3], mat.elements[4], 0)} color={0xffff00} />
+              <Vector position={output} color={0xff00ff} />
+            </Visualization>
+          </div>
+        );
+      }}
+    />
+    <p>
+      This one actually rotates the whole system around by about
+      90 degrees, by moving down in the y direction for every step
+      in the x direction and moving right in the x direction for every
+      step in the y direction.
+    </p>
+    <p>
+      <MathJaxMatrix matrix={[[0, 1], [-1, 0]]} inline />
+      <MathJaxMatrix matrix={[[2], [3]]} inline />
+      {' = '}<MathJaxMatrix matrix={[[3], [-2]]} inline />
+    </p>
+    <Animation
+      initial={{ time: 0 }}
+      update={(state) => ({
+        time: state.time + 1,
+      })}
+      render={(state) => {
+        const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
+        const mat = new Matrix3();
+        const input = new Vector3(2, 3, 0);
+
+        mat.set(1 - (1 * lerp), (1 * lerp), 0,
+                -lerp, 1 - (1 * lerp), 0,
+                0, 0, 0);
+
+        const output = input.clone().applyMatrix3(mat);
+
+        return (
+          <div>
+            <Visualization width={320} height={240}>
+              <XAxis />
+              <YAxis />
+              <Vector position={new Vector3(mat.elements[0], mat.elements[1], 0)} color={0xffff00} />
+              <Vector position={new Vector3(mat.elements[3], mat.elements[4], 0)} color={0xffff00} />
+              <Vector position={output} color={0xff00ff} />
             </Visualization>
           </div>
         );
