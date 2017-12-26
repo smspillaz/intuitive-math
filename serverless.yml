@@ -1,7 +1,8 @@
-service: react-boilerplate-app
+service: intuitive-math
 provider:
   name: aws
   runtime: nodejs6.10
+  credentials: ${file(../intuimath-credentials/config/app/env.yml):credentials}
 functions:
   api:
     handler: ./prodLambda.handler
