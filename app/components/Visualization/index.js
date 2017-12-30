@@ -165,7 +165,7 @@ const Box = styled.div`
   display: inline-block;
 `;
 
-const Visualization = ({ width, height, rotation, position, children, animationIsRunning = false }) => (
+const Visualization = ({ width, height, rotation, position, matrix, children, animationIsRunning = false }) => (
   <Centered>
     {animationIsRunning ? (
       <ThreeJSRenderer
@@ -176,7 +176,12 @@ const Visualization = ({ width, height, rotation, position, children, animationI
         width={width}
         height={height}
       >
-        <Group rotation={rotation || new Euler(0, 0, 0)}>{children}</Group>
+        <Group
+          rotation={rotation || new Euler(0, 0, 0)}
+          {...(matrix ? { matrix } : {})}
+        >
+          {children}
+        </Group>
       </ThreeJSRenderer>
     ) : (<Box width={width} height={height} />)}
   </Centered>
@@ -187,6 +192,7 @@ Visualization.propTypes = {
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
   rotation: PropTypes.object,
+  matrix: PropTypes.object,
   position: PropTypes.object,
   children: PropTypes.element,
 };
