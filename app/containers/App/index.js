@@ -86,6 +86,10 @@ const sections = [
         href: '/linear-algebra#basis',
       },
       {
+        text: 'Elementary Row Ops',
+        href: '/linear-algebra#elementary-row-operations',
+      },
+      {
         text: 'Row Space',
         href: '/linear-algebra#row-space',
       },
