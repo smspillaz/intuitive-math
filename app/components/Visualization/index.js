@@ -24,7 +24,7 @@ Box.propTypes = {
   height: PropTypes.number.isRequired,
 };
 
-const Visualization = ({ width, height, rotation, position, children, animationIsRunning = false }) => (
+const Visualization = ({ width, height, rotation, position, matrix, children, animationIsRunning = false }) => (
   <Centered>
     {animationIsRunning ? (
       <React3
@@ -41,7 +41,10 @@ const Visualization = ({ width, height, rotation, position, children, animationI
             far={1000}
             position={position || new Vector3(0, 0, 5)}
           />
-          <group rotation={rotation || new Euler(0, 0, 0)}>
+          <group
+            rotation={rotation || new Euler(0, 0, 0)}
+            {...(matrix ? { matrix } : {})}
+          >
             {children}
           </group>
         </scene>
@@ -57,6 +60,7 @@ Visualization.propTypes = {
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
   rotation: PropTypes.object,
+  matrix: PropTypes.object,
   position: PropTypes.object,
   children: PropTypes.element,
 };
