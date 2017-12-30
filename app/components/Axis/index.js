@@ -2,21 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Vector3 } from 'three';
 
+import Line from '../Line';
+
 export const Axis = ({ basis, extents, color }) => (
   <group>
-    <line>
-      <geometry
-        vertices={[
-          new Vector3(basis[0] * extents[0],
-                      basis[1] * extents[0],
-                      basis[2] * extents[0]),
-          new Vector3(basis[0] * extents[1],
-                      basis[1] * extents[1],
-                      basis[2] * extents[1]),
-        ]}
-      />
-      <lineBasicMaterial color={color} />
-    </line>
+    <Line basis={basis} extents={extents} color={color} />
     {[...Array(Math.trunc(extents[1]) - Math.trunc(extents[0])).keys()].map((index) => {
       const tick = index + Math.trunc(extents[0]);
       return (
