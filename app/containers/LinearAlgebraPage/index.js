@@ -17,7 +17,7 @@ import MathJax from 'react-mathjax';
 
 import { DoubleSide, Euler, Matrix3, Vector3 } from 'three';
 
-import { XAxis, YAxis, ZAxis } from 'components/Axis';
+import { Axis, XAxis, YAxis, ZAxis } from 'components/Axis';
 import Animation from 'components/Animation';
 import Section from 'components/Section';
 import Vector from 'components/Vector';
@@ -1120,6 +1120,336 @@ const SubspacesSection = () => (
   </Section>
 );
 
+const SpansSection = () => (
+  <Section title="Spans" anchor="spans">
+    <p>
+      Now that we have a better idea of what a <Strong>space</Strong> is and
+      what <Strong>linear independence</Strong> is, we can expand our definition
+      to a <Strong>span</Strong>.
+    </p>
+    <p>
+      A <Strong>span</Strong> just describes the space reachable by
+      <Strong>linear combinations</Strong>{' '} of some given vectors. In fact,
+      it is the set of all vectors reachable by linear combinations of vectors
+      in the span.
+    </p>
+    <p>
+      What makes this slightly annoying to think about is that that a span
+      describes an infinite set and infinite sets are a little hard to reason about.
+    </p>
+    <p>
+      But if we think about it geometrically, it is actually a case that we
+      have seen before. Say for instance we have the following vectors
+      in 2D space:
+    </p>
+    <BlankableVisualization width={320} height={240}>
+      <XAxis />
+      <YAxis />
+      <Vector position={new Vector3(1, 0, 0)} color={0xffff00} />
+      <Vector position={new Vector3(0, 1, 0)} color={0xff00ff} />
+    </BlankableVisualization>
+    <p>
+      <MathJaxMatrix matrix={[[1], [0]]} inline />{' '}
+      <MathJaxMatrix matrix={[[0], [1]]} inline />
+    </p>
+    <p>
+      The span of these two vectors is all of 2D space. The reason for that
+      is that you can give me any 2D point and I can tell you two scalar multiples
+      of these two vectors that will give you that point.
+    </p>
+    <p>
+      For example, say you wanted the point <MathJax.Node inline>(4, 1)</MathJax.Node>;
+      I could say, well, <MathJax.Node inline>(4, 1)</MathJax.Node> is really just
+      <MathJax.Node inline>4 \times (1, 0) + 1 \times (0, 1)</MathJax.Node>
+    </p>
+    <Animation
+      initial={{ time: 0 }}
+      update={(state) => ({
+        time: state.time + 1,
+      })}
+      render={(state) => {
+        const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
+
+        return (
+          <div>
+            <Visualization width={320} height={240}>
+              <XAxis />
+              <YAxis />
+              <Vector position={new Vector3(4 * lerp, 0, 0)} color={0xffff00} />
+              <Vector position={new Vector3(0, lerp, 0)} color={0xff00ff} />
+              <Vector position={new Vector3(4 * lerp, lerp, 0)} color={0x00ffff} />
+            </Visualization>
+          </div>
+        );
+      }}
+    />
+    <p>
+      Now, what if you had the vectors <MathJaxMatrix inline matrix={[[1], [-1]]} />{' '}
+      and <MathJaxMatrix inline matrix={[[-1], [-1]]} />. These two vectors are not
+      linearly dependent. Can we reach any point in 2D space using just combinations
+      of those two? What about <MathJax.Node inline>(4, 1)</MathJax.Node>?
+    </p>
+    <Animation
+      initial={{ time: 0 }}
+      update={(state) => ({
+        time: state.time + 1,
+      })}
+      render={(state) => {
+        const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
+
+        const xFirstInterp = 1 + (lerp * 0.5);
+        const yFirstInterp = -1 + (lerp * -0.5);
+
+        const xSecondInterp = -1 + (lerp * 3.5);
+        const ySecondInterp = -1 + (lerp * 3.5);
+
+        return (
+          <div>
+            <Visualization width={320} height={240}>
+              <XAxis />
+              <YAxis />
+              <Vector position={new Vector3(xFirstInterp, yFirstInterp, 0)} color={0xffff00} />
+              <Vector position={new Vector3(xSecondInterp, ySecondInterp, 0)} color={0xff00ff} />
+              <Vector
+                position={new Vector3(xFirstInterp + xSecondInterp,
+                                      yFirstInterp + ySecondInterp,
+                                      0)}
+                color={0x00ffff}
+              />
+            </Visualization>
+            <p>
+              {truncate((lerp * 0.5) + 1, 2).toFixed(2)}{' '}<MathJaxMatrix inline matrix={[[1], [-1]]} />{' '}
+              {truncate((lerp * -3.5) + 1, 2).toFixed(2)}{' '}<MathJaxMatrix inline matrix={[[-1], [-1]]} />{' '}
+            </p>
+          </div>
+        );
+      }}
+    />
+    <p>
+      The answer, if you look at the diagram is that, yes, you can. I can take
+      <MathJax.Node inline>1.5</MathJax.Node><MathJaxMatrix inline matrix={[[1], [-1]]} />{' '}
+      and <MathJax.Node inline>-2.5</MathJax.Node><MathJaxMatrix inline matrix={[[-1], [-1]]} />{' '};
+      adding both gives me <MathJaxMatrix inline matrix={[[4], [4]]} />
+    </p>
+    <p>
+      What if I have the vectors <MathJaxMatrix inline matrix={[[1], [-1]]} />{' '}
+      and <MathJaxMatrix inline matrix={[[-1], [1]]} />?
+    </p>
+    <Animation
+      initial={{ time: 0 }}
+      update={(state) => ({
+        time: state.time + 1,
+      })}
+      render={(state) => {
+        const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
+
+        return (
+          <div>
+            <Visualization width={320} height={240}>
+              <XAxis />
+              <YAxis />
+              <Vector position={new Vector3(2 * lerp, -2 * lerp, 0)} color={0xffff00} />
+              <Vector position={new Vector3(lerp * -1, lerp, 0)} color={0xff00ff} />
+              <Vector position={new Vector3(4, 1, 0)} color={0x00ffff} />
+            </Visualization>
+          </div>
+        );
+      }}
+    />
+    <p>
+      The answer by the diagram is that you cannot. The two vectors are parallel
+      and so it is impossible to combine them in such a way to make{' '}
+      <MathJax.Node inline>(4, 1)</MathJax.Node>
+    </p>
+    <p>
+      In fact, because of the fact that we cannot reach that vector (or any
+      other vector outside of that line), the we can only say that the span
+      of those two vectors is the line defined by{' '}
+      <MathJax.Node inline>{'(x, y): -x = y'}.</MathJax.Node>
+    </p>
+    <p>
+      Of course, you can generalize to higher dimensions, for instance, the span
+      of three vectors may be all of 3D space, or it might only be a plane
+      if there was a linear dependence amongst the vectors.
+    </p>
+  </Section>
+);
+
+const BasisSection = () => (
+  <Section title="Basis" anchor="basis">
+    <p>
+      Knowing that a span is the space <Strong>spanned</Strong> by a set of
+      vectors, we might want to go the other way and find a set of vectors that
+      describe the space. That set of vectors will be called a <Strong>basis</Strong>.
+    </p>
+    <p>
+      Finding that set only requires that we impose two conditions we already
+      know about on a set of vectors.
+    </p>
+    <ul>
+      <li>The set of vectors must span the space we want to describe.</li>
+      <li>
+        The set of vectors must be linearly independent: that is to say that
+        there must not be any <Strong>redundant</Strong> vectors in the set.
+      </li>
+    </ul>
+    <p>
+      With these definitions in mind, we can already make some observations
+      about the basis.
+    </p>
+    <ul>
+      <li>
+        An <MathJax.Node inline>n</MathJax.Node>-dimensional space must have at
+        least <MathJax.Node inline>n</MathJax.Node> vectors in its basis, such
+        that it could span the entire space.
+      </li>
+      <li>
+        An <MathJax.Node inline>n</MathJax.Node>-dimensional space must have at
+        most <MathJax.Node inline>n</MathJax.Node> vectors in its basis such that
+        no vector is linearly dependant on another.
+      </li>
+    </ul>
+    <p>
+      Generally speaking, if you have some <MathJax.Node inline>n</MathJax.Node>-dimensional space
+      then it should always be possible to, using <MathJax.Node inline>n</MathJax.Node>{' '}
+      vectors that form a basis, reach every possible point in that space with
+      linear combinations of those <MathJax.Node inline>n</MathJax.Node> vectors.
+    </p>
+    <p>
+      It should come as no surprise that in 3-dimensional space, the unit vectors
+      <MathJaxMatrix inline matrix={[[1], [0], [0]]} />{' '}
+      <MathJaxMatrix inline matrix={[[0], [1], [0]]} />{' '}
+      <MathJaxMatrix inline matrix={[[0], [0], [1]]} />{' '}
+      are a basis for the three dimensional space. It should be obvious that
+      by scaling each of them by a different constant and adding them all together
+      that any point in that space can be reached.
+    </p>
+    <Animation
+      initial={{ rotation: new Euler(0.5, 0.5, 0) }}
+      update={(state) => ({
+        rotation: new Euler(state.rotation.x,
+                            state.rotation.y + 0.001,
+                            state.rotation.z),
+      })}
+      render={(state) => (
+        <Visualization width={320} height={240} rotation={state.rotation}>
+          <XAxis />
+          <YAxis />
+          <ZAxis />
+          <Vector position={new Vector3(1, 0, 0)} color={0xffff00} />
+          <Vector position={new Vector3(0, 1, 0)} color={0xff00ff} />
+          <Vector position={new Vector3(0, 0, 1)} color={0xffff00} />
+        </Visualization>
+      )}
+    />
+    <p>
+      Because of that, we have special names for them:{' '}
+      <MathJax.Node inline>\hat i</MathJax.Node>,{' '}
+      <MathJax.Node inline>\hat j</MathJax.Node> and
+      <MathJax.Node inline>\hat k</MathJax.Node>.
+    </p>
+    <p>
+      The unit vectors are not the only valid basis for an n-dimensional
+      space, however. Those vectors could be scaled by any amount and they
+      would still be a basis, where we could combine those three to reach
+      any other vector.
+    </p>
+    <Animation
+      initial={{
+        rotation: new Euler(0.5, 0.5, 0),
+        time: 0,
+      }}
+      update={(state) => ({
+        rotation: new Euler(state.rotation.x,
+                            state.rotation.y + 0.001,
+                            state.rotation.z),
+        time: state.time + 1,
+      })}
+      render={(state) => {
+        const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
+
+        return (
+          <Visualization width={320} height={240} rotation={state.rotation}>
+            <XAxis />
+            <YAxis />
+            <ZAxis />
+            <Vector position={new Vector3(1 + (lerp * 2), 0, 0)} color={0xffff00} />
+            <Vector position={new Vector3(0, 1 + (lerp * 3), 0)} color={0xff00ff} />
+            <Vector position={new Vector3(0, 0, 1 + lerp)} color={0x00ffff} />
+          </Visualization>
+        );
+      }}
+    />
+    <p>
+      In fact, you could imagine squeezing all of those vectors in towards
+      a line and as long as they all point in different directions, it is still
+      possible to combine them in such a way such that it is possible to reach
+      any point in the space with them.
+    </p>
+    <Animation
+      initial={{
+        rotation: new Euler(0.5, 0.5, 0),
+        time: 0,
+      }}
+      update={(state) => ({
+        rotation: new Euler(state.rotation.x,
+                            state.rotation.y + 0.001,
+                            state.rotation.z),
+        time: state.time + 1,
+      })}
+      render={(state) => {
+        const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
+
+        return (
+          <Visualization width={320} height={240} rotation={state.rotation}>
+            <XAxis />
+            <YAxis />
+            <ZAxis />
+            <Vector position={new Vector3(1, lerp, lerp)} color={0xffff00} />
+            <Vector position={new Vector3(lerp, 1, lerp)} color={0xff00ff} />
+            <Vector position={new Vector3(lerp, lerp, 1)} color={0x00ffff} />
+          </Visualization>
+        );
+      }}
+    />
+    <p>
+      It makes more sense if you think about what happens to the rest of space
+      if you apply the same change in the basis vectors to every other part of
+      the space.
+    </p>
+    <Animation
+      initial={{
+        rotation: new Euler(0.5, 0.5, 0),
+        time: 0,
+      }}
+      update={(state) => ({
+        rotation: new Euler(state.rotation.x,
+                            state.rotation.y + 0.001,
+                            state.rotation.z),
+        time: state.time + 1,
+      })}
+      render={(state) => {
+        const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
+
+        return (
+          <Visualization width={320} height={240} rotation={state.rotation} >
+            <Axis basis={[1, lerp, lerp]} extents={[-10, 10]} color={0xff0000} />
+            <Axis basis={[lerp, 1, lerp]} extents={[-10, 10]} color={0x00ff00} />
+            <Axis basis={[lerp, lerp, 1]} extents={[-10, 10]} color={0x0000ff} />
+            <Vector position={new Vector3(1, lerp, lerp)} color={0xffff00} />
+            <Vector position={new Vector3(lerp, 1, lerp)} color={0xff00ff} />
+            <Vector position={new Vector3(lerp, lerp, 1)} color={0x00ffff} />
+          </Visualization>
+        );
+      }}
+    />
+    <p>
+      It is only when all of space is flattened on to a line or a plane that
+      those vectors stop being a basis for the rest of the space.
+    </p>
+  </Section>
+);
+
 export class LinearAlgebraPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   render() {
     return (
@@ -1136,6 +1466,8 @@ export class LinearAlgebraPage extends React.PureComponent { // eslint-disable-l
               <MatricesSection />
               <LinearIndependenceSection />
               <SubspacesSection />
+              <SpansSection />
+              <BasisSection />
             </div>
           </MathJax.Context>
         </div>
