@@ -46,6 +46,12 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
               be expanded in a little more detail at s@polysquare.org
             </p>
             <p>
+              Note that due to the limit on the number of concurrently running
+              WebGL contexts implemented by most browsers, I have tried to use
+              some smarts to disable contexts when they are not fully in view. So far,
+              I have tested that this worked on Chrome and Firefox Quantum.
+            </p>
+            <p>
               If you are interested in how this was made, you can find the
               source code for it on its{' '}
               <a href="https://github.com/smspillaz/intuitive-math">GitHub repository</a>.
