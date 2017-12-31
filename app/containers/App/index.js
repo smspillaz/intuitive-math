@@ -25,7 +25,7 @@ import Navigation, { AkNavigationItemGroup, AkNavigationItem, AkContainerTitle }
 const Navigator = ({ title, sections }) => (
   <Navigation
     containerHeaderComponent={() => (
-      <AkContainerTitle text={title} />
+      <AkContainerTitle text={title} href="/" />
     )}
   >
     {sections.map((section) => (
