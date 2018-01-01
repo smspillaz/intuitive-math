@@ -10,54 +10,13 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import { Switch, Route } from 'react-router-dom';
 
-import PropTypes from 'prop-types';
-
 import HomePage from 'containers/HomePage/Loadable';
 import LinearAlgebraPage from 'containers/LinearAlgebraPage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 
-import NavigationState from 'components/NavigationState';
+import ResponsivePage from 'components/ResponsivePage';
 
 import { AtlaskitThemeProvider } from '@atlaskit/theme';
-import Page from '@atlaskit/page';
-import Navigation, {
-  AkNavigationItemGroup,
-  AkNavigationItem,
-  AkContainerTitle,
-} from '@atlaskit/navigation';
-
-const Navigator = ({ title, sections }) => (
-  <Navigation
-    containerHeaderComponent={() => <AkContainerTitle text={title} href="/" />}
-  >
-    {sections.map(section => (
-      <AkNavigationItemGroup title={section.title} key={section.title}>
-        {section.children.map(child => (
-          <AkNavigationItem
-            text={child.text}
-            href={child.href}
-            key={child.href}
-          />
-        ))}
-      </AkNavigationItemGroup>
-    ))}
-  </Navigation>
-);
-
-Navigator.propTypes = {
-  title: PropTypes.string.isRequired,
-  sections: PropTypes.arrayOf(
-    PropTypes.shape({
-      title: PropTypes.string.isRequired,
-      children: PropTypes.arrayOf(
-        PropTypes.shape({
-          text: PropTypes.string.isRequired,
-          href: PropTypes.string.isRequired,
-        }),
-      ),
-    }),
-  ),
-};
 
 const sections = [
   {
@@ -139,29 +98,20 @@ const sections = [
   },
 ];
 
-class NavigatablePage extends React.PureComponent {
-  static contextTypes = {
-    navOpenState: PropTypes.object,
-    router: PropTypes.object,
-  };
-
-  render() {
-    return (
-      <Page
-        navigationWidth={this.context.navOpenState.width}
-        navigation={<Navigator title="Intuitive Math" sections={sections} />}
-      >
-        <AtlaskitThemeProvider>
-          <Switch>
-            <Route exact path="/" component={HomePage} />
-            <Route path="/linear-algebra" component={LinearAlgebraPage} />
-            <Route path="" component={NotFoundPage} />
-          </Switch>
-        </AtlaskitThemeProvider>
-      </Page>
-    );
-  }
-}
+const NavigatablePage = () => (
+  <AtlaskitThemeProvider>
+    <ResponsivePage
+      title="Intuitive Math"
+      sections={sections}
+    >
+      <Switch>
+        <Route exact path="/" component={HomePage} />
+        <Route path="/linear-algebra" component={LinearAlgebraPage} />
+        <Route path="" component={NotFoundPage} />
+      </Switch>
+    </ResponsivePage>
+  </AtlaskitThemeProvider>
+);
 
 export default function App() {
   return (
@@ -169,11 +119,7 @@ export default function App() {
       <Helmet titleTemplate="%s - Intuitive Math" defaultTitle="Intuitive Math">
         <meta name="description" content="Intuitive Math Explainers" />
       </Helmet>
-      <NavigationState
-        renderNavigable={({ onNavResize }) => (
-          <NavigatablePage onNavResize={onNavResize} />
-        )}
-      />
+      <NavigatablePage />
     </div>
   );
 }
