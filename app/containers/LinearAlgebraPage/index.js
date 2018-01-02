@@ -4450,8 +4450,8 @@ const InversesSection = () => (
       Now subtract the second row from the first.
     </p>
     <p>
-      <MathJaxMatrix matrix={[[2, 0, 0], [-1, -1, 0], [0, 3, 2]]} />
-      <MathJaxMatrix matrix={[[1, -1, 0], [0, 1, 0], [-2, 0, 1]]} />
+      <MathJaxMatrix inline matrix={[[2, 0, 0], [-1, -1, 0], [0, 3, 2]]} />
+      <MathJaxMatrix inline matrix={[[1, -1, 0], [0, 1, 0], [-2, 0, 1]]} />
     </p>
     <Animation
       initial={{
