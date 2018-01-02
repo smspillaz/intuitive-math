@@ -3443,16 +3443,16 @@ const DeterminantSection = () => (
       overall recursive formula expands quite nicely:
     </p>
     <MathJax.Node>
-      {'\\det \\begin{pmatrix} 1 & 2 & 3 & 4 \\\\ 0 & 3 & 4 & 5 \\\\ & 0 & 0 & 5 & 6 \\\\ 0 & 0 & 0 & 7\\end{pmatrix}'}
+      {'\\det \\begin{pmatrix} 1 & 2 & 3 & 4 \\\\ 0 & 3 & 4 & 5 \\\\ 0 & 0 & 5 & 6 \\\\ 0 & 0 & 0 & 7\\end{pmatrix}'}
     </MathJax.Node>
     <MathJax.Node>
-      {'1 \\times \\det \\begin{pmatrix} 3 & 4 & 5 \\\\ & 0 & 5 & 6 \\\\ 0 & 0 & 7\\end{pmatrix}'}
+      {'1 \\times \\det \\begin{pmatrix} 3 & 4 & 5 \\\\ 0 & 5 & 6 \\\\ 0 & 0 & 7\\end{pmatrix}'}
     </MathJax.Node>
     <MathJax.Node>
       {'1 \\times 3 \\times \\det \\begin{pmatrix} 5 & 6 \\\\ 0 & 7\\end{pmatrix}'}
     </MathJax.Node>
     <MathJax.Node>
-      {'1 \\times 3 \\times \\times 5 \\times 7'}
+      {'1 \\times 3 \\times 5 \\times 7'}
     </MathJax.Node>
     <p>
       Now the question is how we can get our matrix into this form so we can do the computation
