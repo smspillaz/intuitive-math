@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import THREE, {
-  Euler,
   PerspectiveCamera,
   Scene,
   Vector3,
@@ -185,7 +184,7 @@ const Visualization = ({
         height={height}
       >
         <Group
-          rotation={rotation || new Euler(0, 0, 0)}
+          {...(rotation ? { rotation } : {})}
           {...(matrix ? { matrix } : {})}
         >
           {children}
