@@ -4034,7 +4034,7 @@ const InversesSection = () => (
       the multiplication and yield 1 again.
     </p>
     <MathJax.Node>
-      1 \times a \times 1 \over a = 1
+      {'1 \\times a \\times \\frac{1}{a} = 1'}
     </MathJax.Node>
     <p>
       For the sake of notational convenience, we usually refer to such fractions as negative
@@ -4051,7 +4051,7 @@ const InversesSection = () => (
       either:
     </p>
     <MathJax.Node>
-      1 \times 0 \times 1 \over 0 = ?
+      {'1 \\times 0 \\times \\frac{1}{0} = ?'}
     </MathJax.Node>
     <p>
       In those cases, we say that the number has no inverse, since it would be the same thing
