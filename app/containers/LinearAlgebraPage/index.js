@@ -3720,7 +3720,7 @@ const DeterminantSection = () => (
       render={(state) => {
         const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
         const iHat = new Vector3(1, -lerp, 0);
-        const jHat = new Vector3(-lerp, (3 * lerp), -lerp);
+        const jHat = new Vector3(-lerp, 1 - (2 * lerp), 3 * lerp);
         const kHat = new Vector3(0, 0, 1 + lerp);
 
         const mat = new Matrix4();
@@ -3775,7 +3775,7 @@ const DeterminantSection = () => (
       render={(state) => {
         const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
         const iHat = new Vector3(1 + lerp, -lerp, 0);
-        const jHat = new Vector3(0, 3 * lerp, -lerp);
+        const jHat = new Vector3(0, 1 - (2 * lerp), 3 * lerp);
         const kHat = new Vector3(0, 0, 1 + lerp);
 
         const mat = new Matrix4();
@@ -3830,7 +3830,7 @@ const DeterminantSection = () => (
       render={(state) => {
         const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
         const iHat = new Vector3(1 + lerp, 0, 0);
-        const jHat = new Vector3(0, 3 * lerp, -lerp);
+        const jHat = new Vector3(0, 1 - (2 * lerp), 3 * lerp);
         const kHat = new Vector3(0, 0, 1 + lerp);
 
         const mat = new Matrix4();
