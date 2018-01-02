@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import TrackVisibility from 'react-on-screen';
 import React3 from 'react-three-renderer';
-import { Euler, Vector3 } from 'three';
+import { Vector3 } from 'three';
 
 const Centered = styled.div`
   text-align: center;
@@ -42,7 +42,7 @@ const Visualization = ({ width, height, rotation, position, matrix, children, an
             position={position || new Vector3(0, 0, 5)}
           />
           <group
-            rotation={rotation || new Euler(0, 0, 0)}
+            {...(rotation ? { rotation } : {})}
             {...(matrix ? { matrix } : {})}
           >
             {children}
