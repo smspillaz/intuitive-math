@@ -4004,12 +4004,12 @@ const DeterminantSection = () => (
       will change the determinant to 9, since first it scales by 3 in the x direction, 3 in the
       y direction and 3 in the z direction.
     </p>
-    <MathJax.Node inline>\det \alpha A_mn = \alpha^n det A</MathJax.Node>
+    <MathJax.Node inline>\det \alpha A_mn = \alpha^n \det A</MathJax.Node>
     <p>
       Secondly, if you think about two matrices as transformations, the determinant
       of their product is the product of the determinants.
     </p>
-    <MathJax.Node inline>\det AB = det A \times det B</MathJax.Node>
+    <MathJax.Node inline>\det AB = \det A \times \det B</MathJax.Node>
   </Section>
 );
 
