@@ -83,12 +83,8 @@ const sections = [
         href: '/linear-algebra/eigenvectors',
       },
       {
-        text: 'Eigenbasis',
+        text: 'Eigenbasis / Diagonalization',
         href: '/linear-algebra/eigenbasis',
-      },
-      {
-        text: 'Diagonalization',
-        href: '/linear-algebra/diagonalization',
       },
     ],
   },
