@@ -43,10 +43,6 @@ const sections = [
         href: '/linear-algebra/subspaces',
       },
       {
-        text: 'Matrices',
-        href: '/linear-algebra/matrices',
-      },
-      {
         text: 'Spans',
         href: '/linear-algebra/spans',
       },
