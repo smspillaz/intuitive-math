@@ -5,8 +5,11 @@
  */
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
+import { Switch, Route } from 'react-router-dom';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 
@@ -40,27 +43,33 @@ export class LinearAlgebraPage extends React.PureComponent { // eslint-disable-l
         </Helmet>
         <div>
           <MathJax.Context>
-            <div>
-              <SpacesSection />
-              <VectorsSection />
-              <MatricesSection />
-              <LinearIndependenceSection />
-              <SubspacesSection />
-              <SpansSection />
-              <BasisSection />
-              <EROSection />
-              <RowSpaceSection />
-              <ColumnSpaceSection />
-              <NullSpaceSection />
-              <DeterminantSection />
-              <InversesSection />
-            </div>
+            <Switch>
+              <Route path={`${this.props.match.path}/spaces`} component={SpacesSection} />
+              <Route path={`${this.props.match.path}/vectors`} component={VectorsSection} />
+              <Route path={`${this.props.match.path}/matrices`} component={MatricesSection} />
+              <Route path={`${this.props.match.path}/linear-independence`} component={LinearIndependenceSection} />
+              <Route path={`${this.props.match.path}/subspaces`} component={SubspacesSection} />
+              <Route path={`${this.props.match.path}/spans`} component={SpansSection} />
+              <Route path={`${this.props.match.path}/basis`} component={BasisSection} />
+              <Route path={`${this.props.match.path}/elementary-row-operations`} component={EROSection} />
+              <Route path={`${this.props.match.path}/row-space`} component={RowSpaceSection} />
+              <Route path={`${this.props.match.path}/column-space`} component={ColumnSpaceSection} />
+              <Route path={`${this.props.match.path}/null-space`} component={NullSpaceSection} />
+              <Route path={`${this.props.match.path}/determinant`} component={DeterminantSection} />
+              <Route path={`${this.props.match.path}/inverses`} component={InversesSection} />
+            </Switch>
           </MathJax.Context>
         </div>
       </article>
     );
   }
 }
+
+LinearAlgebraPage.propTypes = {
+  match: PropTypes.shape({
+    path: PropTypes.string,
+  }),
+};
 
 const mapStateToProps = createStructuredSelector({
 });
@@ -72,4 +81,5 @@ const withReducer = injectReducer({ key: 'linear-algebra', reducer });
 export default compose(
   withReducer,
   withConnect,
+  withRouter,
 )(LinearAlgebraPage);

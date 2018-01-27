@@ -24,75 +24,75 @@ const sections = [
     children: [
       {
         text: 'Co-ordinate Systems',
-        href: '/linear-algebra#spaces',
+        href: '/linear-algebra/spaces',
       },
       {
         text: 'Vectors',
-        href: '/linear-algebra#vectors',
+        href: '/linear-algebra/vectors',
       },
       {
         text: 'Matrices',
-        href: '/linear-algebra#matrices',
+        href: '/linear-algebra/matrices',
       },
       {
         text: 'Linear Independence',
-        href: '/linear-algebra#linear-independence',
+        href: '/linear-algebra/linear-independence',
       },
       {
         text: 'Subspaces',
-        href: '/linear-algebra#subspaces',
+        href: '/linear-algebra/subspaces',
       },
       {
         text: 'Matrices',
-        href: '/linear-algebra#matrices',
+        href: '/linear-algebra/matrices',
       },
       {
         text: 'Spans',
-        href: '/linear-algebra#spans',
+        href: '/linear-algebra/spans',
       },
       {
         text: 'Basis',
-        href: '/linear-algebra#basis',
+        href: '/linear-algebra/basis',
       },
       {
         text: 'Elementary Row Ops',
-        href: '/linear-algebra#elementary-row-operations',
+        href: '/linear-algebra/elementary-row-operations',
       },
       {
         text: 'Row Space',
-        href: '/linear-algebra#row-space',
+        href: '/linear-algebra/row-space',
       },
       {
         text: 'Column Space / Range',
-        href: '/linear-algebra#column-space',
+        href: '/linear-algebra/column-space',
       },
       {
         text: 'Null Space / Kernels',
-        href: '/linear-algebra#null-space',
+        href: '/linear-algebra/null-space',
       },
       {
         text: 'Determinant',
-        href: '/linear-algebra#determinant',
+        href: '/linear-algebra/determinant',
       },
       {
         text: 'Inverses',
-        href: '/linear-algebra#inverses',
+        href: '/linear-algebra/inverses',
       },
       {
         text: 'Eigenvalues',
-        href: '/linear-algebra#eigenvalues',
+        href: '/linear-algebra/eigenvalues',
       },
       {
         text: 'Eigenvectors',
-        href: '/linear-algebra#eigenvectors',
+        href: '/linear-algebra/eigenvectors',
       },
       {
         text: 'Eigenbasis',
-        href: '/linear-algebra#eigenbasis',
+        href: '/linear-algebra/eigenbasis',
       },
       {
         text: 'Diagonalization',
-        href: '/linear-algebra#diagonalization',
+        href: '/linear-algebra/diagonalization',
       },
     ],
   },
