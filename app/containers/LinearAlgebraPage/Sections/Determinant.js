@@ -281,7 +281,7 @@ const DeterminantSection = () => (
       right-triangles on either end, which grow as fast as that rectangle does.
     </p>
     <p>
-      Things start to get a bit more interesting when we have shares in two directions.
+      Things start to get a bit more interesting when we have shears in two directions.
     </p>
     <Animation
       initial={{
