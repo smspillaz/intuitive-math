@@ -20,6 +20,7 @@ import injectReducer from 'utils/injectReducer';
 import BasisSection from './Sections/Basis';
 import ColumnSpaceSection from './Sections/ColumnSpace';
 import DeterminantSection from './Sections/Determinant';
+import EigenvaluesSection from './Sections/Eigenvalues';
 import EROSection from './Sections/ERO';
 import InversesSection from './Sections/Inverses';
 import LinearIndependenceSection from './Sections/LinearIndependence';
@@ -57,6 +58,7 @@ export class LinearAlgebraPage extends React.PureComponent { // eslint-disable-l
               <Route path={`${this.props.match.path}/null-space`} component={NullSpaceSection} />
               <Route path={`${this.props.match.path}/determinant`} component={DeterminantSection} />
               <Route path={`${this.props.match.path}/inverses`} component={InversesSection} />
+              <Route path={`${this.props.match.path}/eigenvalues`} component={EigenvaluesSection} />
             </Switch>
           </MathJax.Context>
         </div>
