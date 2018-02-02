@@ -98,9 +98,9 @@ const EigenbasisSection = () => (
       2.
     </p>
     <p>
-      It also has Eigenvectors <MathJaxMatrix inline matrix={[[0], [1], [0]]}/>,{' '}
+      It also has Eigenvectors <MathJaxMatrix inline matrix={[[0], [1], [0]]} />,{' '}
       for <MathJax.Node inline>\lambda = 2</MathJax.Node>, and{' '}
-      <MathJaxMatrix inline matrix={[[0], [-1], [1]]}/>, and <MathJaxMatrix inline matrix={[[1], [0], [0]]} />,
+      <MathJaxMatrix inline matrix={[[0], [-1], [1]]} />, and <MathJaxMatrix inline matrix={[[1], [0], [0]]} />,
       for <MathJax.Node inline>\lambda = 1</MathJax.Node>{' '}
       visualized below:
     </p>
