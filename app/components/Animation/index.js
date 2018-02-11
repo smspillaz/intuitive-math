@@ -13,6 +13,7 @@ class Animation extends React.Component {
 
   static childContextTypes = {
     animationIsRunning: PropTypes.bool,
+    withinAnimation: PropTypes.bool,
   };
 
   constructor(props) {
@@ -27,6 +28,7 @@ class Animation extends React.Component {
   getChildContext() {
     return {
       animationIsRunning: this.frameId !== -1,
+      withinAnimation: true,
     };
   }
 
