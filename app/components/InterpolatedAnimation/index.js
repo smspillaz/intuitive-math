@@ -12,12 +12,12 @@ import Animation from 'components/Animation';
 
 const sineInterpolator = (begin, end, value, time) => {
   const wave = (Math.sin(time * 0.05) + 1) / 2;
-  return (end - begin) * (wave + begin);
+  return ((end - begin) * wave) + begin;
 };
 
 const cosineInterpolator = (begin, end, value, time) => {
   const wave = (Math.cos(time * 0.05) + 1) / 2;
-  return (end - begin) * (wave + begin);
+  return ((end - begin) * wave) + begin;
 };
 
 const lookupInterpolator = (values, key) => (
