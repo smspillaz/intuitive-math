@@ -12,27 +12,31 @@ import PropTypes from 'prop-types';
 import { XAxis, YAxis } from 'components/Axis';
 import Visualization, { BlankableVisualization } from 'components/Visualization';
 
-const AxisVisualization2D = ({ render, visualizationComponent, width = 320, height = 240 }) => (
-  <visualizationComponent width={width} height={height}>
+// Need to disable propTypes checking here as this is an HOC
+// eslint-disable-next-line react/prop-types
+const AxisVisualization2D = (VisualizationComponent) => ({ render, width = 320, height = 240 }) => (
+  <VisualizationComponent width={width} height={height}>
     <XAxis />
     <YAxis />
     {render ? render() : null}
-  </visualizationComponent>
+  </VisualizationComponent>
 );
 
 AxisVisualization2D.propTypes = {
   render: PropTypes.func.isRequired,
   width: PropTypes.number,
   height: PropTypes.number,
-  visualizationComponent: PropTypes.func.isRequired,
 };
+
+const AnimatedAxisVisualization2D = AxisVisualization2D(Visualization);
+const BlankableAxisVisualization2D = AxisVisualization2D(BlankableVisualization);
 
 const MaybeBlankableAxisVisualization2D = (props, context) => (
   <div>
     {context.withinAnimation ? (
-      <AxisVisualization2D visualizationComponent={Visualization} {...props} />
+      <AnimatedAxisVisualization2D {...props} />
      ) : (
-       <AxisVisualization2D visualizationComponent={BlankableVisualization} {...props} />
+       <BlankableAxisVisualization2D {...props} />
      )}
   </div>
 );
