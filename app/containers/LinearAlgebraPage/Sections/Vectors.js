@@ -8,36 +8,26 @@ import React from 'react';
 
 import MathJax from 'react-mathjax';
 
-import { Euler, Vector3 } from 'three';
+import { Vector3 } from 'three';
 
-import { XAxis, YAxis, ZAxis } from 'components/Axis';
-import Animation from 'components/Animation';
+import { XAxis, YAxis } from 'components/Axis';
+import AxisVisualization1D from 'components/AxisVisualization1D';
+import AxisVisualization2D from 'components/AxisVisualization2D';
+import AxisVisualization3D from 'components/AxisVisualization3D';
 import MathJaxMatrix from 'components/MathJaxMatrix';
+import InterpolatedAnimation, { cosineInterpolator, sineInterpolator } from 'components/InterpolatedAnimation';
 import Section from 'components/Section';
 import Strong from 'components/Strong';
 import Vector from 'components/Vector';
 import Visualization from 'components/Visualization';
 
-import { truncate } from 'utils/math';
-
 const VectorsSection = () => (
   <Section title="Vectors" anchor="vectors">
     <p>The fundamental building block of linear systems is the humble <Strong>Vector</Strong></p>
-    <Animation
-      initial={{ rotation: new Euler(0.5, 0.5, 0) }}
-      update={(state) => ({
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.001,
-                            state.rotation.z),
-      })}
-      render={(state) => (
-        <Visualization width={320} height={240} rotation={state.rotation}>
-          <XAxis />
-          <YAxis />
-          <ZAxis />
-          <Vector position={new Vector3(2, 2, 2)} color={0xff8800} />
-        </Visualization>
-      )}
+    <AxisVisualization3D
+      render={() =>
+        <Vector position={new Vector3(2, 2, 2)} color={0xff8800} />
+      }
     />
     <p>
       There is a few different ways to think about vectors. It is not quite right
@@ -72,25 +62,22 @@ const VectorsSection = () => (
       build up. For instance, take a one-dimensional space, the number line,
       where we only have an <MathJax.Node inline>{'x'}</MathJax.Node> axis.
     </p>
-    <Animation
-      initial={{ time: 0 }}
-      update={(state) => ({
-        time: state.time + 1,
-      })}
-      render={(state) => {
-        const xPosition = truncate(Math.sin(state.time * 0.05), 2);
-        return (
-          <div>
-            <Visualization width={320} height={240}>
-              <XAxis />
-              <Vector position={new Vector3(2 * xPosition, 0, 0)} color={0xff8800} />
-            </Visualization>
-            <div>
-              <MathJax.Node inline>{'x ='}</MathJax.Node>{' '}<span>{xPosition}</span>
-            </div>
-          </div>
-        );
+    <InterpolatedAnimation
+      values={{
+        xPosition: { begin: -1, end: 1 },
       }}
+      render={({ xPosition }) => (
+        <div>
+          <AxisVisualization1D
+            render={() => (
+              <Vector position={new Vector3(xPosition.value, 0, 0)} color={0xff8800} />
+            )}
+          />
+          <div>
+            <MathJax.Node inline>{'x ='}</MathJax.Node>{' '}<span>{xPosition.value.toFixed(2)}</span>
+          </div>
+        </div>
+      )}
     />
     <p>
       Now let us have a look at a vector which ranges around a circle on the
@@ -99,68 +86,88 @@ const VectorsSection = () => (
       sort of translating the whole line up and down whilst the vector
       move along the same line.
     </p>
-    <Animation
-      initial={{ time: 0 }}
-      update={(state) => ({
-        time: state.time + 1,
-      })}
-      render={(state) => {
-        const xPosition = truncate(Math.sin(state.time * 0.05), 2);
-        const yPosition = truncate(Math.cos(state.time * 0.05), 2);
-        return (
-          <div>
-            <Visualization width={320} height={240}>
-              <XAxis />
-              <YAxis />
-              <Vector position={new Vector3(2 * xPosition, 2 * yPosition, 0)} color={0xff8800} />
-              <Vector position={new Vector3(2 * xPosition, 2 * yPosition, 0)} color={0xff8800} base={new Vector3(0, 2 * yPosition, 0)} />
-            </Visualization>
-            <div>
-              <MathJax.Node inline>{'x ='}</MathJax.Node>{' '}<span>{xPosition}</span>
-            </div>
-            <div>
-              <MathJax.Node inline>{'y ='}</MathJax.Node>{' '}<span>{yPosition}</span>
-            </div>
-          </div>
-        );
+    <InterpolatedAnimation
+      values={{
+        xPosition: { begin: -1, end: 1, interpolator: sineInterpolator },
+        yPosition: { begin: -1, end: 1, interpolator: cosineInterpolator },
       }}
+      render={({ xPosition, yPosition }) => (
+        <div>
+          <AxisVisualization2D
+            render={() => (
+              <group>
+                <Vector position={new Vector3(xPosition.value, yPosition.value, 0)} color={0xff8800} />
+                <Vector
+                  position={new Vector3(xPosition.value, yPosition.value, 0)}
+                  base={new Vector3(0, yPosition.value, 0)}
+                  color={0xff8800}
+                />
+                <Vector
+                  position={new Vector3(xPosition.value, yPosition.value, 0)}
+                  base={new Vector3(xPosition.value, 0, 0)}
+                  color={0xff8800}
+                />
+              </group>
+            )}
+          />
+          <div>
+            <MathJax.Node inline>{'x ='}</MathJax.Node>{' '}<span>{xPosition.value.toFixed(2)}</span>
+          </div>
+          <div>
+            <MathJax.Node inline>{'y ='}</MathJax.Node>{' '}<span>{yPosition.value.toFixed(2)}</span>
+          </div>
+        </div>
+      )}
     />
     <p>
       Extending this to the third dimension is fairly straightforward. If we can
       imagine our 2D animation running on a flat surface, then in 3D all we are
       really doing is moving the plane which is that flat surface, around.
     </p>
-    <Animation
-      initial={{ time: 0 }}
-      update={(state) => ({
-        time: state.time + 1,
-      })}
-      render={(state) => {
-        const xPosition = truncate(Math.sin(state.time * 0.05), 2);
-        const yPosition = truncate(Math.cos(state.time * 0.05), 2);
-        const zPosition = truncate(Math.sin(state.time * 0.005), 2);
-        return (
-          <div>
-            <Visualization width={320} height={240} rotation={new Euler(0.5, 0.5, 0)}>
-              <XAxis />
-              <YAxis />
-              <ZAxis />
-              <Vector position={new Vector3(2 * xPosition, 2 * yPosition, 2 * zPosition)} color={0xff8800} base={new Vector3(2 * xPosition, 0, 2 * zPosition)} />
-              <Vector position={new Vector3(2 * xPosition, 2 * yPosition, 2 * zPosition)} color={0xff8800} base={new Vector3(0, 2 * yPosition, 2 * zPosition)} />
-              <Vector position={new Vector3(2 * xPosition, 2 * yPosition, 2 * zPosition)} color={0xff8800} />
-            </Visualization>
-            <div>
-              <MathJax.Node inline>{'x ='}</MathJax.Node>{' '}<span>{xPosition}</span>
-            </div>
-            <div>
-              <MathJax.Node inline>{'y ='}</MathJax.Node>{' '}<span>{yPosition}</span>
-            </div>
-            <div>
-              <MathJax.Node inline>{'z ='}</MathJax.Node>{' '}<span>{zPosition}</span>
-            </div>
-          </div>
-        );
+    <InterpolatedAnimation
+      values={{
+        xPosition: { begin: -1, end: 1, interpolator: sineInterpolator },
+        yPosition: { begin: -1, end: 1, interpolator: cosineInterpolator },
+        zPosition: { begin: -1, end: 1, interpolator: sineInterpolator },
       }}
+      render={({ xPosition, yPosition, zPosition }) => (
+        <div>
+          <AxisVisualization3D
+            render={() => (
+              <group>
+                <Vector
+                  position={new Vector3(xPosition.value, yPosition.value, zPosition.value)}
+                  color={0xff8800}
+                />
+                <Vector
+                  position={new Vector3(xPosition.value, yPosition.value, zPosition.value)}
+                  base={new Vector3(0, yPosition.value, zPosition.value)}
+                  color={0xff8800}
+                />
+                <Vector
+                  position={new Vector3(xPosition.value, yPosition.value, zPosition.value)}
+                  base={new Vector3(xPosition.value, 0, zPosition.value)}
+                  color={0xff8800}
+                />
+                <Vector
+                  position={new Vector3(xPosition.value, yPosition.value, zPosition.value)}
+                  base={new Vector3(0, yPosition.value, zPosition.value)}
+                  color={0xff8800}
+                />
+              </group>
+            )}
+          />
+          <div>
+            <MathJax.Node inline>{'x ='}</MathJax.Node>{' '}<span>{xPosition.value.toFixed(2)}</span>
+          </div>
+          <div>
+            <MathJax.Node inline>{'y ='}</MathJax.Node>{' '}<span>{yPosition.value.toFixed(2)}</span>
+          </div>
+          <div>
+            <MathJax.Node inline>{'z ='}</MathJax.Node>{' '}<span>{zPosition.value.toFixed(2)}</span>
+          </div>
+        </div>
+      )}
     />
     <p>
       Addition and subtraction on vectors is defined in the usual sense. Analytically
@@ -176,15 +183,14 @@ const VectorsSection = () => (
       the steps indicated by the first vector, then following the steps
       indicated by the second
     </p>
-    <Animation
-      initial={{ time: 0 }}
-      update={(state) => ({
-        time: state.time + 1,
-      })}
-      render={(state) => {
-        const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
+    <InterpolatedAnimation
+      values={{
+        xAdd: { begin: 0, end: 2 },
+        yAdd: { begin: 0, end: 1 },
+      }}
+      render={({ xAdd, yAdd }) => {
         const a = new Vector3(1, 2, 0);
-        const b = new Vector3(2 * lerp, 1 * lerp, 0);
+        const b = new Vector3(xAdd.value, yAdd.value, 0);
         const c = new Vector3();
 
         c.addVectors(a, b);
@@ -199,10 +205,10 @@ const VectorsSection = () => (
               <Vector position={c} color={0x00ffff} />
             </Visualization>
             <div>
-              <MathJax.Node inline>{'x ='}</MathJax.Node>{' '}<span>{a.x}{' + '}{truncate(b.x, 2)}{' = '}{truncate(c.x, 2)}</span>
+              <MathJax.Node inline>{'x ='}</MathJax.Node>{' '}<span>{a.x}{' + '}{xAdd.value.toFixed(2)}{' = '}{c.x.toFixed(2)}</span>
             </div>
             <div>
-              <MathJax.Node inline>{'y ='}</MathJax.Node>{' '}<span>{a.y}{' + '}{truncate(b.y, 2)}{' = '}{truncate(c.y, 2)}</span>
+              <MathJax.Node inline>{'y ='}</MathJax.Node>{' '}<span>{a.y}{' + '}{yAdd.value.toFixed(2)}{' = '}{c.y.toFixed(2)}</span>
             </div>
           </div>
         );
@@ -219,15 +225,14 @@ const VectorsSection = () => (
       are really doing in that case is scaling each component by a different
       number.
     </p>
-    <Animation
-      initial={{ time: 0 }}
-      update={(state) => ({
-        time: state.time + 1,
-      })}
-      render={(state) => {
-        const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
+    <InterpolatedAnimation
+      values={{
+        xMul: { begin: 0, end: 2 },
+        yMul: { begin: 0, end: 1 },
+      }}
+      render={({ xMul, yMul }) => {
         const a = new Vector3(1, 2, 0);
-        const b = new Vector3(2 * lerp, 1 * lerp, 0);
+        const b = new Vector3(xMul.value, yMul.value, 0);
         const c = new Vector3(a.x * b.x, a.y * b.y, 0);
 
         return (
@@ -240,10 +245,10 @@ const VectorsSection = () => (
               <Vector position={c} color={0x00ffff} />
             </Visualization>
             <div>
-              <MathJax.Node inline>{'x ='}</MathJax.Node>{' '}<span>{a.x}{' * '}{truncate(b.x, 2)}{' = '}{truncate(c.x, 2)}</span>
+              <MathJax.Node inline>{'x ='}</MathJax.Node>{' '}<span>{a.x}<MathJax.Node inline>\times</MathJax.Node>{xMul.value.toFixed(2)}{' = '}{c.x.toFixed(2)}</span>
             </div>
             <div>
-              <MathJax.Node inline>{'y ='}</MathJax.Node>{' '}<span>{a.y}{' * '}{truncate(b.y, 2)}{' = '}{truncate(c.y, 2)}</span>
+              <MathJax.Node inline>{'y ='}</MathJax.Node>{' '}<span>{a.y}<MathJax.Node inline>\times</MathJax.Node>{yMul.value.toFixed(2)}{' = '}{c.y.toFixed(2)}</span>
             </div>
           </div>
         );
