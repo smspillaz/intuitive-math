@@ -8,7 +8,7 @@ class Animation extends React.Component {
     initial: PropTypes.any,
     update: PropTypes.func.isRequired,
     render: PropTypes.func.isRequired,
-    isVisible: PropTypes.bool.isRequired,
+    running: PropTypes.bool.isRequired,
   };
 
   static childContextTypes = {
@@ -37,9 +37,9 @@ class Animation extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (!prevProps.isVisible && this.props.isVisible) {
+    if (!prevProps.running && this.props.running) {
       this.startAnimationCountdown();
-    } else if (prevProps.isVisible && !this.props.isVisible) {
+    } else if (prevProps.running && !this.props.running) {
       this.stop();
     }
   }
@@ -49,7 +49,7 @@ class Animation extends React.Component {
   }
 
   animate() {
-    if (this.frameId === -1 && this.props.isVisible) {
+    if (this.frameId === -1 && this.props.running) {
       const updater = () => {
         this.setState(this.props.update(this.state));
         this.frameId = requestAnimationFrame(updater);
@@ -83,10 +83,14 @@ class Animation extends React.Component {
   }
 }
 
-const PowerEfficientAnimation = (props) => (
+const PowerEfficientAnimation = ({ running = true, ...props }) => (
   <TrackVisibility offset={100}>
-    {({ isVisible }) => <Animation {...props} isVisible={isVisible} />}
+    {({ isVisible }) => <Animation {...props} running={running && isVisible} />}
   </TrackVisibility>
 );
+
+PowerEfficientAnimation.propTypes = {
+  running: PropTypes.bool,
+};
 
 export default PowerEfficientAnimation;
