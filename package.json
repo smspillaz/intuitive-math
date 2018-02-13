@@ -194,6 +194,7 @@
     "react-mathjax": "^0.1.1",
     "react-media": "^1.6.1",
     "react-metrics": "^2.4.0",
+    "react-number-editor": "^4.0.3",
     "react-on-screen": "^2.0.1",
     "react-redux": "5.0.7",
     "react-router-dom": "4.3.1",

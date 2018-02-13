@@ -2567,6 +2567,10 @@ circular-json@^0.3.1:
   version "0.3.3"
   resolved "https://registry.yarnpkg.com/circular-json/-/circular-json-0.3.3.tgz#815c99ea84f6809529d2f45791bdf82711352d66"
 
+clamp@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/clamp/-/clamp-1.0.1.tgz#66a0e64011816e37196828fdc8c8c147312c8634"
+
 clap@^1.0.9:
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/clap/-/clap-1.2.3.tgz#4f36745b32008492557f46412d66d50cb99bce51"
@@ -9241,6 +9245,10 @@ react-addons-text-content@^0.0.4:
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/react-addons-text-content/-/react-addons-text-content-0.0.4.tgz#d2e259fdc951d1d8906c08902002108dce8792e5"
 
+react-clickdrag@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/react-clickdrag/-/react-clickdrag-3.0.2.tgz#54df5f3df6d695c54e9978a08253f83de7611bd2"
+
 react-deprecate@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/react-deprecate/-/react-deprecate-0.1.0.tgz#817bdf22b8275fb767e9f49a8053f642600435c3"
@@ -9313,6 +9321,14 @@ react-metrics@^2.4.0:
     hoist-non-react-statics "^1.0.5"
     querystring "^0.2.0"
     rimraf "^2.5.1"
+
+react-number-editor:
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/react-number-editor/-/react-number-editor-4.0.3.tgz#3b2b2310910060a41418453299813c5acd3161c7"
+  dependencies:
+    clamp "^1.0.1"
+    prop-types "^15.6.0"
+    react-clickdrag "^3.0.2"
 
 react-on-screen:
   version "2.0.1"
