@@ -43,6 +43,31 @@ export default class InterpolatedAnimation extends React.Component {
     };
   }
 
+  handleChange = (key, value) => {
+    /* Check if we really need to call setState here */
+    if (this.state.values[key].override === value) {
+      return;
+    }
+
+    this.setState({
+      values: {
+        ...this.state.values,
+        [key]: {
+          override: value,
+        },
+      },
+    });
+  }
+
+  handleClear = (key) => this.setState({
+    values: {
+      ...this.state.values,
+      [key]: {
+        override: null,
+      },
+    },
+  })
+
   render() {
     return (
       <Animation
@@ -77,7 +102,13 @@ export default class InterpolatedAnimation extends React.Component {
             ({
               ...acc,
               [key]: {
-                value: state.values[key],
+                value: this.state.values[key].override !== null ?
+                       this.state.values[key].override : state.values[key],
+                begin: this.props.values[key].begin,
+                end: this.props.values[key].end,
+                onChange: (value) => this.handleChange(key, value),
+                onClear: () => this.handleClear(key),
+                overridden: this.state.values[key].override !== null,
               },
             }),
             {},
