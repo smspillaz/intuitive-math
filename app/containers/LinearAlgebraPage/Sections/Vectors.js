@@ -18,6 +18,7 @@ import MathJaxMatrix from 'components/MathJaxMatrix';
 import InterpolatedAnimation, { cosineInterpolator, sineInterpolator } from 'components/InterpolatedAnimation';
 import Section from 'components/Section';
 import Strong from 'components/Strong';
+import Tweakable from 'components/Tweakable';
 import Vector from 'components/Vector';
 import Visualization from 'components/Visualization';
 
@@ -74,7 +75,9 @@ const VectorsSection = () => (
             )}
           />
           <div>
-            <MathJax.Node inline>{'x ='}</MathJax.Node>{' '}<span>{xPosition.value.toFixed(2)}</span>
+            <Tweakable {...xPosition}>
+              <MathJax.Node inline>{'x ='}</MathJax.Node>{' '}
+            </Tweakable>
           </div>
         </div>
       )}
@@ -111,10 +114,14 @@ const VectorsSection = () => (
             )}
           />
           <div>
-            <MathJax.Node inline>{'x ='}</MathJax.Node>{' '}<span>{xPosition.value.toFixed(2)}</span>
+            <Tweakable {...xPosition}>
+              <MathJax.Node inline>{'x ='}</MathJax.Node>{' '}
+            </Tweakable>
           </div>
           <div>
-            <MathJax.Node inline>{'y ='}</MathJax.Node>{' '}<span>{yPosition.value.toFixed(2)}</span>
+            <Tweakable {...yPosition}>
+              <MathJax.Node inline>{'y ='}</MathJax.Node>{' '}
+            </Tweakable>
           </div>
         </div>
       )}
@@ -158,13 +165,19 @@ const VectorsSection = () => (
             )}
           />
           <div>
-            <MathJax.Node inline>{'x ='}</MathJax.Node>{' '}<span>{xPosition.value.toFixed(2)}</span>
+            <Tweakable {...xPosition}>
+              <MathJax.Node inline>{'x ='}</MathJax.Node>{' '}
+            </Tweakable>
           </div>
           <div>
-            <MathJax.Node inline>{'y ='}</MathJax.Node>{' '}<span>{yPosition.value.toFixed(2)}</span>
+            <Tweakable {...yPosition}>
+              <MathJax.Node inline>{'y ='}</MathJax.Node>{' '}
+            </Tweakable>
           </div>
           <div>
-            <MathJax.Node inline>{'z ='}</MathJax.Node>{' '}<span>{zPosition.value.toFixed(2)}</span>
+            <Tweakable {...zPosition}>
+              <MathJax.Node inline>{'z ='}</MathJax.Node>{' '}
+            </Tweakable>
           </div>
         </div>
       )}
@@ -205,10 +218,14 @@ const VectorsSection = () => (
               <Vector position={c} color={0x00ffff} />
             </Visualization>
             <div>
-              <MathJax.Node inline>{'x ='}</MathJax.Node>{' '}<span>{a.x}{' + '}{xAdd.value.toFixed(2)}{' = '}{c.x.toFixed(2)}</span>
+              <Tweakable {...xAdd}>
+                <MathJax.Node inline>{'x ='}</MathJax.Node>{' '}<span>{a.x}{' + '}</span>
+              </Tweakable>{' = '}{c.x.toFixed(2)}
             </div>
             <div>
-              <MathJax.Node inline>{'y ='}</MathJax.Node>{' '}<span>{a.y}{' + '}{yAdd.value.toFixed(2)}{' = '}{c.y.toFixed(2)}</span>
+              <Tweakable {...yAdd}>
+                <MathJax.Node inline>{'y ='}</MathJax.Node>{' '}<span>{a.y}{' + '}</span>
+              </Tweakable>{' = '}{c.y.toFixed(2)}
             </div>
           </div>
         );
@@ -245,10 +262,14 @@ const VectorsSection = () => (
               <Vector position={c} color={0x00ffff} />
             </Visualization>
             <div>
-              <MathJax.Node inline>{'x ='}</MathJax.Node>{' '}<span>{a.x}<MathJax.Node inline>\times</MathJax.Node>{xMul.value.toFixed(2)}{' = '}{c.x.toFixed(2)}</span>
+              <Tweakable {...xMul}>
+                <MathJax.Node inline>{'x ='}</MathJax.Node>{' '}<span>{a.x}<MathJax.Node inline>\times</MathJax.Node></span>
+              </Tweakable>{' = '}{c.x.toFixed(2)}
             </div>
             <div>
-              <MathJax.Node inline>{'y ='}</MathJax.Node>{' '}<span>{a.y}<MathJax.Node inline>\times</MathJax.Node>{yMul.value.toFixed(2)}{' = '}{c.y.toFixed(2)}</span>
+              <Tweakable {...yMul}>
+                <MathJax.Node inline>{'y ='}</MathJax.Node>{' '}<span>{a.y}<MathJax.Node inline>\times</MathJax.Node></span>
+              </Tweakable>{' = '}{c.y.toFixed(2)}
             </div>
           </div>
         );
