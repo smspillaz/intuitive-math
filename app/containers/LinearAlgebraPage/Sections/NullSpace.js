@@ -32,7 +32,7 @@ const NullSpaceSection = () => (
       to zero is the zero vector itself.
     </p>
     <p>
-      In other cases, there is an interesting compliment going on between both the
+      In other cases, there is an interesting compliment going on between both the{' '}
       <Strong>Column Space</Strong>, the <Strong>Row Space</Strong> and the{' '}
       <Strong>Null Space</Strong>.
     </p>
@@ -111,7 +111,7 @@ const NullSpaceSection = () => (
     <MathJaxMatrix inline matrix={[[0], [0], [0]]} />
     <p>
       Now, how do we solve for <MathJax.Node inline>x, y, z</MathJax.Node>, from here?
-      One thing to pay attention to are what we call <Strong>basic variables</Strong>
+      One thing to pay attention to are what we call <Strong>basic variables</Strong>{' '}
       and <Strong>free variables</Strong>. A basic variable has a leading entry, whereas
       a free variable does not.
     </p>
@@ -132,7 +132,7 @@ const NullSpaceSection = () => (
     <MathJax.Node>
       y = -2z
     </MathJax.Node>
-    <p>And solving for x...</p>
+    <p>And solving for <MathJax.Node inline>x</MathJax.Node>...</p>
     <MathJax.Node>
       2x + y = 0
     </MathJax.Node>
