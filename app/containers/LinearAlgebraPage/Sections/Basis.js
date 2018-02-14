@@ -8,10 +8,11 @@ import React from 'react';
 
 import MathJax from 'react-mathjax';
 
-import { Euler, Vector3 } from 'three';
+import { Vector3 } from 'three';
 
-import { Axis, XAxis, YAxis, ZAxis } from 'components/Axis';
-import Animation from 'components/Animation';
+import { Axis } from 'components/Axis';
+import AxisVisualization3D from 'components/AxisVisualization3D';
+import InterpolatedAnimation from 'components/InterpolatedAnimation';
 import MathJaxMatrix from 'components/MathJaxMatrix';
 import Section from 'components/Section';
 import Strong from 'components/Strong';
@@ -67,22 +68,13 @@ const BasisSection = () => (
       by scaling each of them by a different constant and adding them all together
       that any point in that space can be reached.
     </p>
-    <Animation
-      initial={{ rotation: new Euler(0.5, 0.5, 0) }}
-      update={(state) => ({
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.001,
-                            state.rotation.z),
-      })}
-      render={(state) => (
-        <Visualization width={320} height={240} rotation={state.rotation}>
-          <XAxis />
-          <YAxis />
-          <ZAxis />
+    <AxisVisualization3D
+      render={() => (
+        <group>
           <Vector position={new Vector3(1, 0, 0)} color={0xffff00} />
           <Vector position={new Vector3(0, 1, 0)} color={0xff00ff} />
           <Vector position={new Vector3(0, 0, 1)} color={0xffff00} />
-        </Visualization>
+        </group>
       )}
     />
     <p>
@@ -97,31 +89,23 @@ const BasisSection = () => (
       would still be a basis, where we could combine those three to reach
       any other vector.
     </p>
-    <Animation
-      initial={{
-        rotation: new Euler(0.5, 0.5, 0),
-        time: 0,
+    <InterpolatedAnimation
+      values={{
+        xInterp: { begin: 0, end: 2 },
+        yInterp: { begin: 0, end: 4 },
+        zInterp: { begin: 0, end: 1 },
       }}
-      update={(state) => ({
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.001,
-                            state.rotation.z),
-        time: state.time + 1,
-      })}
-      render={(state) => {
-        const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
-
-        return (
-          <Visualization width={320} height={240} rotation={state.rotation}>
-            <XAxis />
-            <YAxis />
-            <ZAxis />
-            <Vector position={new Vector3(1 + (lerp * 2), 0, 0)} color={0xffff00} />
-            <Vector position={new Vector3(0, 1 + (lerp * 3), 0)} color={0xff00ff} />
-            <Vector position={new Vector3(0, 0, 1 + lerp)} color={0x00ffff} />
-          </Visualization>
-        );
-      }}
+      render={({ xInterp, yInterp, zInterp }) => (
+        <AxisVisualization3D
+          render={() => (
+            <group>
+              <Vector position={new Vector3(xInterp.value, 0, 0)} color={0xffff00} />
+              <Vector position={new Vector3(0, yInterp.value, 0)} color={0xff00ff} />
+              <Vector position={new Vector3(0, 0, zInterp.value)} color={0x00ffff} />
+            </group>
+          )}
+        />
+      )}
     />
     <p>
       In fact, you could imagine squeezing all of those vectors in towards
@@ -129,62 +113,48 @@ const BasisSection = () => (
       possible to combine them in such a way such that it is possible to reach
       any point in the space with them.
     </p>
-    <Animation
-      initial={{
-        rotation: new Euler(0.5, 0.5, 0),
-        time: 0,
+    <InterpolatedAnimation
+      values={{
+        xyInterp: { begin: 0, end: 1 },
+        xzInterp: { begin: 0, end: 1 },
+        yxInterp: { begin: 0, end: 1 },
+        yzInterp: { begin: 0, end: 1 },
+        zxInterp: { begin: 0, end: 1 },
+        zyInterp: { begin: 0, end: 1 },
       }}
-      update={(state) => ({
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.001,
-                            state.rotation.z),
-        time: state.time + 1,
-      })}
-      render={(state) => {
-        const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
-
-        return (
-          <Visualization width={320} height={240} rotation={state.rotation}>
-            <XAxis />
-            <YAxis />
-            <ZAxis />
-            <Vector position={new Vector3(1, lerp, lerp)} color={0xffff00} />
-            <Vector position={new Vector3(lerp, 1, lerp)} color={0xff00ff} />
-            <Vector position={new Vector3(lerp, lerp, 1)} color={0x00ffff} />
-          </Visualization>
-        );
-      }}
+      render={({ xyInterp, xzInterp, yxInterp, yzInterp, zxInterp, zyInterp }) => (
+        <AxisVisualization3D
+          render={() => (
+            <group>
+              <Vector position={new Vector3(1, xyInterp.value, xzInterp.value)} color={0xffff00} />
+              <Vector position={new Vector3(yxInterp.value, 1, yzInterp.value)} color={0xff00ff} />
+              <Vector position={new Vector3(zxInterp.value, zyInterp.value, 1)} color={0x00ffff} />
+            </group>
+          )}
+        />
+      )}
     />
     <p>
       It makes more sense if you think about what happens to the rest of space
       if you apply the same change in the basis vectors to every other part of
       the space.
     </p>
-    <Animation
-      initial={{
-        rotation: new Euler(0.5, 0.5, 0),
-        time: 0,
+    <InterpolatedAnimation
+      values={{
+        xyInterp: { begin: 0, end: 1 },
+        xzInterp: { begin: 0, end: 1 },
+        yxInterp: { begin: 0, end: 1 },
+        yzInterp: { begin: 0, end: 1 },
+        zxInterp: { begin: 0, end: 1 },
+        zyInterp: { begin: 0, end: 1 },
       }}
-      update={(state) => ({
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.001,
-                            state.rotation.z),
-        time: state.time + 1,
-      })}
-      render={(state) => {
-        const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
-
-        return (
-          <Visualization width={320} height={240} rotation={state.rotation} >
-            <Axis basis={[1, lerp, lerp]} extents={[-10, 10]} color={0xff0000} />
-            <Axis basis={[lerp, 1, lerp]} extents={[-10, 10]} color={0x00ff00} />
-            <Axis basis={[lerp, lerp, 1]} extents={[-10, 10]} color={0x0000ff} />
-            <Vector position={new Vector3(1, lerp, lerp)} color={0xffff00} />
-            <Vector position={new Vector3(lerp, 1, lerp)} color={0xff00ff} />
-            <Vector position={new Vector3(lerp, lerp, 1)} color={0x00ffff} />
-          </Visualization>
-        );
-      }}
+      render={({ xyInterp, xzInterp, yxInterp, yzInterp, zxInterp, zyInterp }) => (
+        <Visualization width={320} height={240} >
+          <Axis basis={[1, xyInterp.value, xzInterp.value]} extents={[-10, 10]} color={0xff0000} />
+          <Axis basis={[yxInterp.value, 1, yzInterp.value]} extents={[-10, 10]} color={0x00ff00} />
+          <Axis basis={[zxInterp.value, zyInterp.value, 1]} extents={[-10, 10]} color={0x0000ff} />
+        </Visualization>
+      )}
     />
     <p>
       It is only when all of space is flattened on to a line or a plane that
