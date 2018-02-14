@@ -96,7 +96,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                 The visualizations are partially interactive. They are done on
                 sine-wave interpolations by default, but if a value is shown
                 below the visualisation, in some cases, you can manually adjust it
-                by dragging it from side to side, or just double-clicking an editing
+                by dragging it from side to side, or just double-clicking and editing
                 it. Animation will stop for that value as soon as you edit it, and you
                 can undo the stopped animation by clicking the close button:
                 <EditorCloseIcon size="small" />.
