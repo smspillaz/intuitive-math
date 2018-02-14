@@ -82,9 +82,11 @@ const NullSpaceSection = () => (
     <p>
       And recall that we are trying to solve the system when the result is the zero vector
     </p>
-    <MathJaxMatrix inline matrix={[[0, 0, 0], [2, 1, 0], [0, 2, 4]]} />
-    <MathJaxMatrix inline matrix={[['x'], ['y'], ['z']]} />
-    <MathJaxMatrix inline matrix={[[0], [0], [0]]} />
+    <p>
+      <MathJaxMatrix inline matrix={[[0, 0, 0], [2, 1, 0], [0, 2, 4]]} />
+      <MathJaxMatrix inline matrix={[['x'], ['y'], ['z']]} />
+      <MathJaxMatrix inline matrix={[[0], [0], [0]]} />
+    </p>
     <p>
       Now, how do we solve for <MathJax.Node inline>x, y, z</MathJax.Node>, from here?
       One thing to pay attention to are what we call <Strong>basic variables</Strong>{' '}
@@ -102,25 +104,29 @@ const NullSpaceSection = () => (
       In order to solve the system, we can rephrase the two basic variables in
       terms of the free variable:
     </p>
-    <MathJax.Node>
-      2y + 4z = 0
-    </MathJax.Node>
-    <MathJax.Node>
-      y = -2z
-    </MathJax.Node>
+    <p>
+      <MathJax.Node>
+        2y + 4z = 0
+      </MathJax.Node>
+      <MathJax.Node>
+        y = -2z
+      </MathJax.Node>
+    </p>
     <p>And solving for <MathJax.Node inline>x</MathJax.Node>...</p>
-    <MathJax.Node>
-      2x + y = 0
-    </MathJax.Node>
-    <MathJax.Node>
-      2x - 2z = 0
-    </MathJax.Node>
-    <MathJax.Node>
-      -2z = -2x
-    </MathJax.Node>
-    <MathJax.Node>
-      x = z
-    </MathJax.Node>
+    <p>
+      <MathJax.Node>
+        2x + y = 0
+      </MathJax.Node>
+      <MathJax.Node>
+        2x - 2z = 0
+      </MathJax.Node>
+      <MathJax.Node>
+        -2z = -2x
+      </MathJax.Node>
+      <MathJax.Node>
+        x = z
+      </MathJax.Node>
+    </p>
     <p>
       Now that we have a solution for <MathJax.Node inline>x, y</MathJax.Node> in terms
       of <MathJax.Node inline>z</MathJax.Node>, we can express it as a vector
@@ -130,8 +136,10 @@ const NullSpaceSection = () => (
     <p>
       Or more specifically:
     </p>
-    <MathJaxMatrix inline matrix={[[1], [-2], [1]]} />
-    <MathJax.Node inline>z</MathJax.Node>
+    <p>
+      <MathJaxMatrix inline matrix={[[1], [-2], [1]]} />
+      <MathJax.Node inline>z</MathJax.Node>
+    </p>
     <p>
       Thus, the vector <MathJaxMatrix inline matrix={[[1], [-2], [1]]} /> is the
       basis for the <Strong>Null Space</Strong> of the transformation. You will also
