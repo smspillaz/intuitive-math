@@ -12,7 +12,7 @@ import PropTypes from 'prop-types';
 import AxisVisualization3D from 'components/AxisVisualization3D';
 import Plane from 'components/Plane';
 
-const TriplePlanes = ({ first, second, third, extents = [-2, 2] }) => (
+const TriplePlanes = ({ first, second, third, extents = [-1, 1] }) => (
   <AxisVisualization3D
     render={() => (
       <group>
