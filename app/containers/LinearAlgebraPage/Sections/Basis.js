@@ -88,7 +88,7 @@ const BasisSection = () => (
     <p>
       Because of that, we have special names for them:{' '}
       <MathJax.Node inline>\hat i</MathJax.Node>,{' '}
-      <MathJax.Node inline>\hat j</MathJax.Node> and
+      <MathJax.Node inline>\hat j</MathJax.Node> and{' '}
       <MathJax.Node inline>\hat k</MathJax.Node>.
     </p>
     <p>
