@@ -8,14 +8,17 @@ import React from 'react';
 
 import MathJax from 'react-mathjax';
 
-import { DoubleSide, Vector3 } from 'three';
+import { Vector3 } from 'three';
 
 import AxisVisualization2D from 'components/AxisVisualization2D';
 import AxisVisualization3D from 'components/AxisVisualization3D';
 import MathJaxMatrix from 'components/MathJaxMatrix';
+import Plane from 'components/Plane';
 import Strong from 'components/Strong';
 import Section from 'components/Section';
 import Vector from 'components/Vector';
+
+import { cross } from 'utils/math';
 
 const LinearIndependenceSection = () => (
   <Section title="Linear Independence" anchor="linear-independence">
@@ -121,24 +124,29 @@ const LinearIndependenceSection = () => (
       <MathJaxMatrix inline matrix={[[2], [1], [2]]} />
     </p>
     <AxisVisualization3D
-      render={() => (
-        <group>
-          <Vector position={new Vector3(1, 1, 1)} color={0xffff00} />
-          <Vector position={new Vector3(1, 0, 1)} color={0xff00ff} />
-          <Vector position={new Vector3(2, 1, 2)} color={0x00ffff} />
-          <mesh>
-            <parametricGeometry
-              parametricFunction={(u, v) =>
-                new Vector3(u + v,
-                            u,
-                            u + v)}
-              slices={1}
-              stacks={1}
+      render={() => {
+        const first = new Vector3(1, 1, 1);
+        const second = new Vector3(1, 0, 1);
+        const normal = cross([first.x, first.y, first.z],
+                             [second.x, second.y, second.z]);
+        return (
+          <group>
+            <Vector position={first} color={0xffff00} />
+            <Vector position={second} color={0xff00ff} />
+            <Vector position={new Vector3(2, 1, 2)} color={0x00ffff} />
+            <Plane
+              extents={[-2, 2]}
+              a={normal[0]}
+              b={normal[1]}
+              c={normal[2]}
+              d={0}
+              color={0x00ffff}
+              transparent
+              opacity={0.8}
             />
-            <meshBasicMaterial color={0x009900} side={DoubleSide} />
-          </mesh>
-        </group>
-      )}
+          </group>
+        );
+      }}
     />
     <p>
       It is not immediately obvious, but adding the third vector to the
@@ -154,23 +162,28 @@ const LinearIndependenceSection = () => (
       <MathJaxMatrix inline matrix={[[1], [0], [1]]} />
     </p>
     <AxisVisualization3D
-      render={() => (
-        <group>
-          <Vector position={new Vector3(1, 1, 1)} color={0xffff00} />
-          <Vector position={new Vector3(1, 0, 1)} color={0xff00ff} />
-          <mesh>
-            <parametricGeometry
-              parametricFunction={(u, v) =>
-                new Vector3(u + v,
-                            u,
-                            u + v)}
-              slices={1}
-              stacks={1}
+      render={() => {
+        const first = new Vector3(1, 1, 1);
+        const second = new Vector3(1, 0, 1);
+        const normal = cross([first.x, first.y, first.z],
+                             [second.x, second.y, second.z]);
+        return (
+          <group>
+            <Vector position={first} color={0xffff00} />
+            <Vector position={second} color={0xff00ff} />
+            <Plane
+              extents={[-1, 1]}
+              a={normal[0]}
+              b={normal[1]}
+              c={normal[2]}
+              d={0}
+              color={0x00ffff}
+              transparent
+              opacity={0.8}
             />
-            <meshBasicMaterial color={0x009900} side={DoubleSide} />
-          </mesh>
-        </group>
-      )}
+          </group>
+        );
+      }}
     />
   </Section>
 );
