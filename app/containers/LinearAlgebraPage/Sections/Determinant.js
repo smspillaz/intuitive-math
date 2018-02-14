@@ -1007,7 +1007,7 @@ const DeterminantSection = () => (
       in a far simpler way. The answer of course, is <Strong>Elementary Row Operations</Strong>. However,{' '}
       <Strong>Elementary Row Operations</Strong> might preserve the row space, but they do not
       preserve the overall characteristic of the transformation, including the degree to which it
-      space or flips space over on itself.
+      scales space or flips space over on itself.
     </p>
     <p>
       The fact that it does not should be relatively easy to see when you consider the end result
