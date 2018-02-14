@@ -22,7 +22,7 @@ import Visualization, { BlankableVisualization } from 'components/Visualization'
 const RowSpaceSection = () => (
   <Section title="Row Space" anchor="row-space">
     <p>
-      Given what we know about spans and matrices, the row space is just the
+      Given what we know about spans and matrices, the row space is just the{' '}
       <Strong>span</Strong> of each of the rows, if we are to consider each
       row to be a vector in a set.
     </p>
@@ -103,7 +103,7 @@ const RowSpaceSection = () => (
       you can use <Strong>Elementary Row Operations</Strong> as explained above. Recall
       that since we are only interested in finding the set of all possible vectors
       spanned by the rows and that either our row space consisted of linearly independent
-      vectors or linearly dependent vectors and all <Strong>Elementary Row Operations</Strong>
+      vectors or linearly dependent vectors and all <Strong>Elementary Row Operations</Strong>{' '}
       actually do is recover the standard basis vectors through linear combinations, it follows
       that performing such operations are safe, in that they will not change the dimension,
       which is what we are looking for.
