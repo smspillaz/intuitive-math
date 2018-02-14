@@ -33,13 +33,14 @@ const VectorsSection = () => (
     <p>
       There is a few different ways to think about vectors. It is not quite right
       to call them a point, because vectors have a direction that is actually
-      computable. But then they are not just a pure direction with no associated
+      computable. But then they are also not just a pure direction with no associated
       point.
     </p>
     <p>
-      Personally, I find it best to think of them as a recipie to get to a point
+      Personally, I find it best to think of them as a recipe to get to a point
       based on our understanding of dimensions above. When you plot the vector,
-      it shows you the fastest way of getting to that point in space.
+      it shows you the fastest way of getting to that point in space, which is
+      incidentally, a straight line.
     </p>
     <p>
       For instance, the vector above is at the position <MathJax.Node inline>{'(5, 5, 5)'}</MathJax.Node>{' '}.
