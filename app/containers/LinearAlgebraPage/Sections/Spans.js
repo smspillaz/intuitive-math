@@ -28,7 +28,7 @@ const SpansSection = () => (
       to a <Strong>span</Strong>.
     </p>
     <p>
-      A <Strong>span</Strong> just describes the space reachable by
+      A <Strong>span</Strong> just describes the space reachable by{' '}
       <Strong>linear combinations</Strong>{' '} of some given vectors. In fact,
       it is the set of all vectors reachable by linear combinations of vectors
       in the span.
@@ -59,7 +59,7 @@ const SpansSection = () => (
     </p>
     <p>
       For example, say you wanted the point <MathJax.Node inline>(4, 1)</MathJax.Node>;
-      I could say, well, <MathJax.Node inline>(4, 1)</MathJax.Node> is really just
+      I could say, well, <MathJax.Node inline>(4, 1)</MathJax.Node> is really just{' '}
       <MathJax.Node inline>4 \times (1, 0) + 1 \times (0, 1)</MathJax.Node>
     </p>
     <Animation
