@@ -61,44 +61,32 @@ const DeterminantSection = () => (
       space more than others. For simple changes in the unit vectors, it is
       pretty obvious how much space gets squashed or expanded.
     </p>
-    <Animation
-      initial={{
-        time: 0,
-        rotation: new Euler(0.5, 0.5, 0),
+    <InterpolatedAnimation
+      values={{
+        xxInterp: { begin: 1, end: 0.5 },
+        yyInterp: { begin: 1, end: 0.8 },
       }}
-      update={(state) => ({
-        time: state.time + 1,
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.004,
-                            state.rotation.z),
-      })}
-      render={(state) => {
-        const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
+      render={({ xxInterp, yyInterp }) => {
         const iHat = new Vector3(1, 0, 0);
         const jHat = new Vector3(0, 1, 0);
 
         const mat = new Matrix4();
-        mat.set(1 - (0.5 * lerp), 0, 0, 0,
-                0, 1 - (0.2 * lerp), 0, 0,
+        mat.set(xxInterp.value, 0, 0, 0,
+                0, yyInterp.value, 0, 0,
                 0, 0, 1, 0,
                 0, 0, 0, 1);
-        const rot = new Matrix4();
-        rot.makeRotationFromEuler(new Euler(state.rotation.x,
-                                            state.rotation.y + 0.001,
-                                            state.rotation.z));
 
-        const transform = rot.multiply(mat);
+        const rot = new Matrix4();
+        rot.makeRotationFromEuler(new Euler(0.5, 0.5, 0));
 
         return (
-          <div>
-            <Visualization width={320} height={240} matrix={transform}>
-              <XAxis />
-              <YAxis />
-              <ZAxis />
-              <Vector position={iHat} color={0xffff00} />
-              <Vector position={jHat} color={0xffff00} />
-            </Visualization>
-          </div>
+          <Visualization width={320} height={240} matrix={rot.multiply(mat)}>
+            <XAxis />
+            <YAxis />
+            <ZAxis />
+            <Vector position={iHat} color={0xffff00} />
+            <Vector position={jHat} color={0xffff00} />
+          </Visualization>
         );
       }}
     />
@@ -106,44 +94,35 @@ const DeterminantSection = () => (
       For other transformations, its not quite as obvious how much
       space is being squashed or expanded.
     </p>
-    <Animation
-      initial={{
-        time: 0,
-        rotation: new Euler(0.5, 0.5, 0),
+    <InterpolatedAnimation
+      values={{
+        xxInterp: { begin: 1, end: 0.5 },
+        xyInterp: { begin: 0, end: 5 },
+        yxInterp: { begin: 0, end: 1 },
+        yyInterp: { begin: 1, end: 0.8 },
+        zyInterp: { begin: 0, end: 5 },
       }}
-      update={(state) => ({
-        time: state.time + 1,
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.004,
-                            state.rotation.z),
-      })}
-      render={(state) => {
-        const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
+      render={({ xxInterp, xyInterp, yxInterp, yyInterp, zyInterp }) => {
         const iHat = new Vector3(1, 0, 0);
         const jHat = new Vector3(0, 1, 0);
 
         const mat = new Matrix4();
-        mat.set(1 - (0.5 * lerp), lerp * 5, 0, 0,
-                lerp, 1 - (0.2 * lerp), 0, 0,
-                0, lerp * 5, 1, 0,
+        mat.set(xxInterp.value, xyInterp.value, 0, 0,
+                yxInterp.value, yyInterp.value, 0, 0,
+                0, zyInterp.value, 1, 0,
                 0, 0, 0, 1);
-        const rot = new Matrix4();
-        rot.makeRotationFromEuler(new Euler(state.rotation.x,
-                                            state.rotation.y + 0.001,
-                                            state.rotation.z));
 
-        const transform = rot.multiply(mat);
+        const rot = new Matrix4();
+        rot.makeRotationFromEuler(new Euler(0.5, 0.5, 0));
 
         return (
-          <div>
-            <Visualization width={320} height={240} matrix={transform}>
-              <XAxis />
-              <YAxis />
-              <ZAxis />
-              <Vector position={iHat} color={0xffff00} />
-              <Vector position={jHat} color={0xffff00} />
-            </Visualization>
-          </div>
+          <Visualization width={320} height={240} matrix={rot.multiply(mat)}>
+            <XAxis />
+            <YAxis />
+            <ZAxis />
+            <Vector position={iHat} color={0xffff00} />
+            <Vector position={jHat} color={0xffff00} />
+          </Visualization>
         );
       }}
     />
@@ -161,81 +140,70 @@ const DeterminantSection = () => (
       linear, every other area or volume is going to be changed by that
       same factor.
     </p>
-    <Animation
-      initial={{
-        time: 0,
-        rotation: new Euler(0.5, 0.5, 0),
+    <InterpolatedAnimation
+      values={{
+        xxInterp: { begin: 1, end: 0.5 },
+        yyInterp: { begin: 1, end: 0.8 },
       }}
-      update={(state) => ({
-        time: state.time + 1,
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.004,
-                            state.rotation.z),
-      })}
-      render={(state) => {
-        const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
+      render={({ xxInterp, yyInterp }) => {
         const iHat = new Vector3(1, 0, 0);
         const jHat = new Vector3(0, 1, 0);
 
         const mat = new Matrix4();
-        mat.set(1 - (0.5 * lerp), 0, 0, 0,
-                0, 1 - (0.2 * lerp), 0, 0,
+        mat.set(xxInterp.value, 0, 0, 0,
+                0, yyInterp.value, 0, 0,
                 0, 0, 1, 0,
                 0, 0, 0, 1);
-        const rot = new Matrix4();
-        rot.makeRotationFromEuler(new Euler(state.rotation.x,
-                                            state.rotation.y + 0.001,
-                                            state.rotation.z));
 
-        const transform = rot.multiply(mat);
+        const rot = new Matrix4();
+        rot.makeRotationFromEuler(new Euler(0.5, 0.5, 0));
 
         return (
-          <div>
-            <Visualization width={320} height={240} matrix={transform}>
-              <XAxis />
-              <YAxis />
-              <ZAxis />
-              <mesh position={new Vector3(0.5, 0.5, 0.5)}>
-                <boxGeometry width={1} height={1} depth={1} />
-                <meshBasicMaterial color={0xff00ff} opacity={0.8} />
-              </mesh>
-              <Vector position={iHat} color={0xffff00} />
-              <Vector position={jHat} color={0xffff00} />
-            </Visualization>
-          </div>
+          <Visualization width={320} height={240} matrix={rot.multiply(mat)}>
+            <XAxis />
+            <YAxis />
+            <ZAxis />
+            <Vector position={iHat} color={0xffff00} />
+            <Vector position={jHat} color={0xffff00} />
+          </Visualization>
         );
       }}
     />
     <p>
       Now, as for computing this thing - lets start from the 2D case.
     </p>
-    <Animation
-      initial={{
-        time: 0,
+    <InterpolatedAnimation
+      values={{
+        xxInterp: { begin: 1, end: 0.5 },
+        yyInterp: { begin: 1, end: 0.8 },
       }}
-      update={(state) => ({
-        time: state.time + 1,
-      })}
-      render={(state) => {
-        const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
+      render={({ xxInterp, yyInterp }) => {
+        const mat = new Matrix4();
+        mat.set(xxInterp.value, 0, 0, 0,
+                0, yyInterp.value, 0, 0,
+                0, 0, 1, 0,
+                0, 0, 0, 1);
 
         return (
           <div>
-            <Visualization width={320} height={240}>
-              <XAxis />
-              <YAxis />
-              <mesh position={new Vector3((1 - (0.5 * lerp)) / 2, (1 - (0.2 * lerp)) / 2, 0)}>
-                <planeGeometry width={1 - (0.5 * lerp)} height={1 - (0.2 * lerp)} />
-                <meshBasicMaterial color={0xff00ff} opacity={0.8} />
-              </mesh>
-              <Vector position={new Vector3(1 - (0.5 * lerp), 0, 0)} color={0xffff00} />
-              <Vector position={new Vector3(0, 1 - (0.2 * lerp), 0)} color={0xffff00} />
-            </Visualization>
+            <AxisVisualization2D
+              render={() => (
+                <group>
+                  <SpanningPlane2D matrix={mat} />
+                  <Vector position={new Vector3(xxInterp.value, 0, 0)} color={0xffff00} />
+                  <Vector position={new Vector3(0, yyInterp.value, 0)} color={0xffff00} />
+                </group>
+              )}
+            />
             <p>
-              <MathJax.Node inline>x</MathJax.Node> = {truncate(1 - (0.5 * lerp), 2).toFixed(2)}
+              <Tweakable {...xxInterp}>
+                <MathJax.Node inline>x = </MathJax.Node>
+              </Tweakable>
             </p>
             <p>
-              <MathJax.Node inline>y</MathJax.Node> = {truncate(1 - (0.2 * lerp), 2).toFixed(2)}
+              <Tweakable {...yyInterp}>
+                <MathJax.Node inline>y = </MathJax.Node>
+              </Tweakable>
             </p>
           </div>
         );
@@ -250,18 +218,13 @@ const DeterminantSection = () => (
       You might think that doing more complicated things like shears or rotations would
       complicate matters, but as it turns out, they do not.
     </p>
-    <Animation
-      initial={{
-        time: 0,
+    <InterpolatedAnimation
+      values={{
+        xShear: { begin: 0, end: 1 },
       }}
-      update={(state) => ({
-        time: state.time + 1,
-      })}
-      render={(state) => {
-        const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
-
+      render={({ xShear }) => {
         const mat = new Matrix4();
-        mat.set(1, lerp, 0, 0,
+        mat.set(1, xShear.value, 0, 0,
                 0, 1, 0, 0,
                 0, 0, 1, 0,
                 0, 0, 0, 1);
@@ -272,26 +235,20 @@ const DeterminantSection = () => (
 
         return (
           <div>
-            <Visualization width={320} height={240}>
-              <XAxis />
-              <YAxis />
-              <group>
-                <mesh>
-                  <geometry
-                    vertices={planeGeometry.vertices}
-                    faces={planeGeometry.faces}
-                    colors={planeGeometry.colors}
-                    faceVertexUvs={planeGeometry.faceVertexUvs}
-                  />
-                  <meshBasicMaterial color={0xff00ff} opacity={0.8} />
-                </mesh>
-                <Vector position={new Vector3(1, 0, 0)} color={0xffff00} />
-                <Vector position={new Vector3(lerp, 1, 0)} color={0xffff00} />
-              </group>
-            </Visualization>
+            <AxisVisualization2D
+              render={() => (
+                <group>
+                  <SpanningPlane2D matrix={mat} />
+                  <Vector position={new Vector3(1, 0, 0)} color={0xffff00} />
+                  <Vector position={new Vector3(xShear.value, 1, 0)} color={0xffff00} />
+                </group>
+              )}
+            />
             <p>
               <MathJax.Node inline>x</MathJax.Node> = {truncate(1, 2).toFixed(2)}{' '}
-              <MathJax.Node inline>y</MathJax.Node> = {truncate(lerp, 2).toFixed(2)}
+              <Tweakable {...xShear}>
+                <MathJax.Node inline>y</MathJax.Node><span> = </span>
+              </Tweakable>
             </p>
             <p>
               <MathJax.Node inline>x</MathJax.Node> = {truncate(0, 2).toFixed(2)}{' '}
@@ -310,25 +267,17 @@ const DeterminantSection = () => (
     <p>
       Things start to get a bit more interesting when we have shears in two directions.
     </p>
-    <Animation
-      initial={{
-        time: 0,
+    <InterpolatedAnimation
+      values={{
+        xyShear: { begin: 0, end: 1 },
+        yxShear: { begin: 0, end: 1 },
       }}
-      update={(state) => ({
-        time: state.time + 1,
-      })}
-      render={(state) => {
-        const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
-
+      render={({ xyShear, yxShear }) => {
         const mat = new Matrix4();
-        mat.set(1, lerp, 0, 0,
-                lerp, 1, 0, 0,
+        mat.set(1, xyShear.value, 0, 0,
+                yxShear.value, 1, 0, 0,
                 0, 0, 1, 0,
                 0, 0, 0, 1);
-
-        const planeGeometry = new PlaneGeometry(1, 1);
-        planeGeometry.translate(0.5, 0.5, 0.0);
-        planeGeometry.applyMatrix(mat);
 
         return (
           <div>
@@ -336,25 +285,21 @@ const DeterminantSection = () => (
               <XAxis />
               <YAxis />
               <group>
-                <mesh>
-                  <geometry
-                    vertices={planeGeometry.vertices}
-                    faces={planeGeometry.faces}
-                    colors={planeGeometry.colors}
-                    faceVertexUvs={planeGeometry.faceVertexUvs}
-                  />
-                  <meshBasicMaterial color={0xff00ff} opacity={0.8} />
-                </mesh>
-                <Vector position={new Vector3(1, lerp, 0)} color={0xffff00} />
-                <Vector position={new Vector3(lerp, 1, 0)} color={0xffff00} />
+                <SpanningPlane2D matrix={mat} />
+                <Vector position={new Vector3(1, xyShear.value, 0)} color={0xffff00} />
+                <Vector position={new Vector3(yxShear.value, 1, 0)} color={0xffff00} />
               </group>
             </Visualization>
             <p>
               <MathJax.Node inline>x</MathJax.Node> = {truncate(1, 2).toFixed(2)}{' '}
-              <MathJax.Node inline>y</MathJax.Node> = {truncate(lerp, 2).toFixed(2)}
+              <Tweakable {...xyShear}>
+                <MathJax.Node inline>y</MathJax.Node><span> = </span>
+              </Tweakable>
             </p>
             <p>
-              <MathJax.Node inline>x</MathJax.Node> = {truncate(lerp, 2).toFixed(2)}{' '}
+              <Tweakable {...yxShear}>
+                <MathJax.Node inline>x</MathJax.Node><span> = </span>
+              </Tweakable>
               <MathJax.Node inline>y</MathJax.Node> = {truncate(1, 2).toFixed(2)}
             </p>
           </div>
@@ -368,25 +313,18 @@ const DeterminantSection = () => (
       basis vectors increases. However, if we scale one of the basis vectors, notice
       that they will not convege on the same point anymore:
     </p>
-    <Animation
-      initial={{
-        time: 0,
+    <InterpolatedAnimation
+      values={{
+        xyShear: { begin: 0, end: 1 },
+        yxShear: { begin: 0, end: 1 },
+        yyScale: { begin: 1, end: 2 },
       }}
-      update={(state) => ({
-        time: state.time + 1,
-      })}
-      render={(state) => {
-        const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
-
+      render={({ xyShear, yxShear, yyScale }) => {
         const mat = new Matrix4();
-        mat.set(1 + lerp, lerp, 0, 0,
-                lerp, 1, 0, 0,
+        mat.set(1, xyShear.value, 0, 0,
+                yxShear.value, yyScale.value, 0, 0,
                 0, 0, 1, 0,
                 0, 0, 0, 1);
-
-        const planeGeometry = new PlaneGeometry(1, 1);
-        planeGeometry.translate(0.5, 0.5, 0.0);
-        planeGeometry.applyMatrix(mat);
 
         return (
           <div>
@@ -394,26 +332,24 @@ const DeterminantSection = () => (
               <XAxis />
               <YAxis />
               <group>
-                <mesh>
-                  <geometry
-                    vertices={planeGeometry.vertices}
-                    faces={planeGeometry.faces}
-                    colors={planeGeometry.colors}
-                    faceVertexUvs={planeGeometry.faceVertexUvs}
-                  />
-                  <meshBasicMaterial color={0xff00ff} opacity={0.8} />
-                </mesh>
-                <Vector position={new Vector3(1 + lerp, lerp, 0)} color={0xffff00} />
-                <Vector position={new Vector3(lerp, 1, 0)} color={0xffff00} />
+                <SpanningPlane2D matrix={mat} />
+                <Vector position={new Vector3(1, xyShear.value, 0)} color={0xffff00} />
+                <Vector position={new Vector3(yxShear.value, yyScale.value, 0)} color={0xffff00} />
               </group>
             </Visualization>
             <p>
-              <MathJax.Node inline>x</MathJax.Node> = {truncate(1 + lerp, 2).toFixed(2)}{' '}
-              <MathJax.Node inline>y</MathJax.Node> = {truncate(lerp, 2).toFixed(2)}
+              <MathJax.Node inline>x</MathJax.Node> = {truncate(1, 2).toFixed(2)}{' '}
+              <Tweakable {...xyShear}>
+                <MathJax.Node inline>y</MathJax.Node><span> = </span>
+              </Tweakable>
             </p>
             <p>
-              <MathJax.Node inline>x</MathJax.Node> = {truncate(lerp, 2).toFixed(2)}{' '}
-              <MathJax.Node inline>y</MathJax.Node> = {truncate(1, 2).toFixed(2)}
+              <Tweakable {...yxShear}>
+                <MathJax.Node inline>x</MathJax.Node><span> = </span>
+              </Tweakable>
+              <Tweakable {...yyScale}>
+                <MathJax.Node inline>y</MathJax.Node><span> = </span>
+              </Tweakable>
             </p>
           </div>
         );
