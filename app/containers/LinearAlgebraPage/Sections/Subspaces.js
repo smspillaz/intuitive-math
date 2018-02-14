@@ -42,7 +42,7 @@ const SubspacesSection = () => (
       The formal definition of a subspace is as follows:
     </p>
     <ul>
-      <li>It must contain the zero-vector</li>
+      <li>It must contain the zero-vector.</li>
       <li>
         It must be <Strong>closed under addition</Strong>:
         if <MathJax.Node inline>v_1 \in S</MathJax.Node> and{' '}
@@ -153,12 +153,12 @@ const SubspacesSection = () => (
       \alpha v_1 = (\alpha x_2, \alpha y_1, \alpha z_2)
     </MathJax.Node>
     <p>
-      And if <MathJax.Node inline>v_1 \in S</MathJax.Node> then
+      And if <MathJax.Node inline>v_1 \in S</MathJax.Node> then{' '}
       <MathJax.Node inline>2x_1 + 3y_1 = z</MathJax.Node>. So if we multiply
       through <MathJax.Node inline>\alpha</MathJax.Node>:
     </p>
     <MathJax.Node>
-      \alpha 2x + \alpha 3y = \alpha z
+      2\alpha x + 3\alpha y = \alpha z
     </MathJax.Node>
     <p>
       And this is always true, since it is just a scalar.
