@@ -28,7 +28,7 @@ const Tweakable = ({ begin, end, value, onChange, onClear, overridden, children,
       onValueChange={(v) => onChange(Number(v))}
       step={step}
       style={{
-        width: `${Math.max(String(value.toFixed(2)).length, 5) * 8}px`,
+        width: `${Math.max(String(value.toFixed(2)).length, 5) * 9}px`,
       }}
     />
     {overridden ? <EditorCloseIcon onClick={onClear} size="small" /> : <span />}
