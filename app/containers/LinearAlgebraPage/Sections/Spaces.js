@@ -47,19 +47,19 @@ const SpacesSection = () => (
       </p>
       <p>
         In the <Strong>first</Strong> dimension you would just have a number
-        line made up of every possible point
+        line made up of every possible point:
       </p>
       <BlankableVisualization width={320} height={240}>
         <XAxis />
       </BlankableVisualization>
       <p>
         In <Strong>two</Strong> dimensional space, you have a co-ordinate plane
-        made up of every possible line
+        made up of every possible line:
       </p>
       <AxisVisualization2D />
       <p>
         In <Strong>three</Strong> dimensional space, you have a volume
-        made up of every possible plane
+        made up of every possible plane:
       </p>
       <AxisVisualization3D />
       <p>
