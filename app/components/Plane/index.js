@@ -2,20 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { DoubleSide, Vector3 } from 'three';
 
-const cross = (vec1, vec2) => (
-  [
-    (vec1[1] * vec2[2]) - (vec1[2] * vec2[1]),
-    (vec1[2] * vec2[0]) - (vec1[0] * vec2[2]),
-    (vec1[0] * vec2[1]) - (vec1[1] * vec2[0]),
-  ]
-);
-
-const tangentVectors = ([a, b, c]) => {
-  if (a === 0 && b === 0) {
-    return [[1, 0, 0], [0, 1, 0]];
-  }
-  return [[b, -a, 0], cross([b, -a, 0], [a, b, c])];
-};
+import { tangentVectors } from 'utils/math';
 
 /**
  * Plane:
