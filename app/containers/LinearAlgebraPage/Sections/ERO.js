@@ -6,18 +6,64 @@
 
 import React from 'react';
 
+import PropTypes from 'prop-types';
+
 import MathJax from 'react-mathjax';
 
-import { Euler, Vector3 } from 'three';
+import { Vector3 } from 'three';
 
-import { XAxis, YAxis, ZAxis } from 'components/Axis';
-import Animation from 'components/Animation';
+import AxisVisualization3D from 'components/AxisVisualization3D';
+import InterpolatedAnimation from 'components/InterpolatedAnimation';
 import MathJaxMatrix from 'components/MathJaxMatrix';
 import Plane from 'components/Plane';
 import Section from 'components/Section';
 import Strong from 'components/Strong';
 import Vector from 'components/Vector';
-import Visualization from 'components/Visualization';
+
+const TriplePlanes = ({ first, second, third, extents = [-2, 2] }) => (
+  <AxisVisualization3D
+    render={() => (
+      <group>
+        <Plane extents={extents} a={first[0]} b={first[1]} c={first[2]} d={first[3]} color={0xffff00} transparent opacity={0.8} />
+        <Plane extents={extents} a={second[0]} b={second[1]} c={second[2]} d={second[3]} color={0xff00ff} transparent opacity={0.8} />
+        <Plane extents={extents} a={third[0]} b={third[1]} c={third[2]} d={third[3]} color={0x00ffff} transparent opacity={0.8} />
+      </group>
+    )}
+  />
+);
+
+TriplePlanes.propTypes = {
+  first: PropTypes.arrayOf(PropTypes.number).isRequired,
+  second: PropTypes.arrayOf(PropTypes.number).isRequired,
+  third: PropTypes.arrayOf(PropTypes.number).isRequired,
+  extents: PropTypes.arrayOf(PropTypes.number),
+};
+
+const EROVisualization = ({ first, second, third, ...props }) => (
+  <div>
+    <p style={{ textAlign: 'center' }}>
+      <MathJaxMatrix
+        inline
+        matrix={[
+          [[first[0]], [first[1]], [first[2]]],
+          [[second[0]], [second[1]], [second[2]]],
+          [[third[0]], [third[1]], [third[2]]],
+        ]}
+      />
+      <MathJaxMatrix inline matrix={[['x'], ['y'], ['z']]} />
+      <MathJax.Node inline>=</MathJax.Node>
+      <MathJaxMatrix inline matrix={[[first[3]], [second[3]], [third[3]]]} />
+    </p>
+    <TriplePlanes first={first} second={second} third={third} {...props} />
+  </div>
+);
+
+EROVisualization.propTypes = {
+  first: PropTypes.arrayOf(PropTypes.number).isRequired,
+  second: PropTypes.arrayOf(PropTypes.number).isRequired,
+  third: PropTypes.arrayOf(PropTypes.number).isRequired,
+  extents: PropTypes.arrayOf(PropTypes.number),
+};
 
 const EROSection = () => (
   <Section title="Elementary Row Operations" anchor="elementary-row-operations">
@@ -46,25 +92,10 @@ const EROSection = () => (
       If you visualize the three planes in the system, you will notice that they
       intersect at a point.
     </p>
-    <Animation
-      initial={{
-        rotation: new Euler(0.5, 0.5, 0),
-      }}
-      update={(state) => ({
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.004,
-                            state.rotation.z),
-      })}
-      render={(state) => (
-        <Visualization width={320} height={240} rotation={state.rotation}>
-          <XAxis />
-          <YAxis />
-          <ZAxis />
-          <Plane extents={[-2, 2]} a={1} b={1} c={0} d={2} color={0xffff00} transparent opacity={0.8} />
-          <Plane extents={[-2, 2]} a={1} b={0} c={-1} d={1} color={0xff00ff} transparent opacity={0.8} />
-          <Plane extents={[-2, 2]} a={0} b={1} c={-1} d={0} color={0x00ffff} transparent opacity={0.8} />
-        </Visualization>
-      )}
+    <TriplePlanes
+      first={[1, 1, 0, 2]}
+      second={[1, 0, -1, 1]}
+      third={[0, 1, -1, 0]}
     />
     <p>
       Now, if we recall that any vector multiplied by the three standard basis
@@ -82,172 +113,59 @@ const EROSection = () => (
     <p>
       First, subtract the first row from the second:
     </p>
-    <p>
-      <MathJaxMatrix inline matrix={[[1, 1, 0], [0, -1, -1], [0, 1, -1]]} />
-      <MathJaxMatrix inline matrix={[['x'], ['y'], ['z']]} />
-      <MathJax.Node inline>=</MathJax.Node>
-      <MathJaxMatrix inline matrix={[[2], [-1], [0]]} />
-    </p>
-    <Animation
-      initial={{
-        rotation: new Euler(0.5, 0.5, 0),
-      }}
-      update={(state) => ({
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.004,
-                            state.rotation.z),
-      })}
-      render={(state) => (
-        <Visualization width={320} height={240} rotation={state.rotation}>
-          <XAxis />
-          <YAxis />
-          <ZAxis />
-          <Plane extents={[-2, 2]} a={1} b={1} c={0} d={2} color={0xffff00} transparent opacity={0.8} />
-          <Plane extents={[-2, 2]} a={0} b={-1} c={-1} d={-1} color={0xff00ff} transparent opacity={0.8} />
-          <Plane extents={[-2, 2]} a={0} b={1} c={-1} d={0} color={0x00ffff} transparent opacity={0.8} />
-        </Visualization>
-      )}
+    <EROVisualization
+      first={[1, 1, 0, 2]}
+      second={[0, -1, -1, -1]}
+      third={[0, 1, -1, 0]}
     />
     <p>Then, add the second row to the third</p>
-    <p>
-      <MathJaxMatrix inline matrix={[[1, 1, 0], [0, -1, -1], [0, 0, -2]]} />
-      <MathJaxMatrix inline matrix={[['x'], ['y'], ['z']]} />
-      <MathJax.Node inline>=</MathJax.Node>
-      <MathJaxMatrix inline matrix={[[2], [-1], [-1]]} />
-    </p>
-    <Animation
-      initial={{
-        rotation: new Euler(0.5, 0.5, 0),
-      }}
-      update={(state) => ({
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.004,
-                            state.rotation.z),
-      })}
-      render={(state) => (
-        <Visualization width={320} height={240} rotation={state.rotation}>
-          <XAxis />
-          <YAxis />
-          <ZAxis />
-          <Plane extents={[-2, 2]} a={1} b={1} c={0} d={2} color={0xffff00} transparent opacity={0.8} />
-          <Plane extents={[-2, 2]} a={0} b={-1} c={-1} d={-1} color={0xff00ff} transparent opacity={0.8} />
-          <Plane extents={[-2, 2]} a={0} b={0} c={-2} d={-1} color={0x00ffff} transparent opacity={0.8} />
-        </Visualization>
-      )}
+    <EROVisualization
+      first={[1, 1, 0, 2]}
+      second={[0, -1, -1, -1]}
+      third={[0, 0, -2, -1]}
     />
     <p>Now, subtract half of the third row from the second</p>
-    <p>
-      <MathJaxMatrix inline matrix={[[1, 1, 0], [0, -1, 0], [0, 0, -2]]} />
-      <MathJaxMatrix inline matrix={[['x'], ['y'], ['z']]} />
-      <MathJax.Node inline>=</MathJax.Node>
-      <MathJaxMatrix inline matrix={[[2], ['-1 \\over 2'], [-1]]} />
-    </p>
-    <Animation
-      initial={{
-        rotation: new Euler(0.5, 0.5, 0),
-      }}
-      update={(state) => ({
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.004,
-                            state.rotation.z),
-      })}
-      render={(state) => (
-        <Visualization width={320} height={240} rotation={state.rotation}>
-          <XAxis />
-          <YAxis />
-          <ZAxis />
-          <Plane extents={[-2, 2]} a={1} b={1} c={0} d={2} color={0xffff00} transparent opacity={0.8} />
-          <Plane extents={[-2, 2]} a={0} b={-1} c={0} d={-0.5} color={0xff00ff} transparent opacity={0.8} />
-          <Plane extents={[-2, 2]} a={0} b={0} c={-2} d={-1} color={0x00ffff} transparent opacity={0.8} />
-        </Visualization>
-      )}
+    <EROVisualization
+      first={[1, 1, 0, 2]}
+      second={[0, -1, 0, -0.5]}
+      third={[0, 0, -2, -1]}
     />
     <p>Add the second row to the first</p>
-    <p>
-      <MathJaxMatrix inline matrix={[[1, 0, 0], [0, -1, 0], [0, 0, -2]]} />
-      <MathJaxMatrix inline matrix={[['x'], ['y'], ['z']]} />
-      <MathJax.Node inline>=</MathJax.Node>
-      <MathJaxMatrix inline matrix={[['3 \\over 2'], ['-1 \\over 2'], [-1]]} />
-    </p>
-    <Animation
-      initial={{
-        rotation: new Euler(0.5, 0.5, 0),
-      }}
-      update={(state) => ({
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.004,
-                            state.rotation.z),
-      })}
-      render={(state) => (
-        <Visualization width={320} height={240} rotation={state.rotation}>
-          <XAxis />
-          <YAxis />
-          <ZAxis />
-          <Plane extents={[-2, 2]} a={1} b={0} c={0} d={1.5} color={0xffff00} transparent opacity={0.8} />
-          <Plane extents={[-2, 2]} a={0} b={-1} c={0} d={-0.5} color={0xff00ff} transparent opacity={0.8} />
-          <Plane extents={[-2, 2]} a={0} b={0} c={-2} d={-1} color={0x00ffff} transparent opacity={0.8} />
-        </Visualization>
-      )}
+    <EROVisualization
+      first={[1, 0, 0, 1.5]}
+      second={[0, -1, 0, -0.5]}
+      third={[0, 0, -2, -1]}
     />
     <p>Clean everything up by dividing the second row by -1 and the third row by -2</p>
-    <p>
-      <MathJaxMatrix inline matrix={[[1, 0, 0], [0, 1, 0], [0, 0, 1]]} />
-      <MathJaxMatrix inline matrix={[['x'], ['y'], ['z']]} />
-      <MathJax.Node inline>=</MathJax.Node>
-      <MathJaxMatrix inline matrix={[['3 \\over 2'], ['1 \\over 2'], ['1 \\over 2']]} />
-    </p>
-    <Animation
-      initial={{
-        rotation: new Euler(0.5, 0.5, 0),
-      }}
-      update={(state) => ({
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.004,
-                            state.rotation.z),
-      })}
-      render={(state) => (
-        <Visualization width={320} height={240} rotation={state.rotation}>
-          <XAxis />
-          <YAxis />
-          <ZAxis />
-          <Plane extents={[-2, 2]} a={1} b={0} c={0} d={1.5} color={0xffff00} transparent opacity={0.8} />
-          <Plane extents={[-2, 2]} a={0} b={1} c={0} d={0.5} color={0xff00ff} transparent opacity={0.8} />
-          <Plane extents={[-2, 2]} a={0} b={0} c={1} d={0.5} color={0x00ffff} transparent opacity={0.8} />
-        </Visualization>
-      )}
+    <EROVisualization
+      first={[1, 0, 0, 1.5]}
+      second={[0, 1, 0, 0.5]}
+      third={[0, 0, 1, 0.5]}
     />
     <p>
       As you will have noticed, the intersection between the planes is the point
       of the solution, but now we can simply just express that as the vector{' '}
       <MathJaxMatrix inline matrix={[['3 \\over 2'], ['1 \\over 2'], ['1 \\over 2']]} />
     </p>
-    <Animation
-      initial={{
-        rotation: new Euler(0.5, 0.5, 0),
-        time: 0,
+    <InterpolatedAnimation
+      values={{
+        xInterp: { begin: 0, end: 1.5 },
+        yInterp: { begin: 0, end: 0.5 },
+        zInterp: { begin: 0, end: 0.5 },
+        fade: { begin: 1, end: 0 },
       }}
-      update={(state) => ({
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.004,
-                            state.rotation.z),
-        time: state.time + 1,
-      })}
-      render={(state) => {
-        const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
-        const ilerp = 1 - lerp;
-
-        return (
-          <Visualization width={320} height={240} rotation={state.rotation}>
-            <XAxis />
-            <YAxis />
-            <ZAxis />
-            <Vector position={new Vector3(ilerp * 1.5, ilerp * 0.5, ilerp * 0.5)} color={0xffff00} />
-            <Plane extents={[-2, 2]} a={1} b={0} c={0} d={1.5} color={0xffff00} transparent opacity={lerp} />
-            <Plane extents={[-2, 2]} a={0} b={1} c={0} d={0.5} color={0xff00ff} transparent opacity={lerp} />
-            <Plane extents={[-2, 2]} a={0} b={0} c={1} d={0.5} color={0x00ffff} transparent opacity={lerp} />
-          </Visualization>
-        );
-      }}
+      render={({ xInterp, yInterp, zInterp, fade }) => (
+        <AxisVisualization3D
+          render={() => (
+            <group>
+              <Vector position={new Vector3(xInterp.value, yInterp.value, zInterp.value)} color={0xffff00} />
+              <Plane extents={[-2, 2]} a={1} b={0} c={0} d={1.5} color={0xffff00} transparent opacity={fade.value} />
+              <Plane extents={[-2, 2]} a={0} b={1} c={0} d={0.5} color={0xff00ff} transparent opacity={fade.value} />
+              <Plane extents={[-2, 2]} a={0} b={0} c={1} d={0.5} color={0x00ffff} transparent opacity={fade.value} />
+            </group>
+          )}
+        />
+      )}
     />
     <p>
       As we will see, <Strong>Elementary Row Operations</Strong> can help us solve
