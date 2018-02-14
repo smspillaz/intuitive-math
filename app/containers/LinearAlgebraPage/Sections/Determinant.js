@@ -6,20 +6,47 @@
 
 import React from 'react';
 
+import PropTypes from 'prop-types';
+
 import MathJax from 'react-mathjax';
 
 import { BoxGeometry, Euler, Matrix4, PlaneGeometry, Vector3 } from 'three';
 
 import { XAxis, YAxis, ZAxis } from 'components/Axis';
 import Animation from 'components/Animation';
+import AxisVisualization2D from 'components/AxisVisualization2D';
+import InterpolatedAnimation from 'components/InterpolatedAnimation';
 import MathJaxMatrix from 'components/MathJaxMatrix';
 import Plane from 'components/Plane';
 import Section from 'components/Section';
 import Strong from 'components/Strong';
+import Tweakable from 'components/Tweakable';
 import Vector from 'components/Vector';
 import Visualization from 'components/Visualization';
 
 import { truncate } from 'utils/math';
+
+const SpanningPlane2D = ({ matrix }) => {
+  const planeGeometry = new PlaneGeometry(1, 1);
+  planeGeometry.translate(0.5, 0.5, 0.0);
+  planeGeometry.applyMatrix(matrix);
+
+  return (
+    <mesh>
+      <geometry
+        vertices={planeGeometry.vertices}
+        faces={planeGeometry.faces}
+        colors={planeGeometry.colors}
+        faceVertexUvs={planeGeometry.faceVertexUvs}
+      />
+      <meshBasicMaterial color={0xff00ff} opacity={0.8} />
+    </mesh>
+  );
+};
+
+SpanningPlane2D.propTypes = {
+  matrix: PropTypes.object.isRequired,
+};
 
 const DeterminantSection = () => (
   <Section title="Determinant" anchor="determinant">
