@@ -124,7 +124,7 @@ const DeterminantSection = () => (
       In every case though, there is a computation we can do to work
       out how much space is being squished or expanded overall regardless
       of the other effects of the transformation. The result of that
-      computation is called the <Strong>Determinant</Strong>
+      computation is called the <Strong>Determinant</Strong>.
     </p>
     <p>
       To interpret the <Strong>Determinant</Strong>, we can think about what
@@ -605,7 +605,7 @@ const DeterminantSection = () => (
       }}
     />
     <p>
-      Okay, lets step up the complexity a little. What happens if we shear along the
+      Okay, lets step up the complexity a little. What happens if we shear along the{' '}
       <MathJax.Node inline>xz</MathJax.Node> plane?
     </p>
     <Animation
@@ -835,7 +835,7 @@ const DeterminantSection = () => (
       }}
     />
     <p>
-      We are not done yet however. What happens if you add some shear on the
+      We are not done yet however. What happens if you add some shear on the{' '}
       <MathJax.Node inline>xz</MathJax.Node> plane?
     </p>
     <Animation
@@ -1041,7 +1041,7 @@ const DeterminantSection = () => (
     </MathJax.Node>
     <p>
       Now the question is how we can get our matrix into this form so we can do the computation
-      in a far simpler way. The answer of course, is <Strong>Elementary Row Operations</Strong>. However,
+      in a far simpler way. The answer of course, is <Strong>Elementary Row Operations</Strong>. However,{' '}
       <Strong>Elementary Row Operations</Strong> might preserve the row space, but they do not
       preserve the overall characteristic of the transformation, including the degree to which it
       space or flips space over on itself.
@@ -1589,7 +1589,7 @@ const DeterminantSection = () => (
       will change the determinant to 9, since first it scales by 3 in the x direction, 3 in the
       y direction and 3 in the z direction.
     </p>
-    <MathJax.Node inline>\det \alpha A_mn = \alpha^n \det A</MathJax.Node>
+    <MathJax.Node inline>{'\\det \\alpha A_{mn} = \\alpha^n \\det A'}</MathJax.Node>
     <p>
       Secondly, if you think about two matrices as transformations, the determinant
       of their product is the product of the determinants.
