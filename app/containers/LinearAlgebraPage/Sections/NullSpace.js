@@ -8,16 +8,14 @@ import React from 'react';
 
 import MathJax from 'react-mathjax';
 
-import { Euler, Vector3 } from 'three';
+import { Vector3 } from 'three';
 
-import { XAxis, YAxis, ZAxis } from 'components/Axis';
-import Animation from 'components/Animation';
+import AxisVisualization3D from 'components/AxisVisualization3D';
 import MathJaxMatrix from 'components/MathJaxMatrix';
 import Plane from 'components/Plane';
 import Section from 'components/Section';
 import Strong from 'components/Strong';
 import Vector from 'components/Vector';
-import Visualization from 'components/Visualization';
 
 const NullSpaceSection = () => (
   <Section title="Null Space" anchor="Null Space">
@@ -39,24 +37,13 @@ const NullSpaceSection = () => (
     <p>
       Consider the same case above where space was squished on to a plane.
     </p>
-    <Animation
-      initial={{
-        rotation: new Euler(0.5, 0.5, 0),
-      }}
-      update={(state) => ({
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.004,
-                            state.rotation.z),
-      })}
-      render={(state) => (
-        <Visualization width={320} height={240} rotation={state.rotation}>
-          <XAxis />
-          <YAxis />
-          <ZAxis />
+    <AxisVisualization3D
+      render={() => (
+        <group>
           <Vector position={new Vector3(2, 1, 0)} color={0xffff00} />
           <Vector position={new Vector3(0, 1, 2)} color={0xff00ff} />
           <Plane extents={[-1, 1]} a={2} b={-4} c={2} d={0} color={0x00ffff} transparent opacity={0.8} />
-        </Visualization>
+        </group>
       )}
     />
     <p>
@@ -66,24 +53,13 @@ const NullSpaceSection = () => (
       or the zero vector. In this case, that line is the set of all vectors that ended up on the
       zero vector under the transformation, so it <Strong>is</Strong> the Null Space.
     </p>
-    <Animation
-      initial={{
-        rotation: new Euler(0.5, 0.5, 0),
-      }}
-      update={(state) => ({
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.004,
-                            state.rotation.z),
-      })}
-      render={(state) => (
-        <Visualization width={320} height={240} rotation={state.rotation}>
-          <XAxis />
-          <YAxis />
-          <ZAxis />
+    <AxisVisualization3D
+      render={() => (
+        <group>
           <Vector position={new Vector3(-1, 2, -1)} color={0xffff00} />
           <Vector position={new Vector3(1, -2, 1)} color={0xffff00} />
           <Plane extents={[-1, 1]} a={2} b={-4} c={2} d={0} color={0x00ffff} transparent opacity={0.8} />
-        </Visualization>
+        </group>
       )}
     />
     <p>(Astute readers might instantly recognize that this line is the surface normal to the plane in both directions)</p>
@@ -162,23 +138,12 @@ const NullSpaceSection = () => (
       notice that this is the exact same vector we found earlier as the
       normal vector to the plane.
     </p>
-    <Animation
-      initial={{
-        rotation: new Euler(0.5, 0.5, 0),
-      }}
-      update={(state) => ({
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.004,
-                            state.rotation.z),
-      })}
-      render={(state) => (
-        <Visualization width={320} height={240} rotation={state.rotation}>
-          <XAxis />
-          <YAxis />
-          <ZAxis />
+    <AxisVisualization3D
+      render={() => (
+        <group>
           <Vector position={new Vector3(1, -2, 1)} color={0xffff00} />
           <Plane extents={[-1, 1]} a={2} b={-4} c={2} d={0} color={0x00ffff} transparent opacity={0.8} />
-        </Visualization>
+        </group>
       )}
     />
   </Section>
