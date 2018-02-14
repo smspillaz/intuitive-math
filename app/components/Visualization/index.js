@@ -162,6 +162,7 @@ const Box = styled.div`
   background-color: #000000;
   text-align: center;
   display: inline-block;
+  border-radius: 1em;
 `;
 
 const Visualization = ({
@@ -182,6 +183,9 @@ const Visualization = ({
         })()}
         width={width}
         height={height}
+        canvasStyle={{
+          borderRadius: '1em',
+        }}
       >
         <Group
           {...(rotation ? { rotation } : {})}
