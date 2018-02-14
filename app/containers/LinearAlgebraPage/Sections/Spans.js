@@ -10,15 +10,13 @@ import MathJax from 'react-mathjax';
 
 import { Vector3 } from 'three';
 
-import { XAxis, YAxis } from 'components/Axis';
-import Animation from 'components/Animation';
+import AxisVisualization2D from 'components/AxisVisualization2D';
+import InterpolatedAnimation from 'components/InterpolatedAnimation';
 import MathJaxMatrix from 'components/MathJaxMatrix';
 import Section from 'components/Section';
 import Strong from 'components/Strong';
+import Tweakable from 'components/Tweakable';
 import Vector from 'components/Vector';
-import Visualization, { BlankableVisualization } from 'components/Visualization';
-
-import { truncate } from 'utils/math';
 
 const SpansSection = () => (
   <Section title="Spans" anchor="spans">
@@ -42,12 +40,14 @@ const SpansSection = () => (
       have seen before. Say for instance we have the following vectors
       in 2D space:
     </p>
-    <BlankableVisualization width={320} height={240}>
-      <XAxis />
-      <YAxis />
-      <Vector position={new Vector3(1, 0, 0)} color={0xffff00} />
-      <Vector position={new Vector3(0, 1, 0)} color={0xff00ff} />
-    </BlankableVisualization>
+    <AxisVisualization2D
+      render={() => (
+        <group>
+          <Vector position={new Vector3(1, 0, 0)} color={0xffff00} />
+          <Vector position={new Vector3(0, 1, 0)} color={0xff00ff} />
+        </group>
+      )}
+    />
     <p>
       <MathJaxMatrix matrix={[[1], [0]]} inline />{' '}
       <MathJaxMatrix matrix={[[0], [1]]} inline />
@@ -62,26 +62,24 @@ const SpansSection = () => (
       I could say, well, <MathJax.Node inline>(4, 1)</MathJax.Node> is really just{' '}
       <MathJax.Node inline>4 \times (1, 0) + 1 \times (0, 1)</MathJax.Node>
     </p>
-    <Animation
-      initial={{ time: 0 }}
-      update={(state) => ({
-        time: state.time + 1,
-      })}
-      render={(state) => {
-        const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
-
-        return (
-          <div>
-            <Visualization width={320} height={240}>
-              <XAxis />
-              <YAxis />
-              <Vector position={new Vector3(4 * lerp, 0, 0)} color={0xffff00} />
-              <Vector position={new Vector3(0, lerp, 0)} color={0xff00ff} />
-              <Vector position={new Vector3(4 * lerp, lerp, 0)} color={0x00ffff} />
-            </Visualization>
-          </div>
-        );
+    <InterpolatedAnimation
+      values={{
+        xxInterp: { begin: 0, end: 4 },
+        yyInterp: { begin: 0, end: 1 },
+        zxInterp: { begin: 0, end: 4 },
+        zyInterp: { begin: 0, end: 1 },
       }}
+      render={({ xxInterp, yyInterp, zxInterp, zyInterp }) => (
+        <AxisVisualization2D
+          render={() => (
+            <group>
+              <Vector position={new Vector3(xxInterp.value, 0, 0)} color={0xffff00} />
+              <Vector position={new Vector3(0, yyInterp.value, 0)} color={0xff00ff} />
+              <Vector position={new Vector3(zxInterp.value, zyInterp.value, 0)} color={0x00ffff} />
+            </group>
+          )}
+        />
+      )}
     />
     <p>
       Now, what if you had the vectors <MathJaxMatrix inline matrix={[[1], [-1]]} />{' '}
@@ -89,41 +87,39 @@ const SpansSection = () => (
       linearly dependent. Can we reach any point in 2D space using just combinations
       of those two? What about <MathJax.Node inline>(4, 1)</MathJax.Node>?
     </p>
-    <Animation
-      initial={{ time: 0 }}
-      update={(state) => ({
-        time: state.time + 1,
-      })}
-      render={(state) => {
-        const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
-
-        const xFirstInterp = 1 + (lerp * 0.5);
-        const yFirstInterp = -1 + (lerp * -0.5);
-
-        const xSecondInterp = -1 + (lerp * 3.5);
-        const ySecondInterp = -1 + (lerp * 3.5);
-
-        return (
-          <div>
-            <Visualization width={320} height={240}>
-              <XAxis />
-              <YAxis />
-              <Vector position={new Vector3(xFirstInterp, yFirstInterp, 0)} color={0xffff00} />
-              <Vector position={new Vector3(xSecondInterp, ySecondInterp, 0)} color={0xff00ff} />
-              <Vector
-                position={new Vector3(xFirstInterp + xSecondInterp,
-                                      yFirstInterp + ySecondInterp,
-                                      0)}
-                color={0x00ffff}
-              />
-            </Visualization>
-            <p>
-              {truncate((lerp * 0.5) + 1, 2).toFixed(2)}{' '}<MathJaxMatrix inline matrix={[[1], [-1]]} />{' '}
-              {truncate((lerp * -3.5) + 1, 2).toFixed(2)}{' '}<MathJaxMatrix inline matrix={[[-1], [-1]]} />{' '}
-            </p>
-          </div>
-        );
+    <InterpolatedAnimation
+      values={{
+        xxInterp: { begin: 1, end: 1.5 },
+        xyInterp: { begin: -1, end: -1.5 },
+        yxInterp: { begin: -1, end: 2.5 },
+        yyInterp: { begin: -1, end: 2.5 },
       }}
+      render={({ xxInterp, xyInterp, yxInterp, yyInterp }) => (
+        <div>
+          <AxisVisualization2D
+            render={() => (
+              <group>
+                <Vector position={new Vector3(xxInterp.value, xyInterp.value, 0)} color={0xffff00} />
+                <Vector position={new Vector3(yxInterp.value, yyInterp.value, 0)} color={0xff00ff} />
+                <Vector
+                  position={new Vector3(xxInterp.value + xyInterp.value,
+                                        yxInterp.value + yyInterp.value,
+                                        0)}
+                  color={0x00ffff}
+                />
+              </group>
+            )}
+          />
+          <p>
+            <div>
+              <Tweakable {...xxInterp} /><MathJaxMatrix inline matrix={[[1], [-1]]} />
+            </div>
+            <div>
+              <Tweakable {...yxInterp} /><MathJaxMatrix inline matrix={[[-1], [-1]]} />
+            </div>
+          </p>
+        </div>
+      )}
     />
     <p>
       The answer, if you look at the diagram is that, yes, you can. I can take
@@ -135,26 +131,34 @@ const SpansSection = () => (
       What if I have the vectors <MathJaxMatrix inline matrix={[[1], [-1]]} />{' '}
       and <MathJaxMatrix inline matrix={[[-1], [1]]} />?
     </p>
-    <Animation
-      initial={{ time: 0 }}
-      update={(state) => ({
-        time: state.time + 1,
-      })}
-      render={(state) => {
-        const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
-
-        return (
-          <div>
-            <Visualization width={320} height={240}>
-              <XAxis />
-              <YAxis />
-              <Vector position={new Vector3(2 * lerp, -2 * lerp, 0)} color={0xffff00} />
-              <Vector position={new Vector3(lerp * -1, lerp, 0)} color={0xff00ff} />
-              <Vector position={new Vector3(4, 1, 0)} color={0x00ffff} />
-            </Visualization>
-          </div>
-        );
+    <InterpolatedAnimation
+      values={{
+        xxInterp: { begin: 0, end: 2 },
+        xyInterp: { begin: 0, end: -2 },
+        yxInterp: { begin: 0, end: -1 },
+        yyInterp: { begin: 0, end: 1 },
       }}
+      render={({ xxInterp, xyInterp, yxInterp, yyInterp }) => (
+        <div>
+          <AxisVisualization2D
+            render={() => (
+              <group>
+                <Vector position={new Vector3(xxInterp.value, xyInterp.value, 0)} color={0xffff00} />
+                <Vector position={new Vector3(yxInterp.value, yyInterp.value, 0)} color={0xff00ff} />
+                <Vector position={new Vector3(4, 1, 0)} color={0x00ffff} />
+              </group>
+            )}
+          />
+          <p>
+            <div>
+              <Tweakable {...xxInterp} /><MathJaxMatrix inline matrix={[[1], [-1]]} />
+            </div>
+            <div>
+              <Tweakable {...yxInterp} /><MathJaxMatrix inline matrix={[[-1], [-1]]} />
+            </div>
+          </p>
+        </div>
+      )}
     />
     <p>
       The answer by the diagram is that you cannot. The two vectors are parallel
