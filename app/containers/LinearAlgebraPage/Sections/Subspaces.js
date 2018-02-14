@@ -28,6 +28,17 @@ const SubspacesSection = () => (
       definition, showing why it is that those properties need to be satisfied.
     </p>
     <p>
+      For those unfamiliar, we will be using a little bit of set notation
+      here - <MathJax.Node inline>\in</MathJax.Node> stands for <Strong>is
+      a member of</Strong>. When we use <MathJax.Node inline>(x, y, z): z = C(x, y)</MathJax.Node>{' '}
+      we are describing a set containing all three dimensional vectors that satisfy
+      the condition that <MathJax.Node inline>z</MathJax.Node> equals some
+      function <MathJax.Node inline>C(x, y)</MathJax.Node>. We also often use
+      letters from the greek alphabet to describe arbitrary constants, for instance
+      alpha <MathJax.Node inline>\alpha</MathJax.Node> and beta{' '}
+      <MathJax.Node inline>\beta</MathJax.Node>.
+    </p>
+    <p>
       The formal definition of a subspace is as follows:
     </p>
     <ul>
