@@ -43,12 +43,12 @@ const VectorsSection = () => (
       incidentally, a straight line.
     </p>
     <p>
-      For instance, the vector above is at the position <MathJax.Node inline>{'(5, 5, 5)'}</MathJax.Node>{' '}.
-      Another way to think about it might be that it is <MathJax.Node inline>{'5'}</MathJax.Node>{' '}
+      For instance, the vector above is at the position <MathJax.Node inline>{'(2, 2, 2)'}</MathJax.Node>{' '}.
+      Another way to think about it might be that it is <MathJax.Node inline>{'2'}</MathJax.Node>{' '}
       steps in the <MathJax.Node inline>{'x'}</MathJax.Node>{' '} direction,{' '}
-      <MathJax.Node inline>{'5'}</MathJax.Node>{' '}
+      <MathJax.Node inline>{'2'}</MathJax.Node>{' '}
       steps in the <MathJax.Node inline>{'y'}</MathJax.Node>{' '} and{' '}
-      <MathJax.Node inline>{'5'}</MathJax.Node>{' '}
+      <MathJax.Node inline>{'2'}</MathJax.Node>{' '}
       steps in the <MathJax.Node inline>{'z'}</MathJax.Node>{' '} direction.
     </p>
     <p>
