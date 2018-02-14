@@ -80,24 +80,26 @@ const LinearIndependenceSection = () => (
       definition, is the entire 2D co-ordinate space. By scaling the lines
       describes by <MathJax.Node inline>{'y = x'}</MathJax.Node> and
       <MathJax.Node inline>{'2y = x'}</MathJax.Node>, adding them together
-      and so on. I can reach any point in 2D space already. I do not need
+      and so on. I can reach any point in 2D space already. I do not need{' '}
       <MathJax.Node inline>{'5y = 4x'}</MathJax.Node> in order to get access
       to any more space.
     </p>
     <p>
       For example, lets make the vector <MathJax.Node inline>{'(4, 5)'}</MathJax.Node>{' '}
-      using <Strong>only</Strong> <MathJax.Node inline>{'(1, 1)'}</MathJax.Node>
+      using <Strong>only</Strong> <MathJax.Node inline>{'(1, 1)'}</MathJax.Node>{' '}
       and <MathJax.Node inline>{'(1, 2)'}</MathJax.Node>.
     </p>
-    <MathJax.Node inline>{'1 * ((1, 2) - (1, 1)) + 4 * (1, 1) = 1 * (0, 1) + 4 * (1, 1) = (4, 5)'}</MathJax.Node>
+    <MathJax.Node inline>{'1 \\times ((1, 2) - (1, 1)) + 4 \\times (1, 1) = 1 \\times (0, 1) + 4 \\times (1, 1) = (4, 5)'}</MathJax.Node>
     <p>
       This is a little more subtle when we move into three dimensions. Just because
       you have three vectors, it doesnt mean that they are all linearly independent.
     </p>
     <p>Obviously, you can get a case where they represent the same line</p>
-    <MathJaxMatrix inline matrix={[[1], [2], [3]]} />
-    <MathJaxMatrix inline matrix={[[2], [4], [6]]} />
-    <MathJaxMatrix inline matrix={[[-1], [-2], [-3]]} />
+    <p>
+      <MathJaxMatrix inline matrix={[[1], [2], [3]]} />
+      <MathJaxMatrix inline matrix={[[2], [4], [6]]} />
+      <MathJaxMatrix inline matrix={[[-1], [-2], [-3]]} />
+    </p>
     <Animation
       initial={{ rotation: new Euler(0.5, 0.5, 0) }}
       update={(state) => ({
@@ -117,9 +119,11 @@ const LinearIndependenceSection = () => (
       )}
     />
     <p>But you might also get a case where they, represent the same plane</p>
-    <MathJaxMatrix inline matrix={[[1], [1], [1]]} />
-    <MathJaxMatrix inline matrix={[[1], [0], [1]]} />
-    <MathJaxMatrix inline matrix={[[2], [1], [2]]} />
+    <p>
+      <MathJaxMatrix inline matrix={[[1], [1], [1]]} />
+      <MathJaxMatrix inline matrix={[[1], [0], [1]]} />
+      <MathJaxMatrix inline matrix={[[2], [1], [2]]} />
+    </p>
     <Animation
       initial={{ rotation: new Euler(0.5, 0.5, 0) }}
       update={(state) => ({
@@ -158,8 +162,10 @@ const LinearIndependenceSection = () => (
       So we can get rid of the third vector and still be describing the same
       plane.
     </p>
-    <MathJaxMatrix inline matrix={[[1], [1], [1]]} />
-    <MathJaxMatrix inline matrix={[[1], [0], [1]]} />
+    <p>
+      <MathJaxMatrix inline matrix={[[1], [1], [1]]} />
+      <MathJaxMatrix inline matrix={[[1], [0], [1]]} />
+    </p>
     <Animation
       initial={{ rotation: new Euler(0.5, 0.5, 0) }}
       update={(state) => ({
