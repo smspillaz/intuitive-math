@@ -8,13 +8,10 @@ import React from 'react';
 
 import MathJax from 'react-mathjax';
 
-import { DoubleSide, Euler, Vector3 } from 'three';
-
-import { XAxis, YAxis, ZAxis } from 'components/Axis';
-import Animation from 'components/Animation';
+import AxisVisualization3D from 'components/AxisVisualization3D';
+import Plane from 'components/Plane';
 import Section from 'components/Section';
 import Strong from 'components/Strong';
-import Visualization from 'components/Visualization';
 
 const SubspacesSection = () => (
   <Section title="Subspaces" anchor="subspaces">
@@ -67,31 +64,11 @@ const SubspacesSection = () => (
       So for instance, valid subspace for a three dimensional space
       might be <MathJax.Node inline>z = 2x + 3y</MathJax.Node>, which is a plane:
     </p>
-    <Animation
-      initial={{ rotation: new Euler(0.5, 0.5, 0) }}
-      update={(state) => ({
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y - 0.001,
-                            state.rotation.z),
-      })}
-      render={(state) => (
-        <Visualization width={320} height={240} rotation={state.rotation}>
-          <XAxis />
-          <YAxis />
-          <ZAxis />
-          <mesh>
-            <parametricGeometry
-              parametricFunction={(u, v) =>
-                new Vector3((-2 * u) + (2 * v),
-                            (-2 * u) + v,
-                            (-10 * u) + (7 * v))
-              }
-              slices={1}
-              stacks={1}
-            />
-            <meshBasicMaterial color={0x009900} side={DoubleSide} />
-          </mesh>
-        </Visualization>
+    <AxisVisualization3D
+      render={() => (
+        <group>
+          <Plane a={2} b={3} c={-1} d={0} transparent opacity={0.5} extents={[-1, 1]} color={0x0099bb} />
+        </group>
       )}
     />
     <p>
