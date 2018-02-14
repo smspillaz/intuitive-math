@@ -36,7 +36,7 @@ const SpacesSection = () => (
       <p>
         There exist infinitely many points in the other corresponding
         dimensions for a single point on one dimension. For instance, if you
-        had a two dimensional space and you held <MathJax.Node inline>{'x'}</MathJax.Node>
+        had a two dimensional space and you held <MathJax.Node inline>{'x'}</MathJax.Node>{' '}
         constant at <MathJax.Node inline>{'x = 1'}</MathJax.Node>, there are
         still infinitely many points you could pick on the <MathJax.Node inline>{'y'}</MathJax.Node>{' '}
         dimension. If you had a three dimensional space and held <MathJax.Node inline>{'x'}</MathJax.Node>{' '}
