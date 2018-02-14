@@ -8,15 +8,14 @@ import React from 'react';
 
 import MathJax from 'react-mathjax';
 
-import { DoubleSide, Euler, Vector3 } from 'three';
+import { DoubleSide, Vector3 } from 'three';
 
-import { XAxis, YAxis, ZAxis } from 'components/Axis';
-import Animation from 'components/Animation';
+import AxisVisualization2D from 'components/AxisVisualization2D';
+import AxisVisualization3D from 'components/AxisVisualization3D';
 import MathJaxMatrix from 'components/MathJaxMatrix';
 import Strong from 'components/Strong';
 import Section from 'components/Section';
 import Vector from 'components/Vector';
-import Visualization, { BlankableVisualization } from 'components/Visualization';
 
 const LinearIndependenceSection = () => (
   <Section title="Linear Independence" anchor="linear-independence">
@@ -41,12 +40,14 @@ const LinearIndependenceSection = () => (
       best illustrated in the two dimensional case with a visual explanation.
     </p>
     <MathJaxMatrix inline matrix={[[1, 2], [2, 4]]} />
-    <BlankableVisualization width={320} height={240}>
-      <XAxis />
-      <YAxis />
-      <Vector position={new Vector3(1, 2, 0)} color={0xffff00} />
-      <Vector position={new Vector3(2, 4, 0)} color={0xff00ff} />
-    </BlankableVisualization>
+    <AxisVisualization2D
+      render={() => (
+        <group>
+          <Vector position={new Vector3(1, 2, 0)} color={0xffff00} />
+          <Vector position={new Vector3(2, 4, 0)} color={0xff00ff} />
+        </group>
+      )}
+    />
     <p>
       These two vectors are not linearly independent. The reason why is that
       the first vector describes the line <MathJax.Node inline>{'y = 2x'}</MathJax.Node>{' '}
@@ -63,16 +64,20 @@ const LinearIndependenceSection = () => (
       it basically only comes up when the set of vectors are just scalar multiples
       of each other.  But what happens if you have 3 vectors in a two dimensional space?
     </p>
-    <MathJaxMatrix inline matrix={[[1], [2]]} />
-    <MathJaxMatrix inline matrix={[[1], [1]]} />
-    <MathJaxMatrix inline matrix={[[4], [5]]} />
-    <BlankableVisualization width={320} height={240}>
-      <XAxis />
-      <YAxis />
-      <Vector position={new Vector3(1, 1, 0)} color={0xffff00} />
-      <Vector position={new Vector3(1, 2, 0)} color={0xff00ff} />
-      <Vector position={new Vector3(4, 5, 0)} color={0x00fff} />
-    </BlankableVisualization>
+    <p>
+      <MathJaxMatrix inline matrix={[[1], [2]]} />
+      <MathJaxMatrix inline matrix={[[1], [1]]} />
+      <MathJaxMatrix inline matrix={[[4], [5]]} />
+    </p>
+    <AxisVisualization2D
+      render={() => (
+        <group>
+          <Vector position={new Vector3(1, 1, 0)} color={0xffff00} />
+          <Vector position={new Vector3(1, 2, 0)} color={0xff00ff} />
+          <Vector position={new Vector3(4, 5, 0)} color={0x00fff} />
+        </group>
+      )}
+    />
     <p>
       These vectors are still linearly dependent, even though none of them
       line on the same line. The reason is that now instead of lying on the
@@ -100,22 +105,13 @@ const LinearIndependenceSection = () => (
       <MathJaxMatrix inline matrix={[[2], [4], [6]]} />
       <MathJaxMatrix inline matrix={[[-1], [-2], [-3]]} />
     </p>
-    <Animation
-      initial={{ rotation: new Euler(0.5, 0.5, 0) }}
-      update={(state) => ({
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.001,
-                            state.rotation.z),
-      })}
-      render={(state) => (
-        <Visualization width={320} height={240} rotation={state.rotation}>
-          <XAxis />
-          <YAxis />
-          <ZAxis />
+    <AxisVisualization3D
+      render={() => (
+        <group>
           <Vector position={new Vector3(1, 2, 3)} color={0xffff00} />
           <Vector position={new Vector3(2, 4, 6)} color={0xff00ff} />
           <Vector position={new Vector3(-1, -2, -3)} color={0xffff} />
-        </Visualization>
+        </group>
       )}
     />
     <p>But you might also get a case where they, represent the same plane</p>
@@ -124,18 +120,9 @@ const LinearIndependenceSection = () => (
       <MathJaxMatrix inline matrix={[[1], [0], [1]]} />
       <MathJaxMatrix inline matrix={[[2], [1], [2]]} />
     </p>
-    <Animation
-      initial={{ rotation: new Euler(0.5, 0.5, 0) }}
-      update={(state) => ({
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.001,
-                            state.rotation.z),
-      })}
-      render={(state) => (
-        <Visualization width={320} height={240} rotation={state.rotation}>
-          <XAxis />
-          <YAxis />
-          <ZAxis />
+    <AxisVisualization3D
+      render={() => (
+        <group>
           <Vector position={new Vector3(1, 1, 1)} color={0xffff00} />
           <Vector position={new Vector3(1, 0, 1)} color={0xff00ff} />
           <Vector position={new Vector3(2, 1, 2)} color={0x00ffff} />
@@ -150,7 +137,7 @@ const LinearIndependenceSection = () => (
             />
             <meshBasicMaterial color={0x009900} side={DoubleSide} />
           </mesh>
-        </Visualization>
+        </group>
       )}
     />
     <p>
@@ -166,18 +153,9 @@ const LinearIndependenceSection = () => (
       <MathJaxMatrix inline matrix={[[1], [1], [1]]} />
       <MathJaxMatrix inline matrix={[[1], [0], [1]]} />
     </p>
-    <Animation
-      initial={{ rotation: new Euler(0.5, 0.5, 0) }}
-      update={(state) => ({
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.001,
-                            state.rotation.z),
-      })}
-      render={(state) => (
-        <Visualization width={320} height={240} rotation={state.rotation}>
-          <XAxis />
-          <YAxis />
-          <ZAxis />
+    <AxisVisualization3D
+      render={() => (
+        <group>
           <Vector position={new Vector3(1, 1, 1)} color={0xffff00} />
           <Vector position={new Vector3(1, 0, 1)} color={0xff00ff} />
           <mesh>
@@ -191,7 +169,7 @@ const LinearIndependenceSection = () => (
             />
             <meshBasicMaterial color={0x009900} side={DoubleSide} />
           </mesh>
-        </Visualization>
+        </group>
       )}
     />
   </Section>
