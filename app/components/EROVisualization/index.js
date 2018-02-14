@@ -13,6 +13,11 @@ import MathJax from 'react-mathjax';
 import MathJaxMatrix from 'components/MathJaxMatrix';
 import TriplePlanes from 'components/TriplePlanes';
 
+/* Planes need to have four components to represent a solution - in case
+ * we are using the null-solution shorthand, just append an extra zero */
+const adjust3PointPlane = (planeDefinition) =>
+  planeDefinition.length === 4 ? planeDefinition : [...planeDefinition, 0];
+
 const EROVisualization = ({ first, second, third, ...props }) => (
   <div>
     <p style={{ textAlign: 'center' }}>
@@ -24,11 +29,20 @@ const EROVisualization = ({ first, second, third, ...props }) => (
           [[third[0]], [third[1]], [third[2]]],
         ]}
       />
-      <MathJaxMatrix inline matrix={[['x'], ['y'], ['z']]} />
-      <MathJax.Node inline>=</MathJax.Node>
-      <MathJaxMatrix inline matrix={[[first[3]], [second[3]], [third[3]]]} />
+      {first.length === 4 ? (
+        <div>
+          <MathJaxMatrix inline matrix={[['x'], ['y'], ['z']]} />
+          <MathJax.Node inline>=</MathJax.Node>
+          <MathJaxMatrix inline matrix={[[first[3]], [second[3]], [third[3]]]} />
+        </div>
+      ) : <div />}
     </p>
-    <TriplePlanes first={first} second={second} third={third} {...props} />
+    <TriplePlanes
+      first={adjust3PointPlane(first)}
+      second={adjust3PointPlane(second)}
+      third={adjust3PointPlane(third)}
+      {...props}
+    />
   </div>
 );
 
