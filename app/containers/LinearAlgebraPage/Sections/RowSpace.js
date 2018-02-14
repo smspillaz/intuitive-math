@@ -8,16 +8,16 @@ import React from 'react';
 
 import MathJax from 'react-mathjax';
 
-import { Euler, Vector3 } from 'three';
+import { Vector3 } from 'three';
 
-import { XAxis, YAxis, ZAxis } from 'components/Axis';
-import Animation from 'components/Animation';
+import AxisVisualization2D from 'components/AxisVisualization2D';
+import AxisVisualization3D from 'components/AxisVisualization3D';
+import EROVisualization from 'components/EROVisualization';
 import MathJaxMatrix from 'components/MathJaxMatrix';
 import Plane from 'components/Plane';
 import Section from 'components/Section';
 import Strong from 'components/Strong';
 import Vector from 'components/Vector';
-import Visualization, { BlankableVisualization } from 'components/Visualization';
 
 const RowSpaceSection = () => (
   <Section title="Row Space" anchor="row-space">
@@ -34,13 +34,17 @@ const RowSpaceSection = () => (
     <p>
       So if you have a matrix defined like this:
     </p>
-    <MathJaxMatrix matrix={[[1, 1], [2, 2]]} />
-    <BlankableVisualization width={320} height={240}>
-      <XAxis />
-      <YAxis />
-      <Vector color={0xffff00} position={new Vector3(1, 1, 0)} />
-      <Vector color={0xff00ff} position={new Vector3(1, 0, 1)} />
-    </BlankableVisualization>
+    <p>
+      <MathJaxMatrix matrix={[[1, 1], [2, 2]]} />
+    </p>
+    <AxisVisualization2D
+      render={() => (
+        <group>
+          <Vector color={0xffff00} position={new Vector3(1, 1, 0)} />
+          <Vector color={0xff00ff} position={new Vector3(1, 0, 1)} />
+        </group>
+      )}
+    />
     <p>
       Then because the rows are not linearly independent, the row space is
       just going to be the line defined by <MathJax.Node>y = -x</MathJax.Node>
@@ -49,13 +53,17 @@ const RowSpaceSection = () => (
       However, if you have a matrix defined with two linearly
       independent vectors, then the row space is going to be all 2D space.
     </p>
-    <MathJaxMatrix matrix={[[1, 1], [1, -1]]} />
-    <BlankableVisualization width={320} height={240}>
-      <XAxis />
-      <YAxis />
-      <Vector color={0xffff00} position={new Vector3(1, 1, 0)} />
-      <Vector color={0xff00ff} position={new Vector3(1, -1, 1)} />
-    </BlankableVisualization>
+    <p>
+      <MathJaxMatrix matrix={[[1, 1], [1, -1]]} />
+    </p>
+    <AxisVisualization2D
+      render={() => (
+        <group>
+          <Vector color={0xffff00} position={new Vector3(1, 1, 0)} />
+          <Vector color={0xff00ff} position={new Vector3(1, -1, 1)} />
+        </group>
+      )}
+    />
     <p>
       One thing which you might be interested in is finding the basis
       for a row space. Recall that since all the vectors in a basis
@@ -72,31 +80,10 @@ const RowSpaceSection = () => (
       all the rows as planes with a solution of <MathJaxMatrix matrix={[[0], [0], [0]]} inline />,
       then there would be a single point where they all intersect.
     </p>
-    <p>
-      <MathJaxMatrix inline matrix={[[1, 1, 0], [1, 0, -1], [0, 1, -1]]} />
-      <MathJaxMatrix inline matrix={[['x'], ['y'], ['z']]} />
-      <MathJax.Node inline>=</MathJax.Node>
-      <MathJaxMatrix inline matrix={[[0], [0], [0]]} />
-    </p>
-    <Animation
-      initial={{
-        rotation: new Euler(0.5, 0.5, 0),
-      }}
-      update={(state) => ({
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.004,
-                            state.rotation.z),
-      })}
-      render={(state) => (
-        <Visualization width={320} height={240} rotation={state.rotation}>
-          <XAxis />
-          <YAxis />
-          <ZAxis />
-          <Plane extents={[-2, 2]} a={1} b={1} c={0} d={0} color={0xffff00} transparent opacity={0.8} />
-          <Plane extents={[-2, 2]} a={1} b={0} c={-1} d={0} color={0xff00ff} transparent opacity={0.8} />
-          <Plane extents={[-2, 2]} a={0} b={1} c={-1} d={0} color={0x00ffff} transparent opacity={0.8} />
-        </Visualization>
-      )}
+    <EROVisualization
+      first={[1, 1, 0, 0]}
+      second={[1, 0, -1, 0]}
+      third={[0, 1, -1, 0]}
     />
     <p>
       If you want to more rigorously prove what the dimension of the row space is,
@@ -112,26 +99,10 @@ const RowSpaceSection = () => (
       With that mouthful out of the way, recall that the matrix above
       row-reduced to:
     </p>
-    <MathJaxMatrix matrix={[[1, 0, 0], [0, 1, 0], [0, 0, 1]]} />
-    <Animation
-      initial={{
-        rotation: new Euler(0.5, 0.5, 0),
-      }}
-      update={(state) => ({
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.004,
-                            state.rotation.z),
-      })}
-      render={(state) => (
-        <Visualization width={320} height={240} rotation={state.rotation}>
-          <XAxis />
-          <YAxis />
-          <ZAxis />
-          <Plane extents={[-2, 2]} a={1} b={0} c={0} d={0} color={0xffff00} transparent opacity={0.8} />
-          <Plane extents={[-2, 2]} a={0} b={1} c={0} d={0} color={0xff00ff} transparent opacity={0.8} />
-          <Plane extents={[-2, 2]} a={0} b={0} c={1} d={0} color={0x00ffff} transparent opacity={0.8} />
-        </Visualization>
-      )}
+    <EROVisualization
+      first={[1, 0, 0]}
+      second={[0, 1, 0]}
+      third={[0, 0, 1]}
     />
     <p>
       So, given that we have three vectors that are linearly independent, our
@@ -141,75 +112,32 @@ const RowSpaceSection = () => (
       The row space might not always have as many dimensions as the number of
       rows in the matrix. For instance, consider the matrix:
     </p>
-    <MathJaxMatrix matrix={[[1, 1, 0], [2, 2, 0], [0, 0, 1]]} />
-    <Animation
-      initial={{
-        rotation: new Euler(0.5, 0.5, 0),
-      }}
-      update={(state) => ({
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.004,
-                            state.rotation.z),
-      })}
-      render={(state) => (
-        <Visualization width={320} height={240} rotation={state.rotation}>
-          <XAxis />
-          <YAxis />
-          <ZAxis />
-          <Plane extents={[-2, 2]} a={1} b={1} c={0} d={0} color={0xffff00} transparent opacity={0.8} />
-          <Plane extents={[-2, 2]} a={2} b={2} c={0} d={0} color={0xff00ff} transparent opacity={0.8} />
-          <Plane extents={[-2, 2]} a={0} b={0} c={1} d={0} color={0x00ffff} transparent opacity={0.8} />
-        </Visualization>
-      )}
+    <EROVisualization
+      first={[1, 1, 0]}
+      second={[2, 2, 0]}
+      third={[0, 0, 1]}
     />
     <p>
       With this matrix, we can immediately tell that the second row has a
       linear dependence on the first (it is just a scalar multiple of it). Indeed,
       it row-reduces to:
     </p>
-    <MathJaxMatrix matrix={[[1, 1, 0], [0, 0, 0], [0, 0, 1]]} />
-    <Animation
-      initial={{
-        rotation: new Euler(0.5, 0.5, 0),
-      }}
-      update={(state) => ({
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.004,
-                            state.rotation.z),
-      })}
-      render={(state) => (
-        <Visualization width={320} height={240} rotation={state.rotation}>
-          <XAxis />
-          <YAxis />
-          <ZAxis />
-          <Plane extents={[-2, 2]} a={1} b={1} c={0} d={0} color={0xffff00} transparent opacity={0.8} />
-          <Plane extents={[-2, 2]} a={0} b={0} c={0} d={0} color={0xff00ff} transparent opacity={0.8} />
-          <Plane extents={[-2, 2]} a={0} b={0} c={1} d={0} color={0x00ffff} transparent opacity={0.8} />
-        </Visualization>
-      )}
+    <EROVisualization
+      first={[1, 1, 0]}
+      second={[0, 0, 0]}
+      third={[0, 0, 1]}
     />
     <p>
       So in reality, the dimension of the row-space of this matrix is is just 2. It makes more sense
       if you visualize the basis vectors
     </p>
-    <Animation
-      initial={{
-        rotation: new Euler(0.5, 0.5, 0),
-      }}
-      update={(state) => ({
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.004,
-                            state.rotation.z),
-      })}
-      render={(state) => (
-        <Visualization width={320} height={240} rotation={state.rotation}>
-          <XAxis />
-          <YAxis />
-          <ZAxis />
+    <AxisVisualization3D
+      render={() => (
+        <group>
           <Vector color={0xffff00} position={new Vector3(1, 1, 0)} />
           <Vector color={0xff00ff} position={new Vector3(2, 2, 0)} />
           <Vector color={0x00ffff} position={new Vector3(0, 1, 1)} />
-        </Visualization>
+        </group>
       )}
     />
     <p>
@@ -219,25 +147,16 @@ const RowSpaceSection = () => (
     <p>
       If we had a matrix with three linearly dependent rows:
     </p>
-    <MathJaxMatrix matrix={[[1, 1, 0], [2, 2, 0], [3, 3, 0]]} />
-    <Animation
-      initial={{
-        rotation: new Euler(0.5, 0.5, 0),
-      }}
-      update={(state) => ({
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.004,
-                            state.rotation.z),
-      })}
-      render={(state) => (
-        <Visualization width={320} height={240} rotation={state.rotation}>
-          <XAxis />
-          <YAxis />
-          <ZAxis />
+    <p>
+      <MathJaxMatrix matrix={[[1, 1, 0], [2, 2, 0], [3, 3, 0]]} />
+    </p>
+    <AxisVisualization3D
+      render={() => (
+        <group>
           <Vector color={0xffff00} position={new Vector3(1, 1, 0)} />
           <Vector color={0xff00ff} position={new Vector3(2, 2, 0)} />
           <Vector color={0x00ffff} position={new Vector3(3, 3, 0)} />
-        </Visualization>
+        </group>
       )}
     />
     <p>
@@ -251,168 +170,66 @@ const RowSpaceSection = () => (
       you will see that there is not really a single point of intersection for all three
       planes. Instead, they all seem to intersect with each other along a line.
     </p>
-    <MathJaxMatrix matrix={[[1, 2, 3], [2, 2, 2], [-1, 0, 1]]} />
-    <Animation
-      initial={{
-        rotation: new Euler(0.5, 0.5, 0),
-      }}
-      update={(state) => ({
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.004,
-                            state.rotation.z),
-      })}
-      render={(state) => (
-        <Visualization width={320} height={240} rotation={state.rotation}>
-          <XAxis />
-          <YAxis />
-          <ZAxis />
-          <Plane extents={[-1, 1]} a={1} b={2} c={3} d={0} color={0xffff00} transparent opacity={0.8} />
-          <Plane extents={[-1, 1]} a={2} b={2} c={2} d={0} color={0xff00ff} transparent opacity={0.8} />
-          <Plane extents={[-1, 1]} a={-1} b={0} c={1} d={0} color={0x00ffff} transparent opacity={0.8} />
-        </Visualization>
-      )}
+    <EROVisualization
+      first={[1, 2, 3]}
+      second={[2, 2, 2]}
+      third={[-1, 0, 1]}
     />
     <p>
       See what happens when we row-reduce it. First, add the first row
       to the third:
     </p>
-    <MathJaxMatrix matrix={[[1, 2, 3], [2, 2, 2], [0, 2, 4]]} />
-    <Animation
-      initial={{
-        rotation: new Euler(0.5, 0.5, 0),
-      }}
-      update={(state) => ({
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.004,
-                            state.rotation.z),
-      })}
-      render={(state) => (
-        <Visualization width={320} height={240} rotation={state.rotation}>
-          <XAxis />
-          <YAxis />
-          <ZAxis />
-          <Plane extents={[-1, 1]} a={1} b={2} c={3} d={0} color={0xffff00} transparent opacity={0.8} />
-          <Plane extents={[-1, 1]} a={2} b={2} c={2} d={0} color={0xff00ff} transparent opacity={0.8} />
-          <Plane extents={[-1, 1]} a={0} b={2} c={4} d={0} color={0x00ffff} transparent opacity={0.8} />
-        </Visualization>
-      )}
+    <EROVisualization
+      first={[1, 2, 3]}
+      second={[2, 2, 2]}
+      third={[0, 2, 4]}
     />
     <p>
       Now subtract half the third row from the second:
     </p>
-    <MathJaxMatrix matrix={[[1, 2, 3], [2, 1, 0], [0, 2, 4]]} />
-    <Animation
-      initial={{
-        rotation: new Euler(0.5, 0.5, 0),
-      }}
-      update={(state) => ({
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.004,
-                            state.rotation.z),
-      })}
-      render={(state) => (
-        <Visualization width={320} height={240} rotation={state.rotation}>
-          <XAxis />
-          <YAxis />
-          <ZAxis />
-          <Plane extents={[-1, 1]} a={1} b={2} c={3} d={0} color={0xffff00} transparent opacity={0.8} />
-          <Plane extents={[-1, 1]} a={2} b={1} c={0} d={0} color={0xff00ff} transparent opacity={0.8} />
-          <Plane extents={[-1, 1]} a={0} b={2} c={4} d={0} color={0x00ffff} transparent opacity={0.8} />
-        </Visualization>
-      )}
+    <EROVisualization
+      first={[1, 2, 3]}
+      second={[2, 1, 0]}
+      third={[0, 2, 4]}
     />
     <p>
       Then, multiply the first row by 4 and subtract 3 times the last row from it
     </p>
-    <MathJaxMatrix matrix={[[4, 2, 0], [2, 1, 0], [0, 2, 4]]} />
-    <Animation
-      initial={{
-        rotation: new Euler(0.5, 0.5, 0),
-      }}
-      update={(state) => ({
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.004,
-                            state.rotation.z),
-      })}
-      render={(state) => (
-        <Visualization width={320} height={240} rotation={state.rotation}>
-          <XAxis />
-          <YAxis />
-          <ZAxis />
-          <Plane extents={[-1, 1]} a={4} b={2} c={0} d={0} color={0xffff00} transparent opacity={0.8} />
-          <Plane extents={[-1, 1]} a={2} b={1} c={0} d={0} color={0xff00ff} transparent opacity={0.8} />
-          <Plane extents={[-1, 1]} a={0} b={2} c={4} d={0} color={0x00ffff} transparent opacity={0.8} />
-        </Visualization>
-      )}
+    <EROVisualization
+      first={[4, 2, 0]}
+      second={[2, 1, 0]}
+      third={[0, 2, 4]}
     />
     <p>
       Finally, notice that the first row is twice the second. Subtract twice the second row from it.
     </p>
-    <MathJaxMatrix matrix={[[0, 0, 0], [2, 1, 0], [0, 2, 4]]} />
-    <Animation
-      initial={{
-        rotation: new Euler(0.5, 0.5, 0),
-      }}
-      update={(state) => ({
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.004,
-                            state.rotation.z),
-      })}
-      render={(state) => (
-        <Visualization width={320} height={240} rotation={state.rotation}>
-          <XAxis />
-          <YAxis />
-          <ZAxis />
-          <Plane extents={[-1, 1]} a={0} b={0} c={0} d={0} color={0xffff00} transparent opacity={0.8} />
-          <Plane extents={[-1, 1]} a={2} b={1} c={0} d={0} color={0xff00ff} transparent opacity={0.8} />
-          <Plane extents={[-1, 1]} a={0} b={2} c={4} d={0} color={0x00ffff} transparent opacity={0.8} />
-        </Visualization>
-      )}
+    <EROVisualization
+      first={[0, 0, 0]}
+      second={[2, 1, 0]}
+      third={[0, 2, 4]}
     />
     <p>
       The final two rows are linearly independent of each other. We can represent them
       as basis vectors to show the basis of the row space.
     </p>
-    <Animation
-      initial={{
-        rotation: new Euler(0.5, 0.5, 0),
-      }}
-      update={(state) => ({
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.004,
-                            state.rotation.z),
-      })}
-      render={(state) => (
-        <Visualization width={320} height={240} rotation={state.rotation}>
-          <XAxis />
-          <YAxis />
-          <ZAxis />
+    <AxisVisualization3D
+      render={() => (
+        <group>
           <Vector color={0xff00ff} position={new Vector3(2, 1, 0)} />
           <Vector color={0x00ffff} position={new Vector3(0, 1, 2)} />
-        </Visualization>
+        </group>
       )}
     />
     <p>
       Which, you will notice, forms a plane, indicating that our mapping space is two dimensional.
     </p>
-    <Animation
-      initial={{
-        rotation: new Euler(0.5, 0.5, 0),
-      }}
-      update={(state) => ({
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.004,
-                            state.rotation.z),
-      })}
-      render={(state) => (
-        <Visualization width={320} height={240} rotation={state.rotation}>
-          <XAxis />
-          <YAxis />
-          <ZAxis />
-          <Vector position={new Vector3(2, 1, 0)} color={0xffff00} />
-          <Vector position={new Vector3(0, 1, 2)} color={0xff00ff} />
+    <AxisVisualization3D
+      render={() => (
+        <group>
+          <Vector color={0xff00ff} position={new Vector3(2, 1, 0)} />
+          <Vector color={0x00ffff} position={new Vector3(0, 1, 2)} />
           <Plane extents={[-1, 1]} a={2} b={-4} c={2} d={0} color={0x00ffff} transparent opacity={0.8} />
-        </Visualization>
+        </group>
       )}
     />
   </Section>
