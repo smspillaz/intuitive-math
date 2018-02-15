@@ -6,17 +6,61 @@
 
 import React from 'react';
 
+import PropTypes from 'prop-types';
+
+import styled from 'styled-components';
+
 import MathJax from 'react-mathjax';
 
-import { BoxGeometry, Euler, Matrix3, Matrix4, Vector3 } from 'three';
+import { Matrix3, Matrix4, Vector3 } from 'three';
 
-import { XAxis, YAxis, ZAxis } from 'components/Axis';
-import Animation from 'components/Animation';
+import AxisVisualization2D from 'components/AxisVisualization2D';
+import AxisVisualization3D from 'components/AxisVisualization3D';
+import CubeVectors3D from 'components/CubeVectors3D';
+import InterpolatedAnimation from 'components/InterpolatedAnimation';
 import MathJaxMatrix from 'components/MathJaxMatrix';
 import Section from 'components/Section';
 import Strong from 'components/Strong';
+import TweenedAffineTransformCube from 'components/TweenedAffineTransformCube';
 import Vector from 'components/Vector';
-import Visualization from 'components/Visualization';
+
+const CenteredParagraph = styled.p`
+  text-align: center;
+`;
+
+const matrix4FromMatrix3Arrays = ([row1, row2, row3]) => {
+  const mat = new Matrix4();
+  mat.set(row1[0], row1[1], row1[2], 0,
+          row2[0], row2[1], row2[2], 0,
+          row3[0], row3[1], row3[2], 0,
+          0, 0, 0, 1);
+  return mat;
+};
+
+const CubeVectorsAnimatedSuperERO = ({ matrix, inverse }) => (
+  <div>
+    <CenteredParagraph>
+      <MathJaxMatrix inline matrix={matrix} />
+      <MathJaxMatrix inline matrix={inverse} />
+    </CenteredParagraph>
+    <AxisVisualization3D
+      render={() => <CubeVectors3D matrix={matrix4FromMatrix3Arrays(matrix)} />}
+    />
+  </div>
+);
+
+CubeVectorsAnimatedSuperERO.propTypes = {
+  inverse: PropTypes.arrayOf(
+    PropTypes.arrayOf(
+      PropTypes.number.isRequired
+    ).isRequired
+  ).isRequired,
+  matrix: PropTypes.arrayOf(
+    PropTypes.arrayOf(
+      PropTypes.number.isRequired
+    ).isRequired
+  ).isRequired,
+};
 
 const InversesSection = () => (
   <Section title="Inverses" anchor="inverses">
@@ -78,55 +122,10 @@ const InversesSection = () => (
       Again, note that not every matrix has an inverse. Recall that some transformations
       squash all of space on to a line or a plane:
     </p>
-    <Animation
-      initial={{
-        time: 0,
-        rotation: new Euler(0.5, 0.5, 0),
-      }}
-      update={(state) => ({
-        time: state.time + 1,
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.004,
-                            state.rotation.z),
-      })}
-      render={(state) => {
-        const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
-        const iHat = new Vector3(1, lerp, 0);
-        const jHat = new Vector3(lerp, 1, 0);
-        const kHat = new Vector3(0, 0, 1);
-
-        const mat = new Matrix4();
-        mat.set(1, lerp, 0, 0,
-                lerp, 1, 0, 0,
-                0, 0, 1, 0,
-                0, 0, 0, 1);
-
-        const cubeGeometry = new BoxGeometry(1, 1, 1);
-        cubeGeometry.translate(0.5, 0.5, 0.5);
-        cubeGeometry.applyMatrix(mat);
-
-        return (
-          <div>
-            <Visualization width={320} height={240} rotation={state.rotation}>
-              <XAxis />
-              <YAxis />
-              <ZAxis />
-              <mesh>
-                <geometry
-                  vertices={cubeGeometry.vertices}
-                  faces={cubeGeometry.faces}
-                  colors={cubeGeometry.colors}
-                  faceVertexUvs={cubeGeometry.faceVertexUvs}
-                />
-                <meshBasicMaterial color={0xff00ff} opacity={0.8} transparent wireframe />
-              </mesh>
-              <Vector position={iHat} color={0xffff00} />
-              <Vector position={jHat} color={0xff00ff} />
-              <Vector position={kHat} color={0x00ffff} />
-            </Visualization>
-          </div>
-        );
-      }}
+    <TweenedAffineTransformCube
+      start={[[1, 0, 0], [0, 1, 0], [0, 0, 1]]}
+      end={[[1, 1, 0], [1, 1, 0], [0, 0, 1]]}
+      wireframe
     />
     <p>
       In this case, it would be impossible to find a matrix that would go back to
@@ -151,17 +150,18 @@ const InversesSection = () => (
       that scales by 2 in both directions and rotates counterclockwise.
     </p>
     <MathJaxMatrix matrix={[[0, 2], [-2, 0]]} />
-    <Animation
-      initial={{ time: 0 }}
-      update={(state) => ({
-        time: state.time + 1,
-      })}
-      render={(state) => {
-        const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
+    <InterpolatedAnimation
+      values={{
+        xScale: { begin: 1, end: 0 },
+        xShear: { begin: 0, end: 2 },
+        yShear: { begin: 0, end: -2 },
+        yScale: { begin: 1, end: 0 },
+      }}
+      render={({ xScale, xShear, yShear, yScale }) => {
         const mat = new Matrix3();
 
-        mat.set(1 - (1 * lerp), (2 * lerp), 0,
-                (-2 * lerp), 1 - (1 * lerp), 0,
+        mat.set(xScale.value, xShear.value, 0,
+                yShear.value, yScale.value, 0,
                 0, 0, 0);
 
         const iHat = new Vector3(1, 0, 0);
@@ -171,14 +171,14 @@ const InversesSection = () => (
         jHat.applyMatrix3(mat);
 
         return (
-          <div>
-            <Visualization width={320} height={240}>
-              <XAxis />
-              <YAxis />
-              <Vector position={iHat} color={0xffff00} />
-              <Vector position={jHat} color={0xff00ff} />
-            </Visualization>
-          </div>
+          <AxisVisualization2D
+            render={() => (
+              <group>
+                <Vector position={iHat} color={0xffff00} />
+                <Vector position={jHat} color={0xff00ff} />
+              </group>
+            )}
+          />
         );
       }}
     />
@@ -188,22 +188,22 @@ const InversesSection = () => (
       the standard basis vectors?
     </p>
     <MathJaxMatrix matrix={[[0, -2], [2, 0]]} />
-    <Animation
-      initial={{ time: 0 }}
-      update={(state) => ({
-        time: state.time + 1,
-      })}
-      render={(state) => {
-        const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
+    <InterpolatedAnimation
+      values={{
+        xScale: { begin: 1, end: 0 },
+        xShear: { begin: 0, end: -2 },
+        yShear: { begin: 0, end: 2 },
+        yScale: { begin: 1, end: 0 },
+      }}
+      render={({ xScale, xShear, yShear, yScale }) => {
         const mat = new Matrix3();
-
         mat.set(0, 2, 0,
                 -2, 0, 0,
                 0, 0, 0);
 
         const inverse = new Matrix3();
-        inverse.set(1 - lerp, -2 * lerp, 0,
-                    2 * lerp, 1 - lerp, 0,
+        inverse.set(xScale.value, xShear.value, 0,
+                    yShear.value, yScale.value, 0,
                     0, 0, 0);
 
         const iHat = new Vector3(1, 0, 0);
@@ -216,14 +216,14 @@ const InversesSection = () => (
         jHat.applyMatrix3(inverse);
 
         return (
-          <div>
-            <Visualization width={320} height={240}>
-              <XAxis />
-              <YAxis />
-              <Vector position={iHat} color={0xffff00} />
-              <Vector position={jHat} color={0xff00ff} />
-            </Visualization>
-          </div>
+          <AxisVisualization2D
+            render={() => (
+              <group>
+                <Vector position={iHat} color={0xffff00} />
+                <Vector position={jHat} color={0xff00ff} />
+              </group>
+            )}
+          />
         );
       }}
     />
@@ -252,24 +252,25 @@ const InversesSection = () => (
       matrices are by definition non-invertable, because we cannot multiply by the
       inverse of zero.
     </p>
-    <Animation
-      initial={{ time: 0 }}
-      update={(state) => ({
-        time: state.time + 1,
-      })}
-      render={(state) => {
-        const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
+    <InterpolatedAnimation
+      values={{
+        xScale: { begin: 1, end: 0 },
+        xShear: { begin: 0, end: -2 },
+        yShear: { begin: 0, end: 2 },
+        yScale: { begin: 1, end: 0 },
+        interp: { begin: 0, end: 1 },
+      }}
+      render={({ xScale, xShear, yShear, yScale, interp }) => {
         const mat = new Matrix3();
-
         mat.set(0, 2, 0,
                 -2, 0, 0,
                 0, 0, 0);
 
         const inverse = new Matrix3();
-        inverse.set(1 - lerp, -2 * lerp, 0,
-                    2 * lerp, 1 - lerp, 0,
+        inverse.set(xScale.value, xShear.value, 0,
+                    yShear.value, yScale.value, 0,
                     0, 0, 0);
-        inverse.multiplyScalar(1 - ((1 - 0.25) * lerp));
+        inverse.multiplyScalar(1 - ((1 - 0.25) * interp.value));
 
         const iHat = new Vector3(1, 0, 0);
         const jHat = new Vector3(0, 1, 0);
@@ -281,14 +282,14 @@ const InversesSection = () => (
         jHat.applyMatrix3(inverse);
 
         return (
-          <div>
-            <Visualization width={320} height={240}>
-              <XAxis />
-              <YAxis />
-              <Vector position={iHat} color={0xffff00} />
-              <Vector position={jHat} color={0xff00ff} />
-            </Visualization>
-          </div>
+          <AxisVisualization2D
+            render={() => (
+              <group>
+                <Vector position={iHat} color={0xffff00} />
+                <Vector position={jHat} color={0xff00ff} />
+              </group>
+            )}
+          />
         );
       }}
     />
@@ -314,429 +315,46 @@ const InversesSection = () => (
       operations to the identity matrix and observe how that transformation
       affects an already transformed unit cube. So, side by side:
     </p>
-    <p>
-      <MathJaxMatrix inline matrix={[[1, -1, 0], [-1, -1, 0], [2, 1, 2]]} />
-      <MathJaxMatrix inline matrix={[[1, 0, 0], [0, 1, 0], [0, 0, 1]]} />
-    </p>
-    <Animation
-      initial={{
-        time: 0,
-        rotation: new Euler(0.5, 0.5, 0),
-      }}
-      update={(state) => ({
-        time: state.time + 1,
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.004,
-                            state.rotation.z),
-      })}
-      render={(state) => {
-        const iHat = new Vector3(1, 0, 0);
-        const jHat = new Vector3(0, 1, 0);
-        const kHat = new Vector3(0, 0, 1);
-
-        const mat = new Matrix4();
-        mat.set(1, -1, 0, 0,
-                -1, -1, 0, 0,
-                2, 1, 2, 0,
-                0, 0, 0, 1);
-
-        const candidateInverse = new Matrix4();
-        candidateInverse.set(1, 0, 0, 0,
-                             0, 1, 0, 0,
-                             0, 0, 1, 0,
-                             0, 0, 0, 1);
-
-        iHat.applyMatrix4(mat);
-        iHat.applyMatrix4(candidateInverse);
-        jHat.applyMatrix4(mat);
-        jHat.applyMatrix4(candidateInverse);
-        kHat.applyMatrix4(mat);
-        kHat.applyMatrix4(candidateInverse);
-
-        const cubeGeometry = new BoxGeometry(1, 1, 1);
-        cubeGeometry.translate(0.5, 0.5, 0.5);
-        cubeGeometry.applyMatrix(mat);
-        cubeGeometry.applyMatrix(candidateInverse);
-
-        return (
-          <div>
-            <Visualization width={320} height={240} rotation={state.rotation}>
-              <XAxis />
-              <YAxis />
-              <ZAxis />
-              <mesh>
-                <geometry
-                  vertices={cubeGeometry.vertices}
-                  faces={cubeGeometry.faces}
-                  colors={cubeGeometry.colors}
-                  faceVertexUvs={cubeGeometry.faceVertexUvs}
-                />
-                <meshBasicMaterial color={0xff00ff} opacity={0.8} />
-              </mesh>
-              <Vector position={iHat} color={0xffff00} />
-              <Vector position={jHat} color={0xff00ff} />
-              <Vector position={kHat} color={0x00ffff} />
-            </Visualization>
-          </div>
-        );
-      }}
+    <CubeVectorsAnimatedSuperERO
+      matrix={[[1, -1, 0], [-1, -1, 0], [2, 1, 2]]}
+      inverse={[[1, 0, 0], [0, 1, 0], [0, 0, 1]]}
     />
     <p>
       First, subtract 2 times the first row from the third.
     </p>
-    <p>
-      <MathJaxMatrix inline matrix={[[1, -1, 0], [-1, -1, 0], [0, 3, 2]]} />
-      <MathJaxMatrix inline matrix={[[1, 0, 0], [0, 1, 0], [-2, 0, 1]]} />
-    </p>
-    <Animation
-      initial={{
-        time: 0,
-        rotation: new Euler(0.5, 0.5, 0),
-      }}
-      update={(state) => ({
-        time: state.time + 1,
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.004,
-                            state.rotation.z),
-      })}
-      render={(state) => {
-        const iHat = new Vector3(1, 0, 0);
-        const jHat = new Vector3(0, 1, 0);
-        const kHat = new Vector3(0, 0, 1);
-
-        const mat = new Matrix4();
-        mat.set(1, -1, 0, 0,
-                -1, -1, 0, 0,
-                2, 1, 2, 0,
-                0, 0, 0, 1);
-
-        const candidateInverse = new Matrix4();
-        candidateInverse.set(1, 0, 0, 0,
-                             0, 1, 0, 0,
-                             -2, 0, 1, 0,
-                             0, 0, 0, 1);
-
-        iHat.applyMatrix4(mat);
-        iHat.applyMatrix4(candidateInverse);
-        jHat.applyMatrix4(mat);
-        jHat.applyMatrix4(candidateInverse);
-        kHat.applyMatrix4(mat);
-        kHat.applyMatrix4(candidateInverse);
-
-        const cubeGeometry = new BoxGeometry(1, 1, 1);
-        cubeGeometry.translate(0.5, 0.5, 0.5);
-        cubeGeometry.applyMatrix(mat);
-        cubeGeometry.applyMatrix(candidateInverse);
-
-        return (
-          <div>
-            <Visualization width={320} height={240} rotation={state.rotation}>
-              <XAxis />
-              <YAxis />
-              <ZAxis />
-              <mesh>
-                <geometry
-                  vertices={cubeGeometry.vertices}
-                  faces={cubeGeometry.faces}
-                  colors={cubeGeometry.colors}
-                  faceVertexUvs={cubeGeometry.faceVertexUvs}
-                />
-                <meshBasicMaterial color={0xff00ff} opacity={0.8} />
-              </mesh>
-              <Vector position={iHat} color={0xffff00} />
-              <Vector position={jHat} color={0xff00ff} />
-              <Vector position={kHat} color={0x00ffff} />
-            </Visualization>
-          </div>
-        );
-      }}
+    <CubeVectorsAnimatedSuperERO
+      matrix={[[1, -1, 0], [-1, -1, 0], [0, 3, 2]]}
+      inverse={[[1, 0, 0], [0, 1, 0], [-2, 0, 1]]}
     />
     <p>
       Now subtract the second row from the first.
     </p>
-    <p>
-      <MathJaxMatrix inline matrix={[[2, 0, 0], [-1, -1, 0], [0, 3, 2]]} />
-      <MathJaxMatrix inline matrix={[[1, -1, 0], [0, 1, 0], [-2, 0, 1]]} />
-    </p>
-    <Animation
-      initial={{
-        time: 0,
-        rotation: new Euler(0.5, 0.5, 0),
-      }}
-      update={(state) => ({
-        time: state.time + 1,
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.004,
-                            state.rotation.z),
-      })}
-      render={(state) => {
-        const iHat = new Vector3(1, 0, 0);
-        const jHat = new Vector3(0, 1, 0);
-        const kHat = new Vector3(0, 0, 1);
-
-        const mat = new Matrix4();
-        mat.set(1, -1, 0, 0,
-                -1, -1, 0, 0,
-                2, 1, 2, 0,
-                0, 0, 0, 1);
-
-        const candidateInverse = new Matrix4();
-        candidateInverse.set(1, -1, 0, 0,
-                             0, 1, 0, 0,
-                             -2, 0, 1, 0,
-                             0, 0, 0, 1);
-
-        iHat.applyMatrix4(mat);
-        iHat.applyMatrix4(candidateInverse);
-        jHat.applyMatrix4(mat);
-        jHat.applyMatrix4(candidateInverse);
-        kHat.applyMatrix4(mat);
-        kHat.applyMatrix4(candidateInverse);
-
-        const cubeGeometry = new BoxGeometry(1, 1, 1);
-        cubeGeometry.translate(0.5, 0.5, 0.5);
-        cubeGeometry.applyMatrix(mat);
-        cubeGeometry.applyMatrix(candidateInverse);
-
-        return (
-          <div>
-            <Visualization width={320} height={240} rotation={state.rotation}>
-              <XAxis />
-              <YAxis />
-              <ZAxis />
-              <mesh>
-                <geometry
-                  vertices={cubeGeometry.vertices}
-                  faces={cubeGeometry.faces}
-                  colors={cubeGeometry.colors}
-                  faceVertexUvs={cubeGeometry.faceVertexUvs}
-                />
-                <meshBasicMaterial color={0xff00ff} opacity={0.8} />
-              </mesh>
-              <Vector position={iHat} color={0xffff00} />
-              <Vector position={jHat} color={0xff00ff} />
-              <Vector position={kHat} color={0x00ffff} />
-            </Visualization>
-          </div>
-        );
-      }}
+    <CubeVectorsAnimatedSuperERO
+      matrix={[[2, 0, 0], [-1, -1, 0], [0, 3, 2]]}
+      inverse={[[1, -1, 0], [0, 1, 0], [-2, 0, 1]]}
     />
     <p>
       Then add half of the first row to the second.
     </p>
-    <p>
-      <MathJaxMatrix inline matrix={[[2, 0, 0], [0, -1, 0], [0, 3, 2]]} />
-      <MathJaxMatrix inline matrix={[[1, -1, 0], ['1 \\over 2', '1 \\over 2', 0], [-2, 0, 1]]} />
-    </p>
-    <Animation
-      initial={{
-        time: 0,
-        rotation: new Euler(0.5, 0.5, 0),
-      }}
-      update={(state) => ({
-        time: state.time + 1,
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.004,
-                            state.rotation.z),
-      })}
-      render={(state) => {
-        const iHat = new Vector3(1, 0, 0);
-        const jHat = new Vector3(0, 1, 0);
-        const kHat = new Vector3(0, 0, 1);
-
-        const mat = new Matrix4();
-        mat.set(1, -1, 0, 0,
-                -1, -1, 0, 0,
-                2, 1, 2, 0,
-                0, 0, 0, 1);
-
-        const candidateInverse = new Matrix4();
-        candidateInverse.set(1, -1, 0, 0,
-                             0.5, 0.5, 0, 0,
-                             -2, 0, 1, 0,
-                             0, 0, 0, 1);
-
-        iHat.applyMatrix4(mat);
-        iHat.applyMatrix4(candidateInverse);
-        jHat.applyMatrix4(mat);
-        jHat.applyMatrix4(candidateInverse);
-        kHat.applyMatrix4(mat);
-        kHat.applyMatrix4(candidateInverse);
-
-        const cubeGeometry = new BoxGeometry(1, 1, 1);
-        cubeGeometry.translate(0.5, 0.5, 0.5);
-        cubeGeometry.applyMatrix(mat);
-        cubeGeometry.applyMatrix(candidateInverse);
-
-        return (
-          <div>
-            <Visualization width={320} height={240} rotation={state.rotation}>
-              <XAxis />
-              <YAxis />
-              <ZAxis />
-              <mesh>
-                <geometry
-                  vertices={cubeGeometry.vertices}
-                  faces={cubeGeometry.faces}
-                  colors={cubeGeometry.colors}
-                  faceVertexUvs={cubeGeometry.faceVertexUvs}
-                />
-                <meshBasicMaterial color={0xff00ff} opacity={0.8} />
-              </mesh>
-              <Vector position={iHat} color={0xffff00} />
-              <Vector position={jHat} color={0xff00ff} />
-              <Vector position={kHat} color={0x00ffff} />
-            </Visualization>
-          </div>
-        );
-      }}
+    <CubeVectorsAnimatedSuperERO
+      matrix={[[2, 0, 0], [0, -1, 0], [0, 3, 2]]}
+      inverse={[[1, -1, 0], [0.5, 0.5, 0], [-2, 0, 1]]}
     />
     <p>
       Add three times the second row to the third
     </p>
-    <p>
-      <MathJaxMatrix inline matrix={[[2, 0, 0], [0, -1, 0], [0, 0, 2]]} />
-      <MathJaxMatrix inline matrix={[[1, -1, 0], ['1 \\over 2', '1 \\over 2', 0], ['-1 \\over 2', '3 \\over 2', 1]]} />
-    </p>
-    <Animation
-      initial={{
-        time: 0,
-        rotation: new Euler(0.5, 0.5, 0),
-      }}
-      update={(state) => ({
-        time: state.time + 1,
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.004,
-                            state.rotation.z),
-      })}
-      render={(state) => {
-        const iHat = new Vector3(1, 0, 0);
-        const jHat = new Vector3(0, 1, 0);
-        const kHat = new Vector3(0, 0, 1);
-
-        const mat = new Matrix4();
-        mat.set(1, -1, 0, 0,
-                -1, -1, 0, 0,
-                2, 1, 2, 0,
-                0, 0, 0, 1);
-
-        const candidateInverse = new Matrix4();
-        candidateInverse.set(1, -1, 0, 0,
-                             0.5, 0.5, 0, 0,
-                             -0.5, 1.5, 1, 0,
-                             0, 0, 0, 1);
-
-        iHat.applyMatrix4(mat);
-        iHat.applyMatrix4(candidateInverse);
-        jHat.applyMatrix4(mat);
-        jHat.applyMatrix4(candidateInverse);
-        kHat.applyMatrix4(mat);
-        kHat.applyMatrix4(candidateInverse);
-
-        const cubeGeometry = new BoxGeometry(1, 1, 1);
-        cubeGeometry.translate(0.5, 0.5, 0.5);
-        cubeGeometry.applyMatrix(mat);
-        cubeGeometry.applyMatrix(candidateInverse);
-
-        return (
-          <div>
-            <Visualization width={320} height={240} rotation={state.rotation}>
-              <XAxis />
-              <YAxis />
-              <ZAxis />
-              <mesh>
-                <geometry
-                  vertices={cubeGeometry.vertices}
-                  faces={cubeGeometry.faces}
-                  colors={cubeGeometry.colors}
-                  faceVertexUvs={cubeGeometry.faceVertexUvs}
-                />
-                <meshBasicMaterial color={0xff00ff} opacity={0.8} />
-              </mesh>
-              <Vector position={iHat} color={0xffff00} />
-              <Vector position={jHat} color={0xff00ff} />
-              <Vector position={kHat} color={0x00ffff} />
-            </Visualization>
-          </div>
-        );
-      }}
+    <CubeVectorsAnimatedSuperERO
+      matrix={[[2, 0, 0], [0, -1, 0], [0, 0, 2]]}
+      inverse={[[1, -1, 0], [0.5, 0.5, 0], [0.5, 1.5, 1]]}
     />
     <p>
       Clean up the matrix by multipying the first
       row by <MathJax.Node inline>1 \over 2</MathJax.Node>, the second row by -1 and
       the third row by <MathJax.Node inline>1 \over 2</MathJax.Node>.
     </p>
-    <p>
-      <MathJaxMatrix inline matrix={[[1, 0, 0], [0, 1, 0], [0, 0, 1]]} />
-      <MathJaxMatrix
-        inline
-        matrix={[['1 \\over 2', '-1 \\over 2', 0],
-                ['-1 \\over 2', '-1 \\over 2', 0],
-                ['-1 \\over 4', '3 \\over 4', '1 \\over 2']]}
-      />
-    </p>
-    <Animation
-      initial={{
-        time: 0,
-        rotation: new Euler(0.5, 0.5, 0),
-      }}
-      update={(state) => ({
-        time: state.time + 1,
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.004,
-                            state.rotation.z),
-      })}
-      render={(state) => {
-        const iHat = new Vector3(1, 0, 0);
-        const jHat = new Vector3(0, 1, 0);
-        const kHat = new Vector3(0, 0, 1);
-
-        const mat = new Matrix4();
-        mat.set(1, -1, 0, 0,
-                -1, -1, 0, 0,
-                2, 1, 2, 0,
-                0, 0, 0, 1);
-
-        const candidateInverse = new Matrix4();
-        candidateInverse.set(0.5, -0.5, 0, 0,
-                             -0.5, -0.5, 0, 0,
-                             -0.25, 0.75, 0.5, 0,
-                             0, 0, 0, 1);
-
-        iHat.applyMatrix4(mat);
-        iHat.applyMatrix4(candidateInverse);
-        jHat.applyMatrix4(mat);
-        jHat.applyMatrix4(candidateInverse);
-        kHat.applyMatrix4(mat);
-        kHat.applyMatrix4(candidateInverse);
-
-        const cubeGeometry = new BoxGeometry(1, 1, 1);
-        cubeGeometry.translate(0.5, 0.5, 0.5);
-        cubeGeometry.applyMatrix(mat);
-        cubeGeometry.applyMatrix(candidateInverse);
-
-        return (
-          <div>
-            <Visualization width={320} height={240} rotation={state.rotation}>
-              <XAxis />
-              <YAxis />
-              <ZAxis />
-              <mesh>
-                <geometry
-                  vertices={cubeGeometry.vertices}
-                  faces={cubeGeometry.faces}
-                  colors={cubeGeometry.colors}
-                  faceVertexUvs={cubeGeometry.faceVertexUvs}
-                />
-                <meshBasicMaterial color={0xff00ff} opacity={0.8} />
-              </mesh>
-              <Vector position={iHat} color={0xffff00} />
-              <Vector position={jHat} color={0xff00ff} />
-              <Vector position={kHat} color={0x00ffff} />
-            </Visualization>
-          </div>
-        );
-      }}
+    <CubeVectorsAnimatedSuperERO
+      matrix={[[1, 0, 0], [0, 1, 0], [0, 0, 1]]}
+      inverse={[[0.5, -0.5, 0], [-0.5, -0.5, 0], [-0.25, 0.75, 0.5]]}
     />
     <p>
       And with that, we have found the inverse
