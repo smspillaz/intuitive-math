@@ -8,7 +8,7 @@ import React from 'react';
 
 import PropTypes from 'prop-types';
 
-import { PlaneGeometry } from 'three';
+import { PlaneGeometry, DoubleSide } from 'three';
 
 const SpanningPlane2D = ({ matrix }) => {
   const planeGeometry = new PlaneGeometry(1, 1);
@@ -23,7 +23,7 @@ const SpanningPlane2D = ({ matrix }) => {
         colors={planeGeometry.colors}
         faceVertexUvs={planeGeometry.faceVertexUvs}
       />
-      <meshBasicMaterial color={0xff00ff} opacity={0.8} />
+      <meshBasicMaterial color={0xff00ff} opacity={0.8} side={DoubleSide} />
     </mesh>
   );
 };
