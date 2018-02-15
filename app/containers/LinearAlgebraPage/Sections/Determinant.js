@@ -13,13 +13,13 @@ import MathJax from 'react-mathjax';
 import { BoxGeometry, Euler, Matrix4, PlaneGeometry, Vector3 } from 'three';
 
 import { XAxis, YAxis, ZAxis } from 'components/Axis';
-import Animation from 'components/Animation';
 import AxisVisualization2D from 'components/AxisVisualization2D';
+import AxisVisualization3D from 'components/AxisVisualization3D';
 import InterpolatedAnimation from 'components/InterpolatedAnimation';
 import MathJaxMatrix from 'components/MathJaxMatrix';
-import Plane from 'components/Plane';
 import Section from 'components/Section';
 import Strong from 'components/Strong';
+import TriplePlanes from 'components/TriplePlanes';
 import Tweakable from 'components/Tweakable';
 import Vector from 'components/Vector';
 import Visualization from 'components/Visualization';
@@ -46,6 +46,101 @@ const SpanningPlane2D = ({ matrix }) => {
 
 SpanningPlane2D.propTypes = {
   matrix: PropTypes.object.isRequired,
+};
+
+const CubeVectors3D = ({ matrix, opacity = 0.8, wireframe = false }) => {
+  const iHat = new Vector3(1, 0, 0);
+  const jHat = new Vector3(0, 1, 0);
+  const kHat = new Vector3(0, 0, 1);
+
+  const cubeGeometry = new BoxGeometry(1, 1, 1);
+  cubeGeometry.translate(0.5, 0.5, 0.5);
+  cubeGeometry.applyMatrix(matrix);
+
+  iHat.applyMatrix4(matrix);
+  jHat.applyMatrix4(matrix);
+  kHat.applyMatrix4(matrix);
+
+  return (
+    <group>
+      <mesh>
+        <geometry
+          vertices={cubeGeometry.vertices}
+          faces={cubeGeometry.faces}
+          colors={cubeGeometry.colors}
+          faceVertexUvs={cubeGeometry.faceVertexUvs}
+        />
+        <meshBasicMaterial
+          color={0xff00ff}
+          opacity={opacity}
+          wireframe={wireframe}
+        />
+      </mesh>
+      <Vector position={iHat} color={0xffff00} />
+      <Vector position={jHat} color={0xff00ff} />
+      <Vector position={kHat} color={0x00ffff} />
+    </group>
+  );
+};
+
+CubeVectors3D.propTypes = {
+  opacity: PropTypes.number,
+  matrix: PropTypes.object.isRequired,
+  wireframe: PropTypes.bool,
+};
+
+const CubeVectorsAnimatedERO = ({ matrix }) => (
+  <div>
+    <MathJaxMatrix matrix={matrix} />
+    <InterpolatedAnimation
+      values={{
+        xScale: { begin: 1, end: matrix[0][0] },
+        xyShear: { begin: 0, end: matrix[0][1] },
+        xzShear: { begin: 0, end: matrix[0][2] },
+        yxShear: { begin: 0, end: matrix[1][0] },
+        yScale: { begin: 1, end: matrix[1][1] },
+        yzShear: { begin: 0, end: matrix[1][2] },
+        zxShear: { begin: 0, end: matrix[2][0] },
+        zyShear: { begin: 0, end: matrix[2][1] },
+        zScale: { begin: 1, end: matrix[2][2] },
+      }}
+      render={({
+        xScale,
+        xyShear,
+        xzShear,
+        yxShear,
+        yScale,
+        yzShear,
+        zxShear,
+        zyShear,
+        zScale,
+      }) => {
+        const mat = new Matrix4();
+        mat.set(xScale.value, xyShear.value, xzShear.value, 0,
+                yxShear.value, yScale.value, yzShear.value, 0,
+                zxShear.value, zyShear.value, zScale.value, 0,
+                0, 0, 0, 1);
+
+        return (
+          <div>
+            <AxisVisualization3D
+              render={() => (
+                <CubeVectors3D matrix={mat} />
+              )}
+            />
+          </div>
+        );
+      }}
+    />
+  </div>
+);
+
+CubeVectorsAnimatedERO.propTypes = {
+  matrix: PropTypes.arrayOf(
+    PropTypes.arrayOf(
+      PropTypes.number.isRequired
+    ).isRequired
+  ).isRequired,
 };
 
 const DeterminantSection = () => (
@@ -383,25 +478,11 @@ const DeterminantSection = () => (
       one along <MathJax.Node inline>xz</MathJax.Node> at <MathJax.Node inline>y = 0</MathJax.Node>{' '}
       and one along <MathJax.Node inline>xy</MathJax.Node> at <MathJax.Node inline>z = 0</MathJax.Node>.
     </p>
-    <Animation
-      initial={{
-        rotation: new Euler(0.5, 0.5, 0),
-      }}
-      update={(state) => ({
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.004,
-                            state.rotation.z),
-      })}
-      render={(state) => (
-        <Visualization width={320} height={240} rotation={state.rotation}>
-          <XAxis />
-          <YAxis />
-          <ZAxis />
-          <Plane extents={[0, 1]} a={1} b={0} c={0} d={0} color={0xffff00} transparent opacity={0.8} />
-          <Plane extents={[0, 1]} a={0} b={1} c={0} d={0} color={0xff00ff} transparent opacity={0.8} />
-          <Plane extents={[0, 1]} a={0} b={0} c={1} d={0} color={0x00ffff} transparent opacity={0.8} />
-        </Visualization>
-      )}
+    <TriplePlanes
+      first={[1, 0, 0, 0]}
+      second={[0, 1, 0, 0]}
+      third={[0, 0, 1, 0]}
+      extents={[0, 1]}
     />
     <p>
       Do you notice something that seems off about this visualization though? The plane along the
@@ -430,54 +511,28 @@ const DeterminantSection = () => (
       that the volume of the <MathJax.Node inline>y</MathJax.Node> and <MathJax.Node inline>z</MathJax.Node>{' '}
       volumes is zero.
     </p>
-    <Animation
-      initial={{
-        time: 0,
-        rotation: new Euler(0.5, 0.5, 0),
+    <InterpolatedAnimation
+      values={{
+        xScale: { begin: 1, end: 2 },
       }}
-      update={(state) => ({
-        time: state.time + 1,
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.004,
-                            state.rotation.z),
-      })}
-      render={(state) => {
-        const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
-        const iHat = new Vector3(1 + lerp, 0, 0);
-        const jHat = new Vector3(0, 1, 0);
-        const kHat = new Vector3(0, 0, 1);
-
+      render={({ xScale }) => {
         const mat = new Matrix4();
-        mat.set(1 + lerp, 0, 0, 0,
+        mat.set(xScale.value, 0, 0, 0,
                 0, 1, 0, 0,
                 0, 0, 1, 0,
                 0, 0, 0, 1);
 
-        const cubeGeometry = new BoxGeometry(1, 1, 1);
-        cubeGeometry.translate(0.5, 0.5, 0.5);
-        cubeGeometry.applyMatrix(mat);
-
         return (
           <div>
-            <Visualization width={320} height={240} rotation={state.rotation}>
-              <XAxis />
-              <YAxis />
-              <ZAxis />
-              <mesh>
-                <geometry
-                  vertices={cubeGeometry.vertices}
-                  faces={cubeGeometry.faces}
-                  colors={cubeGeometry.colors}
-                  faceVertexUvs={cubeGeometry.faceVertexUvs}
-                />
-                <meshBasicMaterial color={0xff00ff} opacity={0.8} />
-              </mesh>
-              <Vector position={iHat} color={0xffff00} />
-              <Vector position={jHat} color={0xff00ff} />
-              <Vector position={kHat} color={0x00ffff} />
-            </Visualization>
+            <AxisVisualization3D
+              render={() => (
+                <CubeVectors3D matrix={mat} />
+              )}
+            />
             <p>
-              <MathJax.Node inline>x = </MathJax.Node>{truncate(1 + lerp, 2).toFixed(2)},{' '}
+              <Tweakable {...xScale}>
+                <MathJax.Node inline>x = </MathJax.Node>
+              </Tweakable>
               <MathJax.Node inline>\det yz = 1</MathJax.Node>,{' '}
               <MathJax.Node inline>\rightarrow 1</MathJax.Node>
             </p>
@@ -502,55 +557,27 @@ const DeterminantSection = () => (
       and so the volume will increase, even though
       the <MathJax.Node inline>x</MathJax.Node> scale factor never increases.
     </p>
-    <Animation
-      initial={{
-        time: 0,
-        rotation: new Euler(0.5, 0.5, 0),
+    <InterpolatedAnimation
+      values={{
+        yScale: { begin: 1, end: 2 },
       }}
-      update={(state) => ({
-        time: state.time + 1,
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.004,
-                            state.rotation.z),
-      })}
-      render={(state) => {
-        const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
-        const iHat = new Vector3(1, 0, 0);
-        const jHat = new Vector3(0, 1 + lerp, 0);
-        const kHat = new Vector3(0, 0, 1);
-
+      render={({ yScale }) => {
         const mat = new Matrix4();
         mat.set(1, 0, 0, 0,
-                0, 1 + lerp, 0, 0,
+                0, yScale.value, 0, 0,
                 0, 0, 1, 0,
                 0, 0, 0, 1);
 
-        const cubeGeometry = new BoxGeometry(1, 1, 1);
-        cubeGeometry.translate(0.5, 0.5, 0.5);
-        cubeGeometry.applyMatrix(mat);
-
         return (
           <div>
-            <Visualization width={320} height={240} rotation={state.rotation}>
-              <XAxis />
-              <YAxis />
-              <ZAxis />
-              <mesh>
-                <geometry
-                  vertices={cubeGeometry.vertices}
-                  faces={cubeGeometry.faces}
-                  colors={cubeGeometry.colors}
-                  faceVertexUvs={cubeGeometry.faceVertexUvs}
-                />
-                <meshBasicMaterial color={0xff00ff} opacity={0.8} />
-              </mesh>
-              <Vector position={iHat} color={0xffff00} />
-              <Vector position={jHat} color={0xff00ff} />
-              <Vector position={kHat} color={0x00ffff} />
-            </Visualization>
+            <AxisVisualization3D
+              render={() => (
+                <CubeVectors3D matrix={mat} />
+              )}
+            />
             <p>
               <MathJax.Node inline>x = 1</MathJax.Node>,{' '}
-              <MathJax.Node inline>\det yz = </MathJax.Node>{truncate((1 + lerp) * 1, 2).toFixed(2)},{' '}
+              <MathJax.Node inline>\det yz = </MathJax.Node>{yScale.value.toFixed(2)},{' '}
               <MathJax.Node inline>\rightarrow 1</MathJax.Node>
             </p>
             <p>
@@ -571,59 +598,31 @@ const DeterminantSection = () => (
       Okay, lets step up the complexity a little. What happens if we shear along the{' '}
       <MathJax.Node inline>xz</MathJax.Node> plane?
     </p>
-    <Animation
-      initial={{
-        time: 0,
-        rotation: new Euler(0.5, 0.5, 0),
+    <InterpolatedAnimation
+      values={{
+        xyShear: { begin: 0, end: 1 },
       }}
-      update={(state) => ({
-        time: state.time + 1,
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.004,
-                            state.rotation.z),
-      })}
-      render={(state) => {
-        const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
-        const iHat = new Vector3(1, 0, 0);
-        const jHat = new Vector3(lerp, 1, 0);
-        const kHat = new Vector3(0, 0, 1);
-
+      render={({ xyShear }) => {
         const mat = new Matrix4();
-        mat.set(1, lerp, 0, 0,
+        mat.set(1, xyShear.value, 0, 0,
                 0, 1, 0, 0,
                 0, 0, 1, 0,
                 0, 0, 0, 1);
 
-        const cubeGeometry = new BoxGeometry(1, 1, 1);
-        cubeGeometry.translate(0.5, 0.5, 0.5);
-        cubeGeometry.applyMatrix(mat);
-
         return (
           <div>
-            <Visualization width={320} height={240} rotation={state.rotation}>
-              <XAxis />
-              <YAxis />
-              <ZAxis />
-              <mesh>
-                <geometry
-                  vertices={cubeGeometry.vertices}
-                  faces={cubeGeometry.faces}
-                  colors={cubeGeometry.colors}
-                  faceVertexUvs={cubeGeometry.faceVertexUvs}
-                />
-                <meshBasicMaterial color={0xff00ff} opacity={0.8} />
-              </mesh>
-              <Vector position={iHat} color={0xffff00} />
-              <Vector position={jHat} color={0xff00ff} />
-              <Vector position={kHat} color={0x00ffff} />
-            </Visualization>
+            <AxisVisualization3D
+              render={() => (
+                <CubeVectors3D matrix={mat} />
+              )}
+            />
             <p>
               <MathJax.Node inline>x = 1</MathJax.Node>,{' '}
               <MathJax.Node inline>\det yz = 1</MathJax.Node>,{' '}
               <MathJax.Node inline>\rightarrow 1</MathJax.Node>
             </p>
             <p>
-              <MathJax.Node inline>y = </MathJax.Node>{truncate(lerp * 1, 2).toFixed(2)},{' '}
+              <MathJax.Node inline>y = 0</MathJax.Node>,{' '}
               <MathJax.Node inline>\det xz = 0</MathJax.Node>,{' '}
               <MathJax.Node inline>\rightarrow 0</MathJax.Node>
             </p>
@@ -642,78 +641,40 @@ const DeterminantSection = () => (
       away an equivalent amount of volume on each side. That can be
       visualized below.
     </p>
-    <Animation
-      initial={{
-        time: 0,
-        rotation: new Euler(0.5, 0.5, 0),
+    <InterpolatedAnimation
+      values={{
+        xyShear: { begin: 0, end: 1 },
       }}
-      update={(state) => ({
-        time: state.time + 1,
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.004,
-                            state.rotation.z),
-      })}
-      render={(state) => {
-        const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
-        const iHat = new Vector3(1, 0, 0);
-        const jHat = new Vector3(lerp, 1, 0);
-        const kHat = new Vector3(0, 0, 1);
-
+      render={({ xyShear }) => {
         const mat = new Matrix4();
-        mat.set(1, lerp, 0, 0,
+        mat.set(1, xyShear.value, 0, 0,
                 0, 1, 0, 0,
                 0, 0, 1, 0,
                 0, 0, 0, 1);
 
-        const cubeGeometry = new BoxGeometry(1, 1, 1);
-        cubeGeometry.translate(0.5, 0.5, 0.5);
-        cubeGeometry.applyMatrix(mat);
-
         const negativeMat = new Matrix4();
         negativeMat.set(1, 0, 0, 0,
-                        0, lerp, 0, 0,
+                        0, xyShear.value, 0, 0,
                         0, 0, 1, 0,
                         0, 0, 0, 1);
 
-        const negativeCubeGeometry = new BoxGeometry(1, 1, 1);
-        negativeCubeGeometry.translate(0.5, 0.5, 0.5);
-        negativeCubeGeometry.applyMatrix(negativeMat);
-
         return (
           <div>
-            <Visualization width={320} height={240} rotation={state.rotation}>
-              <XAxis />
-              <YAxis />
-              <ZAxis />
-              <mesh>
-                <geometry
-                  vertices={cubeGeometry.vertices}
-                  faces={cubeGeometry.faces}
-                  colors={cubeGeometry.colors}
-                  faceVertexUvs={cubeGeometry.faceVertexUvs}
-                />
-                <meshBasicMaterial color={0xff00ff} opacity={0.8} transparent />
-              </mesh>
-              <mesh>
-                <geometry
-                  vertices={negativeCubeGeometry.vertices}
-                  faces={negativeCubeGeometry.faces}
-                  colors={negativeCubeGeometry.colors}
-                  faceVertexUvs={negativeCubeGeometry.faceVertexUvs}
-                />
-                <meshBasicMaterial color={0xffff00} opacity={0.8} transparent wireframe />
-              </mesh>
-              <Vector position={iHat} color={0xffff00} />
-              <Vector position={jHat} color={0xff00ff} />
-              <Vector position={kHat} color={0x00ffff} />
-            </Visualization>
+            <AxisVisualization3D
+              render={() => (
+                <group>
+                  <CubeVectors3D matrix={mat} />
+                  <CubeVectors3D matrix={negativeMat} wireframe />
+                </group>
+              )}
+            />
             <p>
               <MathJax.Node inline>x = 1</MathJax.Node>,{' '}
               <MathJax.Node inline>\det yz = 1</MathJax.Node>,{' '}
               <MathJax.Node inline>\rightarrow 1</MathJax.Node>
             </p>
             <p>
-              <MathJax.Node inline>y = </MathJax.Node>{truncate(lerp * 1, 2).toFixed(2)},{' '}
+              <MathJax.Node inline>y = </MathJax.Node>{xyShear.value.toFixed()},{' '}
               <MathJax.Node inline>\det xz = 0</MathJax.Node>,{' '}
               <MathJax.Node inline>\rightarrow 0</MathJax.Node>
             </p>
@@ -732,61 +693,38 @@ const DeterminantSection = () => (
       to collapse into something that looks an awful lot like a plane. Can you see why? Look
       at what happens to the basis vectors.
     </p>
-    <Animation
-      initial={{
-        time: 0,
-        rotation: new Euler(0.5, 0.5, 0),
+    <InterpolatedAnimation
+      values={{
+        xyShear: { begin: 0, end: 1 },
+        yxShear: { begin: 0, end: 1 },
       }}
-      update={(state) => ({
-        time: state.time + 1,
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.004,
-                            state.rotation.z),
-      })}
-      render={(state) => {
-        const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
-        const iHat = new Vector3(1, lerp, 0);
-        const jHat = new Vector3(lerp, 1, 0);
-        const kHat = new Vector3(0, 0, 1);
-
+      render={({ xyShear, yxShear }) => {
         const mat = new Matrix4();
-        mat.set(1, lerp, 0, 0,
-                lerp, 1, 0, 0,
+        mat.set(1, xyShear.value, 0, 0,
+                yxShear.value, 1, 0, 0,
                 0, 0, 1, 0,
                 0, 0, 0, 1);
 
-        const cubeGeometry = new BoxGeometry(1, 1, 1);
-        cubeGeometry.translate(0.5, 0.5, 0.5);
-        cubeGeometry.applyMatrix(mat);
-
         return (
           <div>
-            <Visualization width={320} height={240} rotation={state.rotation}>
-              <XAxis />
-              <YAxis />
-              <ZAxis />
-              <mesh>
-                <geometry
-                  vertices={cubeGeometry.vertices}
-                  faces={cubeGeometry.faces}
-                  colors={cubeGeometry.colors}
-                  faceVertexUvs={cubeGeometry.faceVertexUvs}
-                />
-                <meshBasicMaterial color={0xff00ff} opacity={0.8} transparent wireframe />
-              </mesh>
-              <Vector position={iHat} color={0xffff00} />
-              <Vector position={jHat} color={0xff00ff} />
-              <Vector position={kHat} color={0x00ffff} />
-            </Visualization>
+            <AxisVisualization3D
+              render={() => (
+                <group>
+                  <CubeVectors3D matrix={mat} wireframe />
+                </group>
+              )}
+            />
             <p>
               <MathJax.Node inline>x = 1</MathJax.Node>,{' '}
               <MathJax.Node inline>\det yz = 1</MathJax.Node>,{' '}
               <MathJax.Node inline>\rightarrow 1</MathJax.Node>
             </p>
             <p>
-              <MathJax.Node inline>y = </MathJax.Node>{truncate(lerp * 1, 2).toFixed(2)},{' '}
-              <MathJax.Node inline>\det xz = </MathJax.Node>{truncate(lerp * 1, 2).toFixed(2)},{' '}
-              <MathJax.Node inline>\rightarrow </MathJax.Node>{truncate(lerp * lerp, 2).toFixed(2)}
+              <Tweakable {...yxShear}>
+                <MathJax.Node inline>y = </MathJax.Node>
+              </Tweakable>{', '}
+              <MathJax.Node inline>\det xz = </MathJax.Node>{xyShear.value.toFixed(2)},{' '}
+              <MathJax.Node inline>\rightarrow </MathJax.Node>{(xyShear.value * yxShear.value).toFixed(2)}
             </p>
             <p>
               <MathJax.Node inline>z = 0</MathJax.Node>,{' '}
@@ -801,65 +739,43 @@ const DeterminantSection = () => (
       We are not done yet however. What happens if you add some shear on the{' '}
       <MathJax.Node inline>xz</MathJax.Node> plane?
     </p>
-    <Animation
-      initial={{
-        time: 0,
-        rotation: new Euler(0.5, 0.5, 0),
+    <InterpolatedAnimation
+      values={{
+        xyShear: { begin: 0, end: 1 },
+        yxShear: { begin: 0, end: 1 },
+        zxShear: { begin: 0, end: 1 },
       }}
-      update={(state) => ({
-        time: state.time + 1,
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.004,
-                            state.rotation.z),
-      })}
-      render={(state) => {
-        const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
-        const iHat = new Vector3(1, lerp, lerp);
-        const jHat = new Vector3(lerp, 1, 0);
-        const kHat = new Vector3(0, 0, 1);
-
+      render={({ xyShear, yxShear, zxShear }) => {
         const mat = new Matrix4();
-        mat.set(1, lerp, 0, 0,
-                lerp, 1, 0, 0,
-                lerp, 0, 1, 0,
+        mat.set(1, xyShear.value, 0, 0,
+                yxShear.value, 1, 0, 0,
+                zxShear.value, 0, 1, 0,
                 0, 0, 0, 1);
-
-        const cubeGeometry = new BoxGeometry(1, 1, 1);
-        cubeGeometry.translate(0.5, 0.5, 0.5);
-        cubeGeometry.applyMatrix(mat);
 
         return (
           <div>
-            <Visualization width={320} height={240} rotation={state.rotation}>
-              <XAxis />
-              <YAxis />
-              <ZAxis />
-              <mesh>
-                <geometry
-                  vertices={cubeGeometry.vertices}
-                  faces={cubeGeometry.faces}
-                  colors={cubeGeometry.colors}
-                  faceVertexUvs={cubeGeometry.faceVertexUvs}
-                />
-                <meshBasicMaterial color={0xff00ff} opacity={0.8} transparent wireframe />
-              </mesh>
-              <Vector position={iHat} color={0xffff00} />
-              <Vector position={jHat} color={0xff00ff} />
-              <Vector position={kHat} color={0x00ffff} />
-            </Visualization>
+            <AxisVisualization3D
+              render={() => (
+                <group>
+                  <CubeVectors3D matrix={mat} wireframe />
+                </group>
+              )}
+            />
             <p>
               <MathJax.Node inline>x = 1</MathJax.Node>,{' '}
               <MathJax.Node inline>\det yz = 1</MathJax.Node>,{' '}
               <MathJax.Node inline>\rightarrow 1</MathJax.Node>
             </p>
             <p>
-              <MathJax.Node inline>y = </MathJax.Node>{truncate(lerp * 1, 2).toFixed(2)},{' '}
-              <MathJax.Node inline>\det xz =</MathJax.Node>{truncate(lerp * 1, 2).toFixed(2)},{' '}
-              <MathJax.Node inline>\rightarrow</MathJax.Node>{truncate(lerp * lerp, 2).toFixed(2)}
+              <Tweakable {...yxShear}>
+                <MathJax.Node inline>y = </MathJax.Node>
+              </Tweakable>{', '}
+              <MathJax.Node inline>\det xz = </MathJax.Node>{xyShear.value.toFixed(2)},{' '}
+              <MathJax.Node inline>\rightarrow </MathJax.Node>{(xyShear.value * yxShear.value).toFixed(2)}
             </p>
             <p>
               <MathJax.Node inline>z = 0</MathJax.Node>,{' '}
-              <MathJax.Node inline>\det xy = </MathJax.Node>{truncate(-lerp, 2).toFixed(2)},{' '}
+              <MathJax.Node inline>\det xy = </MathJax.Node>{-zxShear.value.toFixed(2)},{' '}
               <MathJax.Node inline>\rightarrow 0</MathJax.Node>
             </p>
           </div>
@@ -874,66 +790,47 @@ const DeterminantSection = () => (
     <p>
       This time, we shall add some additional shear on the <MathJax.Node inline>zx</MathJax.Node> plane.
     </p>
-    <Animation
-      initial={{
-        time: 0,
-        rotation: new Euler(0.5, 0.5, 0),
+    <InterpolatedAnimation
+      values={{
+        xyShear: { begin: 0, end: 1 },
+        yxShear: { begin: 0, end: 1 },
+        zxShear: { begin: 0, end: 1 },
+        xzShear: { begin: 0, end: 1 },
       }}
-      update={(state) => ({
-        time: state.time + 1,
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.004,
-                            state.rotation.z),
-      })}
-      render={(state) => {
-        const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
-        const iHat = new Vector3(1, lerp, lerp);
-        const jHat = new Vector3(lerp, 1, 0);
-        const kHat = new Vector3(lerp, 0, 1);
-
+      render={({ xyShear, yxShear, zxShear, xzShear }) => {
         const mat = new Matrix4();
-        mat.set(1, lerp, lerp, 0,
-                lerp, 1, 0, 0,
-                lerp, 0, 1, 0,
+        mat.set(1, xyShear.value, xzShear.value, 0,
+                yxShear.value, 1, 0, 0,
+                zxShear.value, 0, 1, 0,
                 0, 0, 0, 1);
-
-        const cubeGeometry = new BoxGeometry(1, 1, 1);
-        cubeGeometry.translate(0.5, 0.5, 0.5);
-        cubeGeometry.applyMatrix(mat);
 
         return (
           <div>
-            <Visualization width={320} height={240} rotation={state.rotation}>
-              <XAxis />
-              <YAxis />
-              <ZAxis />
-              <mesh>
-                <geometry
-                  vertices={cubeGeometry.vertices}
-                  faces={cubeGeometry.faces}
-                  colors={cubeGeometry.colors}
-                  faceVertexUvs={cubeGeometry.faceVertexUvs}
-                />
-                <meshBasicMaterial color={0xff00ff} opacity={0.8} transparent wireframe />
-              </mesh>
-              <Vector position={iHat} color={0xffff00} />
-              <Vector position={jHat} color={0xff00ff} />
-              <Vector position={kHat} color={0x00ffff} />
-            </Visualization>
+            <AxisVisualization3D
+              render={() => (
+                <group>
+                  <CubeVectors3D matrix={mat} wireframe />
+                </group>
+              )}
+            />
             <p>
               <MathJax.Node inline>x = 1</MathJax.Node>,{' '}
               <MathJax.Node inline>\det yz = 1</MathJax.Node>,{' '}
               <MathJax.Node inline>\rightarrow 1</MathJax.Node>
             </p>
             <p>
-              <MathJax.Node inline>y = </MathJax.Node>{truncate(lerp * 1, 2).toFixed(2)},{' '}
-              <MathJax.Node inline>\det xz = </MathJax.Node>{truncate(lerp * 1, 2).toFixed(2)},{' '}
-              <MathJax.Node inline>\rightarrow </MathJax.Node>{truncate(lerp * lerp, 2).toFixed(2)}
+              <Tweakable {...yxShear}>
+                <MathJax.Node inline>y = </MathJax.Node>
+              </Tweakable>{', '}
+              <MathJax.Node inline>\det xz = </MathJax.Node>{xyShear.value.toFixed(2)},{' '}
+              <MathJax.Node inline>\rightarrow </MathJax.Node>{(xyShear.value * yxShear.value).toFixed(2)}
             </p>
             <p>
-              <MathJax.Node inline>z = </MathJax.Node>{truncate(lerp, 2).toFixed(2)},{' '}
-              <MathJax.Node inline>\det xy = </MathJax.Node>{truncate(-lerp, 2).toFixed(2)},{' '}
-              <MathJax.Node inline>\rightarrow </MathJax.Node>{truncate(-lerp * lerp, 2).toFixed(2)}
+              <Tweakable {...xzShear}>
+                <MathJax.Node inline>z = </MathJax.Node>
+              </Tweakable>{', '}
+              <MathJax.Node inline>\det xy = </MathJax.Node>{-zxShear.value.toFixed(2)},{' '}
+              <MathJax.Node inline>\rightarrow 0</MathJax.Node>
             </p>
           </div>
         );
@@ -1024,52 +921,29 @@ const DeterminantSection = () => (
       space over on itself, which means that the determinant will negate. So we need to keep track
       of how many times we negate the determinant so that we can undo it later.
     </p>
-    <Animation
-      initial={{
-        time: 0,
-        rotation: new Euler(0.5, 0.5, 0),
+    <InterpolatedAnimation
+      values={{
+        xyShear: { begin: 0, end: 1 },
+        yxShear: { begin: 0, end: 1 },
+        xScale: { begin: 1, end: 0 },
+        yScale: { begin: 1, end: 0 },
       }}
-      update={(state) => ({
-        time: state.time + 1,
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.004,
-                            state.rotation.z),
-      })}
-      render={(state) => {
-        const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
-        const iHat = new Vector3(1 - lerp, lerp, 0);
-        const jHat = new Vector3(lerp, 1 - lerp, 0);
-        const kHat = new Vector3(0, 0, 1);
-
+      render={({ xyShear, yxShear, xScale, yScale }) => {
         const mat = new Matrix4();
-        mat.set(1 - lerp, lerp, 0, 0,
-                lerp, 1 - lerp, 0, 0,
+        mat.set(xScale.value, xyShear.value, 0, 0,
+                yxShear.value, yScale.value, 0, 0,
                 0, 0, 1, 0,
                 0, 0, 0, 1);
 
-        const cubeGeometry = new BoxGeometry(1, 1, 1);
-        cubeGeometry.translate(0.5, 0.5, 0.5);
-        cubeGeometry.applyMatrix(mat);
-
         return (
           <div>
-            <Visualization width={320} height={240} rotation={state.rotation}>
-              <XAxis />
-              <YAxis />
-              <ZAxis />
-              <mesh>
-                <geometry
-                  vertices={cubeGeometry.vertices}
-                  faces={cubeGeometry.faces}
-                  colors={cubeGeometry.colors}
-                  faceVertexUvs={cubeGeometry.faceVertexUvs}
-                />
-                <meshBasicMaterial color={0xff00ff} opacity={0.8} />
-              </mesh>
-              <Vector position={iHat} color={0xffff00} />
-              <Vector position={jHat} color={0xff00ff} />
-              <Vector position={kHat} color={0x00ffff} />
-            </Visualization>
+            <AxisVisualization3D
+              render={() => (
+                <group>
+                  <CubeVectors3D matrix={mat} />
+                </group>
+              )}
+            />
           </div>
         );
       }}
@@ -1080,52 +954,26 @@ const DeterminantSection = () => (
       of that scalar for later, since that is one factor by which the row-reduced determinant
       would have been scaled.
     </p>
-    <Animation
-      initial={{
-        time: 0,
-        rotation: new Euler(0.5, 0.5, 0),
+    <InterpolatedAnimation
+      values={{
+        xScale: { begin: 1, end: 2 },
       }}
-      update={(state) => ({
-        time: state.time + 1,
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.004,
-                            state.rotation.z),
-      })}
-      render={(state) => {
-        const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
-        const iHat = new Vector3(1 + lerp, 0, 0);
-        const jHat = new Vector3(0, 1, 0);
-        const kHat = new Vector3(0, 0, 1);
-
+      render={({ xScale }) => {
         const mat = new Matrix4();
-        mat.set(1 + lerp, 0, 0, 0,
+        mat.set(xScale.value, 0, 0, 0,
                 0, 1, 0, 0,
                 0, 0, 1, 0,
                 0, 0, 0, 1);
 
-        const cubeGeometry = new BoxGeometry(1, 1, 1);
-        cubeGeometry.translate(0.5, 0.5, 0.5);
-        cubeGeometry.applyMatrix(mat);
-
         return (
           <div>
-            <Visualization width={320} height={240} rotation={state.rotation}>
-              <XAxis />
-              <YAxis />
-              <ZAxis />
-              <mesh>
-                <geometry
-                  vertices={cubeGeometry.vertices}
-                  faces={cubeGeometry.faces}
-                  colors={cubeGeometry.colors}
-                  faceVertexUvs={cubeGeometry.faceVertexUvs}
-                />
-                <meshBasicMaterial color={0xff00ff} opacity={0.8} />
-              </mesh>
-              <Vector position={iHat} color={0xffff00} />
-              <Vector position={jHat} color={0xff00ff} />
-              <Vector position={kHat} color={0x00ffff} />
-            </Visualization>
+            <AxisVisualization3D
+              render={() => (
+                <group>
+                  <CubeVectors3D matrix={mat} />
+                </group>
+              )}
+            />
           </div>
         );
       }}
@@ -1137,52 +985,26 @@ const DeterminantSection = () => (
       combination), will not change the determinant at all. Consider a shear where we
       add a scalar multiple of the second row to the first, to see why this is so:
     </p>
-    <Animation
-      initial={{
-        time: 0,
-        rotation: new Euler(0.5, 0.5, 0),
+    <InterpolatedAnimation
+      values={{
+        yxShear: { begin: 0, end: 2 },
       }}
-      update={(state) => ({
-        time: state.time + 1,
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.004,
-                            state.rotation.z),
-      })}
-      render={(state) => {
-        const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
-        const iHat = new Vector3(1, 2 * lerp, 0);
-        const jHat = new Vector3(0, 1, 0);
-        const kHat = new Vector3(0, 0, 1);
-
+      render={({ yxShear }) => {
         const mat = new Matrix4();
         mat.set(1, 0, 0, 0,
-                2 * lerp, 1, 0, 0,
+                yxShear.value, 1, 0, 0,
                 0, 0, 1, 0,
                 0, 0, 0, 1);
 
-        const cubeGeometry = new BoxGeometry(1, 1, 1);
-        cubeGeometry.translate(0.5, 0.5, 0.5);
-        cubeGeometry.applyMatrix(mat);
-
         return (
           <div>
-            <Visualization width={320} height={240} rotation={state.rotation}>
-              <XAxis />
-              <YAxis />
-              <ZAxis />
-              <mesh>
-                <geometry
-                  vertices={cubeGeometry.vertices}
-                  faces={cubeGeometry.faces}
-                  colors={cubeGeometry.colors}
-                  faceVertexUvs={cubeGeometry.faceVertexUvs}
-                />
-                <meshBasicMaterial color={0xff00ff} opacity={0.8} />
-              </mesh>
-              <Vector position={iHat} color={0xffff00} />
-              <Vector position={jHat} color={0xff00ff} />
-              <Vector position={kHat} color={0x00ffff} />
-            </Visualization>
+            <AxisVisualization3D
+              render={() => (
+                <group>
+                  <CubeVectors3D matrix={mat} />
+                </group>
+              )}
+            />
           </div>
         );
       }}
@@ -1193,57 +1015,7 @@ const DeterminantSection = () => (
       the transformation changes and the factor by which the area changes as
       we apply row reduction operations.
     </p>
-    <MathJaxMatrix matrix={[[1, -1, 0], [-1, -1, 0], [2, 1, 2]]} />
-    <Animation
-      initial={{
-        time: 0,
-        rotation: new Euler(0.5, 0.5, 0),
-      }}
-      update={(state) => ({
-        time: state.time + 1,
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.004,
-                            state.rotation.z),
-      })}
-      render={(state) => {
-        const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
-        const iHat = new Vector3(1, -lerp, 2 * lerp);
-        const jHat = new Vector3(-lerp, 1 - (2 * lerp), lerp);
-        const kHat = new Vector3(0, 0, 1 + lerp);
-
-        const mat = new Matrix4();
-        mat.set(1, -lerp, 0, 0,
-                -lerp, 1 - (2 * lerp), 0, 0,
-                2 * lerp, lerp, 1 + lerp, 0,
-                0, 0, 0, 1);
-
-        const cubeGeometry = new BoxGeometry(1, 1, 1);
-        cubeGeometry.translate(0.5, 0.5, 0.5);
-        cubeGeometry.applyMatrix(mat);
-
-        return (
-          <div>
-            <Visualization width={320} height={240} rotation={state.rotation}>
-              <XAxis />
-              <YAxis />
-              <ZAxis />
-              <mesh>
-                <geometry
-                  vertices={cubeGeometry.vertices}
-                  faces={cubeGeometry.faces}
-                  colors={cubeGeometry.colors}
-                  faceVertexUvs={cubeGeometry.faceVertexUvs}
-                />
-                <meshBasicMaterial color={0xff00ff} opacity={0.8} />
-              </mesh>
-              <Vector position={iHat} color={0xffff00} />
-              <Vector position={jHat} color={0xff00ff} />
-              <Vector position={kHat} color={0x00ffff} />
-            </Visualization>
-          </div>
-        );
-      }}
-    />
+    <CubeVectorsAnimatedERO matrix={[[1, -1, 0], [-1, -1, 0], [2, 1, 2]]} />
     <p>
       Before we begin, first observe a few things about this transformation. First,
       note that it inverts space along the <MathJax.Node inline>x</MathJax.Node> axis.
@@ -1253,221 +1025,21 @@ const DeterminantSection = () => (
       First, subtract 2 times the first row from the third. This is a Type 3 operation
       and will not affect the determinant.
     </p>
-    <MathJaxMatrix matrix={[[1, -1, 0], [-1, -1, 0], [0, 3, 2]]} />
-    <Animation
-      initial={{
-        time: 0,
-        rotation: new Euler(0.5, 0.5, 0),
-      }}
-      update={(state) => ({
-        time: state.time + 1,
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.004,
-                            state.rotation.z),
-      })}
-      render={(state) => {
-        const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
-        const iHat = new Vector3(1, -lerp, 0);
-        const jHat = new Vector3(-lerp, 1 - (2 * lerp), 3 * lerp);
-        const kHat = new Vector3(0, 0, 1 + lerp);
-
-        const mat = new Matrix4();
-        mat.set(1, -lerp, 0, 0,
-                -lerp, 1 - (2 * lerp), 0, 0,
-                0, 3 * lerp, 1 + lerp, 0,
-                0, 0, 0, 1);
-
-        const cubeGeometry = new BoxGeometry(1, 1, 1);
-        cubeGeometry.translate(0.5, 0.5, 0.5);
-        cubeGeometry.applyMatrix(mat);
-
-        return (
-          <div>
-            <Visualization width={320} height={240} rotation={state.rotation}>
-              <XAxis />
-              <YAxis />
-              <ZAxis />
-              <mesh>
-                <geometry
-                  vertices={cubeGeometry.vertices}
-                  faces={cubeGeometry.faces}
-                  colors={cubeGeometry.colors}
-                  faceVertexUvs={cubeGeometry.faceVertexUvs}
-                />
-                <meshBasicMaterial color={0xff00ff} opacity={0.8} />
-              </mesh>
-              <Vector position={iHat} color={0xffff00} />
-              <Vector position={jHat} color={0xff00ff} />
-              <Vector position={kHat} color={0x00ffff} />
-            </Visualization>
-          </div>
-        );
-      }}
-    />
+    <CubeVectorsAnimatedERO matrix={[[1, -1, 0], [-1, -1, 0], [0, 3, 2]]} />
     <p>
       Now subtract the second row from the first. This is also a
       Type 3 operation and does not affect the determinant.
     </p>
-    <MathJaxMatrix matrix={[[2, 0, 0], [-1, -1, 0], [0, 3, 2]]} />
-    <Animation
-      initial={{
-        time: 0,
-        rotation: new Euler(0.5, 0.5, 0),
-      }}
-      update={(state) => ({
-        time: state.time + 1,
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.004,
-                            state.rotation.z),
-      })}
-      render={(state) => {
-        const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
-        const iHat = new Vector3(1 + lerp, -lerp, 0);
-        const jHat = new Vector3(0, 1 - (2 * lerp), 3 * lerp);
-        const kHat = new Vector3(0, 0, 1 + lerp);
-
-        const mat = new Matrix4();
-        mat.set(1 + lerp, 0, 0, 0,
-                -lerp, 1 - (2 * lerp), 0, 0,
-                0, 3 * lerp, 1 + lerp, 0,
-                0, 0, 0, 1);
-
-        const cubeGeometry = new BoxGeometry(1, 1, 1);
-        cubeGeometry.translate(0.5, 0.5, 0.5);
-        cubeGeometry.applyMatrix(mat);
-
-        return (
-          <div>
-            <Visualization width={320} height={240} rotation={state.rotation}>
-              <XAxis />
-              <YAxis />
-              <ZAxis />
-              <mesh>
-                <geometry
-                  vertices={cubeGeometry.vertices}
-                  faces={cubeGeometry.faces}
-                  colors={cubeGeometry.colors}
-                  faceVertexUvs={cubeGeometry.faceVertexUvs}
-                />
-                <meshBasicMaterial color={0xff00ff} opacity={0.8} />
-              </mesh>
-              <Vector position={iHat} color={0xffff00} />
-              <Vector position={jHat} color={0xff00ff} />
-              <Vector position={kHat} color={0x00ffff} />
-            </Visualization>
-          </div>
-        );
-      }}
-    />
+    <CubeVectorsAnimatedERO matrix={[[2, 0, 0], [-1, -1, 0], [0, 3, 2]]} />
     <p>
       Then add half of the first row to the second. This is Type 3 and
       als does not affect the determinant.
     </p>
-    <MathJaxMatrix matrix={[[2, 0, 0], [0, -1, 0], [0, 3, 2]]} />
-    <Animation
-      initial={{
-        time: 0,
-        rotation: new Euler(0.5, 0.5, 0),
-      }}
-      update={(state) => ({
-        time: state.time + 1,
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.004,
-                            state.rotation.z),
-      })}
-      render={(state) => {
-        const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
-        const iHat = new Vector3(1 + lerp, 0, 0);
-        const jHat = new Vector3(0, 1 - (2 * lerp), 3 * lerp);
-        const kHat = new Vector3(0, 0, 1 + lerp);
-
-        const mat = new Matrix4();
-        mat.set(1 + lerp, 0, 0, 0,
-                0, 1 - (2 * lerp), 0, 0,
-                0, 3 * lerp, 1 + lerp, 0,
-                0, 0, 0, 1);
-
-        const cubeGeometry = new BoxGeometry(1, 1, 1);
-        cubeGeometry.translate(0.5, 0.5, 0.5);
-        cubeGeometry.applyMatrix(mat);
-
-        return (
-          <div>
-            <Visualization width={320} height={240} rotation={state.rotation}>
-              <XAxis />
-              <YAxis />
-              <ZAxis />
-              <mesh>
-                <geometry
-                  vertices={cubeGeometry.vertices}
-                  faces={cubeGeometry.faces}
-                  colors={cubeGeometry.colors}
-                  faceVertexUvs={cubeGeometry.faceVertexUvs}
-                />
-                <meshBasicMaterial color={0xff00ff} opacity={0.8} />
-              </mesh>
-              <Vector position={iHat} color={0xffff00} />
-              <Vector position={jHat} color={0xff00ff} />
-              <Vector position={kHat} color={0x00ffff} />
-            </Visualization>
-          </div>
-        );
-      }}
-    />
+    <CubeVectorsAnimatedERO matrix={[[2, 0, 0], [0, -1, 0], [0, 3, 2]]} />
     <p>
       Add three times the second row to the third, which is also Type 3
     </p>
-    <MathJaxMatrix matrix={[[2, 0, 0], [0, -1, 0], [0, 0, 2]]} />
-    <Animation
-      initial={{
-        time: 0,
-        rotation: new Euler(0.5, 0.5, 0),
-      }}
-      update={(state) => ({
-        time: state.time + 1,
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.004,
-                            state.rotation.z),
-      })}
-      render={(state) => {
-        const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
-        const iHat = new Vector3(1 + lerp, 0, 0);
-        const jHat = new Vector3(0, 1 - (2 * lerp), 0);
-        const kHat = new Vector3(0, 0, 1 + lerp);
-
-        const mat = new Matrix4();
-        mat.set(1 + lerp, 0, 0, 0,
-                0, 1 - (2 * lerp), 0, 0,
-                0, 0, 1 + lerp, 0,
-                0, 0, 0, 1);
-
-        const cubeGeometry = new BoxGeometry(1, 1, 1);
-        cubeGeometry.translate(0.5, 0.5, 0.5);
-        cubeGeometry.applyMatrix(mat);
-
-        return (
-          <div>
-            <Visualization width={320} height={240} rotation={state.rotation}>
-              <XAxis />
-              <YAxis />
-              <ZAxis />
-              <mesh>
-                <geometry
-                  vertices={cubeGeometry.vertices}
-                  faces={cubeGeometry.faces}
-                  colors={cubeGeometry.colors}
-                  faceVertexUvs={cubeGeometry.faceVertexUvs}
-                />
-                <meshBasicMaterial color={0xff00ff} opacity={0.8} />
-              </mesh>
-              <Vector position={iHat} color={0xffff00} />
-              <Vector position={jHat} color={0xff00ff} />
-              <Vector position={kHat} color={0x00ffff} />
-            </Visualization>
-          </div>
-        );
-      }}
-    />
+    <CubeVectorsAnimatedERO matrix={[[2, 0, 0], [0, -1, 0], [0, 0, 2]]} />
     <p>
       Now, from here we can compute the determinant directly by just
       multiplying along the diagonal (recall that the determinant has not yet changed):
@@ -1481,56 +1053,7 @@ const DeterminantSection = () => (
       the third row by <MathJax.Node inline>1 \over 2</MathJax.Node>. These operations
       do change the determinant by an overall factor of <MathJax.Node inline>-1 \over 4</MathJax.Node>.
     </p>
-    <MathJaxMatrix matrix={[[1, 0, 0], [0, 1, 0], [0, 0, 1]]} />
-    <Animation
-      initial={{
-        time: 0,
-        rotation: new Euler(0.5, 0.5, 0),
-      }}
-      update={(state) => ({
-        time: state.time + 1,
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.004,
-                            state.rotation.z),
-      })}
-      render={(state) => {
-        const iHat = new Vector3(1, 0, 0);
-        const jHat = new Vector3(0, 1, 0);
-        const kHat = new Vector3(0, 0, 1);
-
-        const mat = new Matrix4();
-        mat.set(1, 0, 0, 0,
-                0, 1, 0, 0,
-                0, 0, 1, 0,
-                0, 0, 0, 1);
-
-        const cubeGeometry = new BoxGeometry(1, 1, 1);
-        cubeGeometry.translate(0.5, 0.5, 0.5);
-        cubeGeometry.applyMatrix(mat);
-
-        return (
-          <div>
-            <Visualization width={320} height={240} rotation={state.rotation}>
-              <XAxis />
-              <YAxis />
-              <ZAxis />
-              <mesh>
-                <geometry
-                  vertices={cubeGeometry.vertices}
-                  faces={cubeGeometry.faces}
-                  colors={cubeGeometry.colors}
-                  faceVertexUvs={cubeGeometry.faceVertexUvs}
-                />
-                <meshBasicMaterial color={0xff00ff} opacity={0.8} />
-              </mesh>
-              <Vector position={iHat} color={0xffff00} />
-              <Vector position={jHat} color={0xff00ff} />
-              <Vector position={kHat} color={0x00ffff} />
-            </Visualization>
-          </div>
-        );
-      }}
-    />
+    <CubeVectorsAnimatedERO matrix={[[1, 0, 0], [0, 1, 0], [0, 0, 1]]} />
     <p>
       Computing the determinant of this newly row-reduced matrix is straightforward
     </p>
