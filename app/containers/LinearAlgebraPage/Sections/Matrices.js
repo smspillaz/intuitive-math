@@ -11,6 +11,7 @@ import MathJax from 'react-mathjax';
 import { Matrix3, Vector3 } from 'three';
 
 import AxisVisualization2D from 'components/AxisVisualization2D';
+import CenteredParagraph from 'components/CenteredParagraph';
 import InterpolatedAnimation from 'components/InterpolatedAnimation';
 import MathJaxMatrix from 'components/MathJaxMatrix';
 import Section from 'components/Section';
@@ -116,10 +117,10 @@ const MatricesSection = () => (
       size in order for this to work. So for instance, if we wanted to add
       the following matrices:
     </p>
-    <p>
+    <CenteredParagraph>
       <MathJaxMatrix inline matrix={[[1, 1], [2, 0]]} />{' + '}
       <MathJaxMatrix inline matrix={[[2, 1], [1, 1]]} />
-    </p>
+    </CenteredParagraph>
     <p>
       You would end up adding each separate vector component together, which
       we would visualize like so:
@@ -174,11 +175,11 @@ const MatricesSection = () => (
       to scale the existing vector by 2 units in the <MathJax.Node inline>{'x'}</MathJax.Node>
       direction and 2 units in the <MathJax.Node inline>{'y'}</MathJax.Node> direction:
     </p>
-    <p>
+    <CenteredParagraph>
       <MathJaxMatrix matrix={[[2, 0], [0, 2]]} inline />
       <MathJaxMatrix matrix={[[3], [1]]} inline />
       {' = '}<MathJaxMatrix matrix={[[6 + 0], [0 + 2]]} inline />
-    </p>
+    </CenteredParagraph>
     <InterpolatedAnimation
       values={{
         xxAdd: { begin: 0, end: 1 },
@@ -214,11 +215,11 @@ const MatricesSection = () => (
       for every unit that it has in the <MathJax.Node inline>{'y'}</MathJax.Node>{' '}
       direction. Such a transformation is called a <Strong>shear</Strong>.
     </p>
-    <p>
+    <CenteredParagraph>
       <MathJaxMatrix matrix={[[1, 1], [0, 1]]} inline />
       <MathJaxMatrix matrix={[[2], [3]]} inline />
       {' = '}<MathJaxMatrix matrix={[[5 + 0], [0 + 3]]} inline />
-    </p>
+    </CenteredParagraph>
     <InterpolatedAnimation
       values={{
         xyInterp: { begin: 0, end: 1 },
@@ -260,11 +261,11 @@ const MatricesSection = () => (
       the vector that much in the y direction and vice versa. As such, it is
       a reflection.
     </p>
-    <p>
+    <CenteredParagraph>
       <MathJaxMatrix matrix={[[0, 1], [1, 0]]} inline />
       <MathJaxMatrix matrix={[[2], [3]]} inline />
       {' = '}<MathJaxMatrix matrix={[[3], [2]]} inline />
-    </p>
+    </CenteredParagraph>
     <InterpolatedAnimation
       values={{
         xxInterp: { begin: 1, end: 0 },
@@ -303,11 +304,11 @@ const MatricesSection = () => (
       in the x direction and moving right in the x direction for every
       step in the y direction.
     </p>
-    <p>
+    <CenteredParagraph>
       <MathJaxMatrix matrix={[[0, 1], [-1, 0]]} inline />
       <MathJaxMatrix matrix={[[2], [3]]} inline />
       {' = '}<MathJaxMatrix matrix={[[3], [-2]]} inline />
-    </p>
+    </CenteredParagraph>
     <InterpolatedAnimation
       values={{
         xxInterp: { begin: 1, end: 0 },
@@ -351,11 +352,11 @@ const MatricesSection = () => (
       in the right hand matrix. The yellow vector represents
       first column and the magenta vector represents the second column.
     </p>
-    <p>
+    <CenteredParagraph>
       <MathJaxMatrix matrix={[[2, 0], [0, 2]]} inline />
       <MathJaxMatrix matrix={[[3, 1], [1, 1]]} inline />
       {' = '}<MathJaxMatrix matrix={[[6, 2], [2, 2]]} inline />
-    </p>
+    </CenteredParagraph>
     <InterpolatedAnimation
       values={{
         xxInterp: { begin: 1, end: 2 },
@@ -406,11 +407,11 @@ const MatricesSection = () => (
       Here is something a little more complicated - we will apply the same
       rotation that we did earlier.
     </p>
-    <p>
+    <CenteredParagraph>
       <MathJaxMatrix matrix={[[0, 1], [-1, 0]]} inline />
       <MathJaxMatrix matrix={[[3, 1], [1, 1]]} inline />
       {' = '}<MathJaxMatrix matrix={[[1, 1], [-3, -1]]} inline />
-    </p>
+    </CenteredParagraph>
     <InterpolatedAnimation
       values={{
         xxInterp: { begin: 1, end: 0 },

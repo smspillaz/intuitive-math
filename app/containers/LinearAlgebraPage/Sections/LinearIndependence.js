@@ -12,6 +12,7 @@ import { Vector3 } from 'three';
 
 import AxisVisualization2D from 'components/AxisVisualization2D';
 import AxisVisualization3D from 'components/AxisVisualization3D';
+import CenteredParagraph from 'components/CenteredParagraph';
 import MathJaxMatrix from 'components/MathJaxMatrix';
 import Plane from 'components/Plane';
 import Strong from 'components/Strong';
@@ -42,7 +43,7 @@ const LinearIndependenceSection = () => (
       in combination with other vectors gives us access to more space. This is
       best illustrated in the two dimensional case with a visual explanation.
     </p>
-    <MathJaxMatrix inline matrix={[[1, 2], [2, 4]]} />
+    <MathJaxMatrix matrix={[[1, 2], [2, 4]]} />
     <AxisVisualization2D
       render={() => (
         <group>
@@ -67,11 +68,11 @@ const LinearIndependenceSection = () => (
       it basically only comes up when the set of vectors are just scalar multiples
       of each other.  But what happens if you have 3 vectors in a two dimensional space?
     </p>
-    <p>
+    <CenteredParagraph>
       <MathJaxMatrix inline matrix={[[1], [2]]} />
       <MathJaxMatrix inline matrix={[[1], [1]]} />
       <MathJaxMatrix inline matrix={[[4], [5]]} />
-    </p>
+    </CenteredParagraph>
     <AxisVisualization2D
       render={() => (
         <group>
@@ -103,11 +104,11 @@ const LinearIndependenceSection = () => (
       you have three vectors, it doesnt mean that they are all linearly independent.
     </p>
     <p>Obviously, you can get a case where they represent the same line</p>
-    <p>
+    <CenteredParagraph>
       <MathJaxMatrix inline matrix={[[1], [2], [3]]} />
       <MathJaxMatrix inline matrix={[[2], [4], [6]]} />
       <MathJaxMatrix inline matrix={[[-1], [-2], [-3]]} />
-    </p>
+    </CenteredParagraph>
     <AxisVisualization3D
       render={() => (
         <group>
@@ -118,11 +119,11 @@ const LinearIndependenceSection = () => (
       )}
     />
     <p>But you might also get a case where they, represent the same plane</p>
-    <p>
+    <CenteredParagraph>
       <MathJaxMatrix inline matrix={[[1], [1], [1]]} />
       <MathJaxMatrix inline matrix={[[1], [0], [1]]} />
       <MathJaxMatrix inline matrix={[[2], [1], [2]]} />
-    </p>
+    </CenteredParagraph>
     <AxisVisualization3D
       render={() => {
         const first = new Vector3(1, 1, 1);
@@ -157,10 +158,10 @@ const LinearIndependenceSection = () => (
       So we can get rid of the third vector and still be describing the same
       plane.
     </p>
-    <p>
+    <CenteredParagraph>
       <MathJaxMatrix inline matrix={[[1], [1], [1]]} />
       <MathJaxMatrix inline matrix={[[1], [0], [1]]} />
-    </p>
+    </CenteredParagraph>
     <AxisVisualization3D
       render={() => {
         const first = new Vector3(1, 1, 1);

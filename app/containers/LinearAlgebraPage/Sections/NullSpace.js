@@ -11,6 +11,7 @@ import MathJax from 'react-mathjax';
 import { Vector3 } from 'three';
 
 import AxisVisualization3D from 'components/AxisVisualization3D';
+import CenteredParagraph from 'components/CenteredParagraph';
 import MathJaxMatrix from 'components/MathJaxMatrix';
 import Plane from 'components/Plane';
 import Section from 'components/Section';
@@ -74,19 +75,19 @@ const NullSpaceSection = () => (
       a form that is a little easier to work with, and then try and solve for those values from there.
     </p>
     <p>Now, recall that our original matrix row-reduces as follows:</p>
-    <p>
+    <CenteredParagraph>
       <MathJaxMatrix inline matrix={[[1, 2, 3], [2, 2, 2], [-1, 0, 1]]} />
       {'~'}
       <MathJaxMatrix inline matrix={[[0, 0, 0], [2, 1, 0], [0, 2, 4]]} />
-    </p>
+    </CenteredParagraph>
     <p>
       And recall that we are trying to solve the system when the result is the zero vector
     </p>
-    <p>
+    <CenteredParagraph>
       <MathJaxMatrix inline matrix={[[0, 0, 0], [2, 1, 0], [0, 2, 4]]} />
       <MathJaxMatrix inline matrix={[['x'], ['y'], ['z']]} />
       <MathJaxMatrix inline matrix={[[0], [0], [0]]} />
-    </p>
+    </CenteredParagraph>
     <p>
       Now, how do we solve for <MathJax.Node inline>x, y, z</MathJax.Node>, from here?
       One thing to pay attention to are what we call <Strong>basic variables</Strong>{' '}
@@ -136,10 +137,10 @@ const NullSpaceSection = () => (
     <p>
       Or more specifically:
     </p>
-    <p>
+    <CenteredParagraph>
       <MathJaxMatrix inline matrix={[[1], [-2], [1]]} />
       <MathJax.Node inline>z</MathJax.Node>
-    </p>
+    </CenteredParagraph>
     <p>
       Thus, the vector <MathJaxMatrix inline matrix={[[1], [-2], [1]]} /> is the
       basis for the <Strong>Null Space</Strong> of the transformation. You will also

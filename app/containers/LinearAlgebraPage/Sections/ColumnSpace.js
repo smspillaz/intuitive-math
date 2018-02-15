@@ -12,6 +12,7 @@ import { Matrix3, Vector3 } from 'three';
 
 import AxisVisualization2D from 'components/AxisVisualization2D';
 import AxisVisualization3D from 'components/AxisVisualization3D';
+import CenteredParagraph from 'components/CenteredParagraph';
 import InterpolatedAnimation from 'components/InterpolatedAnimation';
 import MathJaxMatrix from 'components/MathJaxMatrix';
 import Plane from 'components/Plane';
@@ -93,11 +94,11 @@ const ColumnSpaceSection = () => (
       of an <MathJax.Node inline>m \times n</MathJax.Node> matrix will be an{' '}
       <MathJax.Node inline>n \times m</MathJax.Node> matrix.
     </p>
-    <p>
+    <CenteredParagraph>
       <MathJaxMatrix inline matrix={[[1, 2, 3], [1, 1, 3], [2, 1, 6]]} />
       <MathJax.Node inline>\rightarrow</MathJax.Node>
       <MathJaxMatrix inline matrix={[[1, 1, 2], [2, 1, 1], [3, 3, 6]]} />
-    </p>
+    </CenteredParagraph>
     <TriplePlanes
       first={[1, 1, 2, 0]}
       second={[1, 1, 3, 0]}
@@ -106,11 +107,11 @@ const ColumnSpaceSection = () => (
     <p>
       Now we can row-reduce as usual:
     </p>
-    <p>
+    <CenteredParagraph>
       <MathJaxMatrix inline matrix={[[1, 1, 2], [2, 1, 1], [3, 3, 6]]} />
       {'~'}
       <MathJaxMatrix inline matrix={[[-1, 0, 1], [0, 1, 3], [0, 0, 0]]} />
-    </p>
+    </CenteredParagraph>
     <TriplePlanes
       first={[-1, 0, 1, 0]}
       second={[0, 1, 3, 0]}
@@ -119,11 +120,11 @@ const ColumnSpaceSection = () => (
     <p>
       Transposing our row-reduced matrix, we get a new matrix with our column space.
     </p>
-    <p>
+    <CenteredParagraph>
       <MathJaxMatrix inline matrix={[[-1, 0, 1], [0, 1, 3], [0, 0, 0]]} />
       <MathJax.Node inline>\rightarrow</MathJax.Node>
       <MathJaxMatrix inline matrix={[[-1, 0, 0], [0, 1, 0], [1, 3, 0]]} />
-    </p>
+    </CenteredParagraph>
     <p>
       So our column space here comprises of the vectors <MathJaxMatrix inline matrix={[[-1], [0], [1]]} />{' '}
       and <MathJaxMatrix inline matrix={[[0], [1], [3]]} />{' '}
