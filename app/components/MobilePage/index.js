@@ -27,6 +27,7 @@ const MobileNavigationItemsDrawer = styled.div`
   position: absolute;
   width: 100%;
   padding-left: 20px;
+  padding-bottom: 10px;
 `;
 
 MobileNavigationItemsDrawer.propTypes = {
