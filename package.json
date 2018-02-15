@@ -199,6 +199,7 @@
     "react-redux": "5.0.7",
     "react-router-dom": "4.3.1",
     "react-router-redux": "5.0.0-alpha.9",
+    "react-spinkit": "^3.0.0",
     "redux": "4.0.0",
     "redux-immutable": "4.0.0",
     "redux-saga": "0.16.0",
