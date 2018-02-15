@@ -30,12 +30,12 @@ const EROVisualization = ({ first, second, third, ...props }) => (
         ]}
       />
       {first.length === 4 ? (
-        <div>
+        <span>
           <MathJaxMatrix inline matrix={[['x'], ['y'], ['z']]} />
           <MathJax.Node inline>=</MathJax.Node>
           <MathJaxMatrix inline matrix={[[first[3]], [second[3]], [third[3]]]} />
-        </div>
-      ) : <div />}
+        </span>
+      ) : <span />}
     </p>
     <TriplePlanes
       first={adjust3PointPlane(first)}
