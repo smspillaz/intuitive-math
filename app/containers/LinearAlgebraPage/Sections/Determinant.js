@@ -6,18 +6,19 @@
 
 import React from 'react';
 
-import PropTypes from 'prop-types';
-
 import MathJax from 'react-mathjax';
 
-import { BoxGeometry, Euler, Matrix4, PlaneGeometry, Vector3 } from 'three';
+import { Euler, Matrix4, PlaneGeometry, Vector3 } from 'three';
 
 import { XAxis, YAxis, ZAxis } from 'components/Axis';
 import AxisVisualization2D from 'components/AxisVisualization2D';
 import AxisVisualization3D from 'components/AxisVisualization3D';
+import CubeVectors3D from 'components/CubeVectors3D';
+import CubeVectorsAnimatedERO from 'components/CubeVectorsAnimatedERO';
 import InterpolatedAnimation from 'components/InterpolatedAnimation';
 import MathJaxMatrix from 'components/MathJaxMatrix';
 import Section from 'components/Section';
+import SpanningPlane2D from 'components/SpanningPlane2D';
 import Strong from 'components/Strong';
 import TriplePlanes from 'components/TriplePlanes';
 import Tweakable from 'components/Tweakable';
@@ -25,123 +26,6 @@ import Vector from 'components/Vector';
 import Visualization from 'components/Visualization';
 
 import { truncate } from 'utils/math';
-
-const SpanningPlane2D = ({ matrix }) => {
-  const planeGeometry = new PlaneGeometry(1, 1);
-  planeGeometry.translate(0.5, 0.5, 0.0);
-  planeGeometry.applyMatrix(matrix);
-
-  return (
-    <mesh>
-      <geometry
-        vertices={planeGeometry.vertices}
-        faces={planeGeometry.faces}
-        colors={planeGeometry.colors}
-        faceVertexUvs={planeGeometry.faceVertexUvs}
-      />
-      <meshBasicMaterial color={0xff00ff} opacity={0.8} />
-    </mesh>
-  );
-};
-
-SpanningPlane2D.propTypes = {
-  matrix: PropTypes.object.isRequired,
-};
-
-const CubeVectors3D = ({ matrix, opacity = 0.8, wireframe = false }) => {
-  const iHat = new Vector3(1, 0, 0);
-  const jHat = new Vector3(0, 1, 0);
-  const kHat = new Vector3(0, 0, 1);
-
-  const cubeGeometry = new BoxGeometry(1, 1, 1);
-  cubeGeometry.translate(0.5, 0.5, 0.5);
-  cubeGeometry.applyMatrix(matrix);
-
-  iHat.applyMatrix4(matrix);
-  jHat.applyMatrix4(matrix);
-  kHat.applyMatrix4(matrix);
-
-  return (
-    <group>
-      <mesh>
-        <geometry
-          vertices={cubeGeometry.vertices}
-          faces={cubeGeometry.faces}
-          colors={cubeGeometry.colors}
-          faceVertexUvs={cubeGeometry.faceVertexUvs}
-        />
-        <meshBasicMaterial
-          color={0xff00ff}
-          opacity={opacity}
-          wireframe={wireframe}
-        />
-      </mesh>
-      <Vector position={iHat} color={0xffff00} />
-      <Vector position={jHat} color={0xff00ff} />
-      <Vector position={kHat} color={0x00ffff} />
-    </group>
-  );
-};
-
-CubeVectors3D.propTypes = {
-  opacity: PropTypes.number,
-  matrix: PropTypes.object.isRequired,
-  wireframe: PropTypes.bool,
-};
-
-const CubeVectorsAnimatedERO = ({ matrix }) => (
-  <div>
-    <MathJaxMatrix matrix={matrix} />
-    <InterpolatedAnimation
-      values={{
-        xScale: { begin: 1, end: matrix[0][0] },
-        xyShear: { begin: 0, end: matrix[0][1] },
-        xzShear: { begin: 0, end: matrix[0][2] },
-        yxShear: { begin: 0, end: matrix[1][0] },
-        yScale: { begin: 1, end: matrix[1][1] },
-        yzShear: { begin: 0, end: matrix[1][2] },
-        zxShear: { begin: 0, end: matrix[2][0] },
-        zyShear: { begin: 0, end: matrix[2][1] },
-        zScale: { begin: 1, end: matrix[2][2] },
-      }}
-      render={({
-        xScale,
-        xyShear,
-        xzShear,
-        yxShear,
-        yScale,
-        yzShear,
-        zxShear,
-        zyShear,
-        zScale,
-      }) => {
-        const mat = new Matrix4();
-        mat.set(xScale.value, xyShear.value, xzShear.value, 0,
-                yxShear.value, yScale.value, yzShear.value, 0,
-                zxShear.value, zyShear.value, zScale.value, 0,
-                0, 0, 0, 1);
-
-        return (
-          <div>
-            <AxisVisualization3D
-              render={() => (
-                <CubeVectors3D matrix={mat} />
-              )}
-            />
-          </div>
-        );
-      }}
-    />
-  </div>
-);
-
-CubeVectorsAnimatedERO.propTypes = {
-  matrix: PropTypes.arrayOf(
-    PropTypes.arrayOf(
-      PropTypes.number.isRequired
-    ).isRequired
-  ).isRequired,
-};
 
 const DeterminantSection = () => (
   <Section title="Determinant" anchor="determinant">
