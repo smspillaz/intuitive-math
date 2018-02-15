@@ -22,8 +22,6 @@ import RouteDescriptions, { withRouteDescriptions } from 'components/RouteDescri
 
 import { AtlaskitThemeProvider } from '@atlaskit/theme';
 
-const RoutableRouteDescriptions = withRouter(RouteDescriptions);
-
 const sections = [
   {
     title: 'Linear Algebra',
@@ -120,6 +118,7 @@ NavigationFooterFromRouteDescriptions.propTypes = {
   }).isRequired,
 };
 
+const RoutableRouteDescriptions = withRouter(RouteDescriptions);
 const NavigationFooterWithRouteDescriptions = withRouteDescriptions(NavigationFooterFromRouteDescriptions);
 
 const NavigatablePage = () => (
