@@ -9,15 +9,15 @@ import React from 'react';
 
 import MathJax from 'react-mathjax';
 
-import { BoxGeometry, Euler, Matrix4, Vector3 } from 'three';
+import { Vector3 } from 'three';
 
-import { XAxis, YAxis, ZAxis } from 'components/Axis';
-import Animation from 'components/Animation';
+import AxisVisualization3D from 'components/AxisVisualization3D';
+import InterpolatedAnimation from 'components/InterpolatedAnimation';
 import MathJaxMatrix from 'components/MathJaxMatrix';
 import Section from 'components/Section';
 import Strong from 'components/Strong';
+import TweenedAffineTransformCube from 'components/TweenedAffineTransformCube';
 import Vector from 'components/Vector';
-import Visualization from 'components/Visualization';
 
 const EigenbasisSection = () => (
   <Section title="Eigenbasis and Diagonalization" anchor="eigenbasis">
@@ -38,59 +38,9 @@ const EigenbasisSection = () => (
       matrix scales by a factor of 2 along the y-axis, shears along the
       <MathJax.Node inline>xz</MathJax.Node> axis by a factor of 1.
     </p>
-    <Animation
-      initial={{
-        rotation: new Euler(0.5, 0.5, 0),
-        time: 0,
-      }}
-      update={(state) => ({
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.001,
-                            state.rotation.z),
-        time: state.time + 1,
-      })}
-      render={(state) => {
-        const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
-        const iHat = new Vector3(1, 0, 0);
-        const jHat = new Vector3(0, 1, 0);
-        const kHat = new Vector3(0, 0, 1);
-
-        const mat = new Matrix4();
-        mat.set(1, 0, 0, 0,
-                0, 1 + lerp, lerp, 0,
-                0, 0, 1, 0,
-                0, 0, 0, 1);
-
-        const cubeGeometry = new BoxGeometry(1, 1, 1);
-        cubeGeometry.translate(0.5, 0.5, 0.5);
-        cubeGeometry.applyMatrix(mat);
-
-        iHat.applyMatrix4(mat);
-        jHat.applyMatrix4(mat);
-        kHat.applyMatrix4(mat);
-
-        return (
-          <div>
-            <Visualization width={320} height={240} rotation={state.rotation}>
-              <XAxis />
-              <YAxis />
-              <ZAxis />
-              <mesh>
-                <geometry
-                  vertices={cubeGeometry.vertices}
-                  faces={cubeGeometry.faces}
-                  colors={cubeGeometry.colors}
-                  faceVertexUvs={cubeGeometry.faceVertexUvs}
-                />
-                <meshBasicMaterial color={0xff00ff} opacity={0.8} />
-              </mesh>
-              <Vector position={iHat} color={0xffff00} />
-              <Vector position={jHat} color={0xff00ff} />
-              <Vector position={kHat} color={0x00ffff} />
-            </Visualization>
-          </div>
-        );
-      }}
+    <TweenedAffineTransformCube
+      start={[[1, 0, 0], [0, 1, 0], [0, 0, 1]]}
+      end={[[1, 0, 0], [0, 2, 1], [0, 0, 1]]}
     />
     <p>
       This transformation has Eigenvalues <MathJax.Node inline>\lambda = 2</MathJax.Node>
@@ -104,35 +54,14 @@ const EigenbasisSection = () => (
       for <MathJax.Node inline>\lambda = 1</MathJax.Node>{' '}
       visualized below:
     </p>
-    <Animation
-      initial={{
-        rotation: new Euler(0.5, 0.5, 0),
-        time: 0,
-      }}
-      update={(state) => ({
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.001,
-                            state.rotation.z),
-        time: state.time + 1,
-      })}
-      render={(state) => {
-        const v1 = new Vector3(0, 1, 0);
-        const v2 = new Vector3(0, -1, 0);
-        const v3 = new Vector3(1, 0, 0);
-
-        return (
-          <div>
-            <Visualization width={320} height={240} rotation={state.rotation}>
-              <XAxis />
-              <YAxis />
-              <ZAxis />
-              <Vector position={v1} color={0xffff00} />
-              <Vector position={v2} color={0xff00ff} />
-              <Vector position={v3} color={0x00ffff} />
-            </Visualization>
-          </div>
-        );
-      }}
+    <AxisVisualization3D
+      render={() => (
+        <group>
+          <Vector position={new Vector3(0, 1, 0)} color={0xffff00} />
+          <Vector position={new Vector3(0, -1, 0)} color={0xff00ff} />
+          <Vector position={new Vector3(1, 0, 0)} color={0x00ffff} />
+        </group>
+      )}
     />
     <p>
       These Eigenvectors can be arranged into a new matrix called an Eigenbasis:
@@ -152,36 +81,23 @@ const EigenbasisSection = () => (
       <MathJaxMatrix inline matrix={[[0, 1, 0], [-1, 0, 1], [1, 0, 0]]} />
       = <MathJaxMatrix inline matrix={[[1, 0, 0], [0, 1, 0], [0, 0, 2]]} />
     </p>
-    <Animation
-      initial={{
-        rotation: new Euler(0.5, 0.5, 0),
-        time: 0,
+    <InterpolatedAnimation
+      values={{
+        yScale: { begin: 2, end: 1 },
+        yzShear: { begin: 1, end: 0 },
+        zScale: { begin: 1, end: 2 },
       }}
-      update={(state) => ({
-        rotation: new Euler(state.rotation.x,
-                            state.rotation.y + 0.001,
-                            state.rotation.z),
-        time: state.time + 1,
-      })}
-      render={(state) => {
-        const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
-        const v1 = new Vector3(1, 0, 0);
-        const v2 = new Vector3(0, 2 - lerp, 1 - lerp);
-        const v3 = new Vector3(0, 0, 1 + lerp);
-
-        return (
-          <div>
-            <Visualization width={320} height={240} rotation={state.rotation}>
-              <XAxis />
-              <YAxis />
-              <ZAxis />
-              <Vector position={v1} color={0xffff00} />
-              <Vector position={v2} color={0xff00ff} />
-              <Vector position={v3} color={0x00ffff} />
-            </Visualization>
-          </div>
-        );
-      }}
+      render={({ yScale, yzShear, zScale }) => (
+        <AxisVisualization3D
+          render={() => (
+            <group>
+              <Vector position={new Vector3(1, 0, 0)} color={0xffff00} />
+              <Vector position={new Vector3(0, yScale.value, yzShear.value)} color={0xff00ff} />
+              <Vector position={new Vector3(0, 0, zScale.value)} color={0x00ffff} />
+            </group>
+          )}
+        />
+      )}
     />
     <p>
       Notice anything familiar? The result of changing the basis

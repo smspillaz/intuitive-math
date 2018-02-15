@@ -8,15 +8,15 @@ import React from 'react';
 
 import MathJax from 'react-mathjax';
 
-import { Matrix4, PlaneGeometry, Vector3, Vector4 } from 'three';
+import { Matrix4, Vector3, Vector4 } from 'three';
 
-import { XAxis, YAxis } from 'components/Axis';
-import Animation from 'components/Animation';
+import AxisVisualization2D from 'components/AxisVisualization2D';
+import InterpolatedAnimation from 'components/InterpolatedAnimation';
 import MathJaxMatrix from 'components/MathJaxMatrix';
 import Section from 'components/Section';
+import SpanningPlane2D from 'components/SpanningPlane2D';
 import Strong from 'components/Strong';
 import Vector from 'components/Vector';
-import Visualization from 'components/Visualization';
 
 const EigenvectorsSection = () => (
   <Section title="Eigenvectors" anchor="eigenvectors">
@@ -35,51 +35,33 @@ const EigenvectorsSection = () => (
       For instance, when we consider the transformation{' '}
       <MathJaxMatrix inline matrix={[[2, 0], [0, 2]]} />, which just scales
       everything by a factor of two, we can pretty easily say that
-      <MathJaxMatrix inline matrix={[[1, 0]]} /> and <MathJaxMatrix inline matrix={[[0, 1]]} />
+      <MathJaxMatrix inline matrix={[[1, 0]]} /> and <MathJaxMatrix inline matrix={[[0, 1]]} />{' '}
       are the Eigenvectors, because the transformation as a whole does not change
       the direction of space. It only scales it. And of course, those two vectors
       are the basis for all of 2D space.
     </p>
-    <Animation
-      initial={{
-        time: 0,
+    <InterpolatedAnimation
+      values={{
+        xScale: { begin: 1, end: 2 },
+        yScale: { begin: 1, end: 2 },
       }}
-      update={(state) => ({
-        time: state.time + 1,
-      })}
-      render={(state) => {
-        const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
-
+      render={({ xScale, yScale }) => {
         const mat = new Matrix4();
-        mat.set(1 + lerp, 0, 0, 0,
-                0, 1 + lerp, 0, 0,
+        mat.set(xScale.value, 0, 0, 0,
+                0, yScale.value, 0, 0,
                 0, 0, 1, 0,
                 0, 0, 0, 1);
 
-        const planeGeometry = new PlaneGeometry(1, 1);
-        planeGeometry.translate(0.5, 0.5, 0.0);
-        planeGeometry.applyMatrix(mat);
-
         return (
-          <div>
-            <Visualization width={320} height={240}>
-              <XAxis />
-              <YAxis />
+          <AxisVisualization2D
+            render={() => (
               <group>
-                <mesh>
-                  <geometry
-                    vertices={planeGeometry.vertices}
-                    faces={planeGeometry.faces}
-                    colors={planeGeometry.colors}
-                    faceVertexUvs={planeGeometry.faceVertexUvs}
-                  />
-                  <meshBasicMaterial color={0xff00ff} opacity={0.8} />
-                </mesh>
-                <Vector position={new Vector3(1 + lerp, 0, 0)} color={0xffff00} />
-                <Vector position={new Vector3(0, 1 + lerp, 0)} color={0xffff00} />
+                <SpanningPlane2D matrix={mat} />
+                <Vector position={new Vector3(xScale.value, 0, 0)} color={0xffff00} />
+                <Vector position={new Vector3(0, yScale.value, 0)} color={0xffff00} />
               </group>
-            </Visualization>
-          </div>
+            )}
+          />
         );
       }}
     />
@@ -88,25 +70,17 @@ const EigenvectorsSection = () => (
       instance, the transformation <MathJaxMatrix inline matrix={[[1, 2], [0, 2]]} />
       has two Eigenvectors, but we would not immediately be able to say what they were:
     </p>
-    <Animation
-      initial={{
-        time: 0,
+    <InterpolatedAnimation
+      values={{
+        xyShear: { begin: 0, end: 2 },
+        yScale: { begin: 1, end: 2 },
       }}
-      update={(state) => ({
-        time: state.time + 1,
-      })}
-      render={(state) => {
-        const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
-
+      render={({ xyShear, yScale }) => {
         const mat = new Matrix4();
-        mat.set(1, 2 * lerp, 0, 0,
-                0, 1 + lerp, 0, 0,
+        mat.set(1, xyShear.value, 0, 0,
+                0, yScale.value, 0, 0,
                 0, 0, 1, 0,
                 0, 0, 0, 1);
-
-        const planeGeometry = new PlaneGeometry(1, 1);
-        planeGeometry.translate(0.5, 0.5, 0.0);
-        planeGeometry.applyMatrix(mat);
 
         const eigenvector1 = new Vector4(1, 0, 0, 0);
         const eigenvector2 = new Vector4(2, 1, 0, 0);
@@ -115,25 +89,15 @@ const EigenvectorsSection = () => (
         eigenvector2.applyMatrix4(mat);
 
         return (
-          <div>
-            <Visualization width={320} height={240}>
-              <XAxis />
-              <YAxis />
+          <AxisVisualization2D
+            render={() => (
               <group>
-                <mesh>
-                  <geometry
-                    vertices={planeGeometry.vertices}
-                    faces={planeGeometry.faces}
-                    colors={planeGeometry.colors}
-                    faceVertexUvs={planeGeometry.faceVertexUvs}
-                  />
-                  <meshBasicMaterial color={0xff00ff} opacity={0.8} />
-                </mesh>
-                <Vector position={new Vector3(eigenvector1.x, eigenvector1.y, eigenvector1.z)} color={0xffff00} />
-                <Vector position={new Vector3(eigenvector2.x, eigenvector2.y, eigenvector2.z)} color={0xffff00} />
+                <SpanningPlane2D matrix={mat} />
+                <Vector position={eigenvector1} color={0xffff00} />
+                <Vector position={eigenvector2} color={0xffff00} />
               </group>
-            </Visualization>
-          </div>
+            )}
+          />
         );
       }}
     />
