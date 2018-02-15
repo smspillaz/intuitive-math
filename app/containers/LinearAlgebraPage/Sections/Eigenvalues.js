@@ -8,17 +8,16 @@ import React from 'react';
 
 import MathJax from 'react-mathjax';
 
-import { Matrix4, PlaneGeometry, Vector3 } from 'three';
+import { Matrix4, Vector3 } from 'three';
 
-import { XAxis, YAxis } from 'components/Axis';
-import Animation from 'components/Animation';
+import AxisVisualization2D from 'components/AxisVisualization2D';
+import InterpolatedAnimation from 'components/InterpolatedAnimation';
 import MathJaxMatrix from 'components/MathJaxMatrix';
 import Section from 'components/Section';
 import Strong from 'components/Strong';
+import SpanningPlane2D from 'components/SpanningPlane2D';
+import Tweakable from 'components/Tweakable';
 import Vector from 'components/Vector';
-import Visualization from 'components/Visualization';
-
-import { truncate } from 'utils/math';
 
 const EigenvaluesSection = () => (
   <Section title="Eigenvalues" anchor="eigenvalues">
@@ -43,57 +42,44 @@ const EigenvaluesSection = () => (
       look at any linear transformation with a nonzero determinant, you might wonder
       what you could do to the transformation in order to make the determinant zero.
     </p>
-    <Animation
-      initial={{
-        time: 0,
+    <InterpolatedAnimation
+      values={{
+        xScale: { begin: 0, end: 1 },
+        yScale: { begin: 0, end: 1 },
       }}
-      update={(state) => ({
-        time: state.time + 1,
-      })}
-      render={(state) => {
-        const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
-
+      render={({ xScale, yScale }) => {
         const mat = new Matrix4();
-        mat.set(lerp, 1, 0, 0,
-                1, lerp, 0, 0,
+        mat.set(xScale.value, 1, 0, 0,
+                1, yScale.value, 0, 0,
                 0, 0, 1, 0,
                 0, 0, 0, 1);
 
-        const planeGeometry = new PlaneGeometry(1, 1);
-        planeGeometry.translate(0.5, 0.5, 0.0);
-        planeGeometry.applyMatrix(mat);
-
         return (
           <div>
-            <Visualization width={320} height={240}>
-              <XAxis />
-              <YAxis />
-              <group>
-                <mesh>
-                  <geometry
-                    vertices={planeGeometry.vertices}
-                    faces={planeGeometry.faces}
-                    colors={planeGeometry.colors}
-                    faceVertexUvs={planeGeometry.faceVertexUvs}
-                  />
-                  <meshBasicMaterial color={0xff00ff} opacity={0.8} />
-                </mesh>
-                <Vector position={new Vector3(lerp, 1, 0)} color={0xffff00} />
-                <Vector position={new Vector3(1, lerp, 0)} color={0xffff00} />
-              </group>
-            </Visualization>
+            <AxisVisualization2D
+              render={() => (
+                <group>
+                  <Vector position={new Vector3(xScale.value, 1, 0)} color={0xffff00} />
+                  <Vector position={new Vector3(1, yScale.value, 0)} color={0xffff00} />
+                </group>
+              )}
+            />
             <p>
-              <MathJax.Node inline>x_1</MathJax.Node> = {truncate(lerp, 2).toFixed(2)}{' '}
-              <MathJax.Node inline>x_2</MathJax.Node> = {truncate(1, 2).toFixed(2)}
+              <Tweakable {...xScale}>
+                <MathJax.Node inline>x_1 = </MathJax.Node>
+              </Tweakable>{' '}
+              <MathJax.Node inline>x_2 = 1</MathJax.Node>
             </p>
             <p>
-              <MathJax.Node inline>y_1</MathJax.Node> = {truncate(1, 2).toFixed(2)}{' '}
-              <MathJax.Node inline>y_2</MathJax.Node> = {truncate(lerp, 2).toFixed(2)}
+              <MathJax.Node inline>y_1 = 1</MathJax.Node>{' '}
+              <Tweakable {...yScale}>
+                <MathJax.Node inline>y_1 = </MathJax.Node>
+              </Tweakable>
             </p>
             <p>
               <MathJax.Node inline>
                 {'\\det \\begin{pmatrix} x_1 & x_2 \\\\ y_1 & y_2\\end{pmatrix}'}
-              </MathJax.Node> = {truncate((lerp * lerp) - 1, 2).toFixed(2)}
+              </MathJax.Node> = {((xScale.value * yScale.value) - 1).toFixed(2)}
             </p>
           </div>
         );
@@ -113,21 +99,15 @@ const EigenvaluesSection = () => (
       (of which they may be more than one) to add or subtract along the diagonal which
       make the determinant zero.
     </p>
-    <Animation
-      initial={{
-        time: 0,
+    <InterpolatedAnimation
+      values={{
+        lambda: { begin: 0, end: 1 },
       }}
-      update={(state) => ({
-        time: state.time + 1,
-      })}
-      render={(state) => {
-        const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
-        const lambda = lerp;
-        const x1 = 1 - lambda;
+      render={({ lambda }) => {
+        const x1 = 1 - lambda.value;
         const y1 = 2;
         const x2 = 0;
-        const y2 = 1 - lambda;
-
+        const y2 = 1 - lambda.value;
 
         const mat = new Matrix4();
         mat.set(x1, y1, 0, 0,
@@ -135,44 +115,33 @@ const EigenvaluesSection = () => (
                 0, 0, 1, 0,
                 0, 0, 0, 1);
 
-        const planeGeometry = new PlaneGeometry(1, 1);
-        planeGeometry.translate(0.5, 0.5, 0.0);
-        planeGeometry.applyMatrix(mat);
-
         return (
           <div>
-            <Visualization width={320} height={240}>
-              <XAxis />
-              <YAxis />
-              <group>
-                <mesh>
-                  <geometry
-                    vertices={planeGeometry.vertices}
-                    faces={planeGeometry.faces}
-                    colors={planeGeometry.colors}
-                    faceVertexUvs={planeGeometry.faceVertexUvs}
-                  />
-                  <meshBasicMaterial color={0xff00ff} opacity={0.8} />
-                </mesh>
-                <Vector position={new Vector3(x1, x2, 0)} color={0xffff00} />
-                <Vector position={new Vector3(y1, y2, 0)} color={0xffff00} />
-              </group>
-            </Visualization>
+            <AxisVisualization2D
+              render={() => (
+                <group>
+                  <SpanningPlane2D matrix={mat} />
+                  <Vector position={new Vector3(x1, x2, 0)} color={0xffff00} />
+                  <Vector position={new Vector3(y1, y2, 0)} color={0xffff00} />
+                </group>
+              )}
+            />
             <p>
-              <MathJax.Node inline>x_1</MathJax.Node> = {truncate(x1, 2).toFixed(2)}{' '}
-              <MathJax.Node inline>y_1</MathJax.Node> = {truncate(y1, 2).toFixed(2)}
+              <Tweakable {...lambda}>
+                <MathJax.Node inline>x_1 = </MathJax.Node>
+              </Tweakable>{' '}
+              <MathJax.Node inline>x_2 = 0</MathJax.Node>
             </p>
             <p>
-              <MathJax.Node inline>x_2</MathJax.Node> = {truncate(x2, 2).toFixed(2)}{' '}
-              <MathJax.Node inline>y_2</MathJax.Node> = {truncate(y2, 2).toFixed(2)}
-            </p>
-            <p>
-              <MathJax.Node inline>\lambda</MathJax.Node> = {truncate(lambda, 2).toFixed(2)}
+              <MathJax.Node inline>y_1 = 2</MathJax.Node>{' '}
+              <Tweakable {...lambda}>
+                <MathJax.Node inline>y_2 = </MathJax.Node>
+              </Tweakable>
             </p>
             <p>
               <MathJax.Node inline>
                 {'\\det \\begin{pmatrix} x_1 & x_2 \\\\ y_1 & y_2\\end{pmatrix}'}
-              </MathJax.Node> = {truncate((x1 * y2) - (y1 * x1), 2).toFixed(2)}
+              </MathJax.Node> = {((x1 * y2) - (y1 * x2)).toFixed(2)}
             </p>
           </div>
         );
@@ -184,21 +153,15 @@ const EigenvaluesSection = () => (
       along the x-axis but scales by two along the y-axis has{' '}
       <MathJax.Node inline>\lambda = 1</MathJax.Node>
     </p>
-    <Animation
-      initial={{
-        time: 0,
+    <InterpolatedAnimation
+      values={{
+        lambda: { begin: 0, end: 1 },
       }}
-      update={(state) => ({
-        time: state.time + 1,
-      })}
-      render={(state) => {
-        const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
-        const lambda = lerp;
-        const x1 = 1 - lambda;
+      render={({ lambda }) => {
+        const x1 = 1 - lambda.value;
         const y1 = 2;
         const x2 = 0;
-        const y2 = 2 - lambda;
-
+        const y2 = 2 - lambda.value;
 
         const mat = new Matrix4();
         mat.set(x1, y1, 0, 0,
@@ -206,44 +169,33 @@ const EigenvaluesSection = () => (
                 0, 0, 1, 0,
                 0, 0, 0, 1);
 
-        const planeGeometry = new PlaneGeometry(1, 1);
-        planeGeometry.translate(0.5, 0.5, 0.0);
-        planeGeometry.applyMatrix(mat);
-
         return (
           <div>
-            <Visualization width={320} height={240}>
-              <XAxis />
-              <YAxis />
-              <group>
-                <mesh>
-                  <geometry
-                    vertices={planeGeometry.vertices}
-                    faces={planeGeometry.faces}
-                    colors={planeGeometry.colors}
-                    faceVertexUvs={planeGeometry.faceVertexUvs}
-                  />
-                  <meshBasicMaterial color={0xff00ff} opacity={0.8} />
-                </mesh>
-                <Vector position={new Vector3(x1, x2, 0)} color={0xffff00} />
-                <Vector position={new Vector3(y1, y2, 0)} color={0xffff00} />
-              </group>
-            </Visualization>
+            <AxisVisualization2D
+              render={() => (
+                <group>
+                  <SpanningPlane2D matrix={mat} />
+                  <Vector position={new Vector3(x1, x2, 0)} color={0xffff00} />
+                  <Vector position={new Vector3(y1, y2, 0)} color={0xffff00} />
+                </group>
+              )}
+            />
             <p>
-              <MathJax.Node inline>x_1</MathJax.Node> = {truncate(x1, 2).toFixed(2)}{' '}
-              <MathJax.Node inline>y_1</MathJax.Node> = {truncate(y1, 2).toFixed(2)}
+              <Tweakable {...lambda}>
+                <MathJax.Node inline>x_1 = </MathJax.Node>
+              </Tweakable>{' '}
+              <MathJax.Node inline>x_2 = 2</MathJax.Node>
             </p>
             <p>
-              <MathJax.Node inline>x_2</MathJax.Node> = {truncate(x2, 2).toFixed(2)}{' '}
-              <MathJax.Node inline>y_2</MathJax.Node> = {truncate(y2, 2).toFixed(2)}
-            </p>
-            <p>
-              <MathJax.Node inline>\lambda</MathJax.Node> = {truncate(lambda, 2).toFixed(2)}
+              <MathJax.Node inline>y_1 = 0</MathJax.Node>{' '}
+              <Tweakable {...lambda}>
+                <MathJax.Node inline>y_2 = </MathJax.Node>
+              </Tweakable>
             </p>
             <p>
               <MathJax.Node inline>
                 {'\\det \\begin{pmatrix} x_1 & x_2 \\\\ y_1 & y_2\\end{pmatrix}'}
-              </MathJax.Node> = {truncate((x1 * y2) - (y1 * x1), 2).toFixed(2)}
+              </MathJax.Node> = {((x1 * y2) - (y1 * x2)).toFixed(2)}
             </p>
           </div>
         );
@@ -252,21 +204,15 @@ const EigenvaluesSection = () => (
     <p>
       And it also has <MathJax.Node>\lambda = 2</MathJax.Node>
     </p>
-    <Animation
-      initial={{
-        time: 0,
+    <InterpolatedAnimation
+      values={{
+        lambda: { begin: 0, end: 2 },
       }}
-      update={(state) => ({
-        time: state.time + 1,
-      })}
-      render={(state) => {
-        const lerp = Math.max(Math.sin(state.time * 0.05) + 1, 0) / 2;
-        const lambda = lerp * 2;
-        const x1 = 1 - lambda;
+      render={({ lambda }) => {
+        const x1 = 1 - lambda.value;
         const y1 = 2;
         const x2 = 0;
-        const y2 = 2 - lambda;
-
+        const y2 = 2 - lambda.value;
 
         const mat = new Matrix4();
         mat.set(x1, y1, 0, 0,
@@ -274,44 +220,33 @@ const EigenvaluesSection = () => (
                 0, 0, 1, 0,
                 0, 0, 0, 1);
 
-        const planeGeometry = new PlaneGeometry(1, 1);
-        planeGeometry.translate(0.5, 0.5, 0.0);
-        planeGeometry.applyMatrix(mat);
-
         return (
           <div>
-            <Visualization width={320} height={240}>
-              <XAxis />
-              <YAxis />
-              <group>
-                <mesh>
-                  <geometry
-                    vertices={planeGeometry.vertices}
-                    faces={planeGeometry.faces}
-                    colors={planeGeometry.colors}
-                    faceVertexUvs={planeGeometry.faceVertexUvs}
-                  />
-                  <meshBasicMaterial color={0xff00ff} opacity={0.8} />
-                </mesh>
-                <Vector position={new Vector3(x1, x2, 0)} color={0xffff00} />
-                <Vector position={new Vector3(y1, y2, 0)} color={0xffff00} />
-              </group>
-            </Visualization>
+            <AxisVisualization2D
+              render={() => (
+                <group>
+                  <SpanningPlane2D matrix={mat} />
+                  <Vector position={new Vector3(x1, x2, 0)} color={0xffff00} />
+                  <Vector position={new Vector3(y1, y2, 0)} color={0xffff00} />
+                </group>
+              )}
+            />
             <p>
-              <MathJax.Node inline>x_1</MathJax.Node> = {truncate(x1, 2).toFixed(2)}{' '}
-              <MathJax.Node inline>y_1</MathJax.Node> = {truncate(y1, 2).toFixed(2)}
+              <Tweakable {...lambda}>
+                <MathJax.Node inline>x_1 = </MathJax.Node>
+              </Tweakable>{' '}
+              <MathJax.Node inline>x_2 = 2</MathJax.Node>
             </p>
             <p>
-              <MathJax.Node inline>x_2</MathJax.Node> = {truncate(x2, 2).toFixed(2)}{' '}
-              <MathJax.Node inline>y_2</MathJax.Node> = {truncate(y2, 2).toFixed(2)}
-            </p>
-            <p>
-              <MathJax.Node inline>\lambda</MathJax.Node> = {truncate(lambda, 2).toFixed(2)}
+              <MathJax.Node inline>y_1 = 0</MathJax.Node>{' '}
+              <Tweakable {...lambda}>
+                <MathJax.Node inline>y_2 = </MathJax.Node>
+              </Tweakable>
             </p>
             <p>
               <MathJax.Node inline>
                 {'\\det \\begin{pmatrix} x_1 & x_2 \\\\ y_1 & y_2\\end{pmatrix}'}
-              </MathJax.Node> = {truncate((x1 * y2) - (y1 * x1), 2).toFixed(2)}
+              </MathJax.Node> = {((x1 * y2) - (y1 * x2)).toFixed(2)}
             </p>
           </div>
         );
