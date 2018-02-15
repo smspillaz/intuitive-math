@@ -10,6 +10,7 @@ import PropTypes from 'prop-types';
 
 import MathJax from 'react-mathjax';
 
+import CenteredParagraph from 'components/CenteredParagraph';
 import MathJaxMatrix from 'components/MathJaxMatrix';
 import TriplePlanes from 'components/TriplePlanes';
 
@@ -20,7 +21,7 @@ const adjust3PointPlane = (planeDefinition) =>
 
 const EROVisualization = ({ first, second, third, ...props }) => (
   <div>
-    <p style={{ textAlign: 'center' }}>
+    <CenteredParagraph>
       <MathJaxMatrix
         inline
         matrix={[
@@ -36,7 +37,7 @@ const EROVisualization = ({ first, second, third, ...props }) => (
           <MathJaxMatrix inline matrix={[[first[3]], [second[3]], [third[3]]]} />
         </span>
       ) : <span />}
-    </p>
+    </CenteredParagraph>
     <TriplePlanes
       first={adjust3PointPlane(first)}
       second={adjust3PointPlane(second)}
