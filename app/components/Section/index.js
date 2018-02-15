@@ -13,8 +13,12 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const Padding = styled.div`
-  margin: ${akGridSizeUnitless * 4}px ${akGridSizeUnitless * 8}px;
+  margin: 0;
   padding-bottom: ${akGridSizeUnitless * 3}px;
+
+  @media(min-width: 800px) {
+    margin: ${akGridSizeUnitless * 4}px ${akGridSizeUnitless * 8}px;
+  }
 `;
 
 const SectionContent = ({ children }) => (
