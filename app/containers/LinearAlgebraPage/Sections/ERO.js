@@ -11,6 +11,7 @@ import MathJax from 'react-mathjax';
 import { Vector3 } from 'three';
 
 import AxisVisualization3D from 'components/AxisVisualization3D';
+import CenteredParagraph from 'components/CenteredParagraph';
 import EROVisualization from 'components/EROVisualization';
 import InterpolatedAnimation from 'components/InterpolatedAnimation';
 import MathJaxMatrix from 'components/MathJaxMatrix';
@@ -37,12 +38,12 @@ const EROSection = () => (
       to and from each other. Or we could express the entire system as a
       matrix-vector product and try to solve for the vector in the middle:
     </p>
-    <p>
+    <CenteredParagraph>
       <MathJaxMatrix inline matrix={[[1, 1, 0], [1, 0, -1], [0, 1, -1]]} />
       <MathJaxMatrix inline matrix={[['x'], ['y'], ['z']]} />
       <MathJax.Node inline>=</MathJax.Node>
       <MathJaxMatrix inline matrix={[[2], [1], [0]]} />
-    </p>
+    </CenteredParagraph>
     <p>
       If you visualize the three planes in the system, you will notice that they
       intersect at a point.

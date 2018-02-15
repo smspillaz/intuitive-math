@@ -11,6 +11,7 @@ import MathJax from 'react-mathjax';
 import { Matrix4, Vector3, Vector4 } from 'three';
 
 import AxisVisualization2D from 'components/AxisVisualization2D';
+import CenteredParagraph from 'components/CenteredParagraph';
 import InterpolatedAnimation from 'components/InterpolatedAnimation';
 import MathJaxMatrix from 'components/MathJaxMatrix';
 import Section from 'components/Section';
@@ -156,16 +157,16 @@ const EigenvectorsSection = () => (
     <p>
       First, solve for <MathJax.Node inline>\lambda = 1</MathJax.Node>
     </p>
-    <p>
+    <CenteredParagraph>
       <MathJaxMatrix inline matrix={[['1 - 1', '2'], ['0', '2 - 1']]} />
       <MathJaxMatrix inline matrix={[['v_1'], ['v_2']]} />
       = <MathJaxMatrix inline matrix={[[0], [0]]} />
-    </p>
-    <p>
+    </CenteredParagraph>
+    <CenteredParagraph>
       <MathJaxMatrix inline matrix={[[0, 2], [0, 1]]} />
       <MathJaxMatrix inline matrix={[['v_1'], ['v_2']]} />
       = <MathJaxMatrix inline matrix={[[0], [0]]} />
-    </p>
+    </CenteredParagraph>
     <p>
       This matrix cannot be reduced any further by elementary row operations.
       Multiplying out the first row, we
@@ -188,16 +189,16 @@ const EigenvectorsSection = () => (
       Eigenvector, for Eigenvalue <MathJax.Node inline>\lambda = 1</MathJax.Node>. Lets now
       have a look at <MathJax.Node inline>\lambda = 2</MathJax.Node>
     </p>
-    <p>
+    <CenteredParagraph>
       <MathJaxMatrix inline matrix={[['1 - 2', '2'], ['0', '2 - 2']]} />
       <MathJaxMatrix inline matrix={[['v_1'], ['v_2']]} />
       = <MathJaxMatrix inline matrix={[[0], [0]]} />
-    </p>
-    <p>
+    </CenteredParagraph>
+    <CenteredParagraph>
       <MathJaxMatrix inline matrix={[[-1, 2], [0, 0]]} />
       <MathJaxMatrix inline matrix={[['v_1'], ['v_2']]} />
       = <MathJaxMatrix inline matrix={[[0], [0]]} />
-    </p>
+    </CenteredParagraph>
     <p>
       In this case we have no free variables and an equation by
       examining the first row again:
@@ -251,16 +252,16 @@ const EigenvectorsSection = () => (
       Here we have a single Eigenvalue with algebraic multiplicity 2. If we were to
       solve for the Eigenvectors with this Eigenvalue, we would have:
     </p>
-    <p>
+    <CenteredParagraph>
       <MathJaxMatrix inline matrix={[['1 - 1', '1'], ['0', '1 - 1']]} />
       <MathJaxMatrix inline matrix={[['v_1'], ['v_2']]} />
       = <MathJaxMatrix inline matrix={[[0], [0]]} />
-    </p>
-    <p>
+    </CenteredParagraph>
+    <CenteredParagraph>
       <MathJaxMatrix inline matrix={[[0, 1], [0, 0]]} />
       <MathJaxMatrix inline matrix={[['v_1'], ['v_2']]} />
       = <MathJaxMatrix inline matrix={[[0], [0]]} />
-    </p>
+    </CenteredParagraph>
     <MathJax.Node>
       v_2 = 0
     </MathJax.Node>

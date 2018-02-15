@@ -14,6 +14,7 @@ import { XAxis, YAxis } from 'components/Axis';
 import AxisVisualization1D from 'components/AxisVisualization1D';
 import AxisVisualization2D from 'components/AxisVisualization2D';
 import AxisVisualization3D from 'components/AxisVisualization3D';
+import CenteredParagraph from 'components/CenteredParagraph';
 import MathJaxMatrix from 'components/MathJaxMatrix';
 import InterpolatedAnimation, { cosineInterpolator, sineInterpolator } from 'components/InterpolatedAnimation';
 import Section from 'components/Section';
@@ -187,11 +188,11 @@ const VectorsSection = () => (
       Addition and subtraction on vectors is defined in the usual sense. Analytically
       we just add each component and create a new vector.
     </p>
-    <p>
+    <CenteredParagraph>
       <MathJaxMatrix matrix={[[1], [2], [3]]} inline />{'+ '}
       <MathJaxMatrix matrix={[[1], [2], [3]]} inline />{'= '}
       <MathJaxMatrix matrix={[[2], [4], [6]]} inline />
-    </p>
+    </CenteredParagraph>
     <p>
       Geometrically you can think of this as adding head to tail, or following
       the steps indicated by the first vector, then following the steps

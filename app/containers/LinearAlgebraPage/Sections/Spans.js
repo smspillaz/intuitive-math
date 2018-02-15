@@ -11,6 +11,7 @@ import MathJax from 'react-mathjax';
 import { Vector3 } from 'three';
 
 import AxisVisualization2D from 'components/AxisVisualization2D';
+import CenteredParagraph from 'components/CenteredParagraph';
 import InterpolatedAnimation from 'components/InterpolatedAnimation';
 import MathJaxMatrix from 'components/MathJaxMatrix';
 import Section from 'components/Section';
@@ -48,10 +49,10 @@ const SpansSection = () => (
         </group>
       )}
     />
-    <p>
+    <CenteredParagraph>
       <MathJaxMatrix matrix={[[1], [0]]} inline />{' '}
       <MathJaxMatrix matrix={[[0], [1]]} inline />
-    </p>
+    </CenteredParagraph>
     <p>
       The span of these two vectors is all of 2D space. The reason for that
       is that you can give me any 2D point and I can tell you two scalar multiples
