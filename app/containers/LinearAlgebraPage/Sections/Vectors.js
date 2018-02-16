@@ -212,7 +212,7 @@ const VectorsSection = () => (
 
         return (
           <div>
-            <Visualization width={320} height={240}>
+            <Visualization>
               <XAxis />
               <YAxis />
               <Vector position={a} color={0xffff00} />
@@ -256,7 +256,7 @@ const VectorsSection = () => (
 
         return (
           <div>
-            <Visualization width={320} height={240}>
+            <Visualization>
               <XAxis />
               <YAxis />
               <Vector position={a} color={0xffff00} />

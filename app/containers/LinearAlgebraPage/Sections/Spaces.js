@@ -49,7 +49,7 @@ const SpacesSection = () => (
         In the <Strong>first</Strong> dimension you would just have a number
         line made up of every possible point:
       </p>
-      <BlankableVisualization width={320} height={240}>
+      <BlankableVisualization>
         <XAxis />
       </BlankableVisualization>
       <p>
