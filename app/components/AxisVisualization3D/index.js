@@ -14,7 +14,7 @@ import Animation from 'components/Animation';
 import { XAxis, YAxis, ZAxis } from 'components/Axis';
 import Visualization from 'components/Visualization';
 
-const AxisVisualization3D = ({ render, width = 320, height = 240, rotationRate = 0.001 }) => (
+const AxisVisualization3D = ({ render, rotationRate = 0.001 }) => (
   <Animation
     initial={{ rotation: new Euler(0.5, 0.5, 0) }}
     update={(state) => ({
@@ -23,7 +23,7 @@ const AxisVisualization3D = ({ render, width = 320, height = 240, rotationRate =
                           state.rotation.z),
     })}
     render={(state) => (
-      <Visualization width={width} height={height} rotation={state.rotation}>
+      <Visualization rotation={state.rotation}>
         <XAxis />
         <YAxis />
         <ZAxis />
@@ -36,8 +36,6 @@ const AxisVisualization3D = ({ render, width = 320, height = 240, rotationRate =
 AxisVisualization3D.propTypes = {
   render: PropTypes.func,
   rotationRate: PropTypes.number,
-  width: PropTypes.number,
-  height: PropTypes.number,
 };
 
 export default AxisVisualization3D;
