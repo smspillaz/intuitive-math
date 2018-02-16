@@ -28,7 +28,7 @@ const EigenvaluesSection = () => (
       them intuitively.
     </p>
     <p>
-      Briefly speaking, the <Strong>Eigenvalues</Strong> of a square matrix translates to
+      Briefly speaking, the <Strong>Eigenvalues</Strong> of a square matrix translates to{' '}
       <Strong>own values</Strong>. They are the special values which encode what happens to the
       Eigenvectors of the matrix when it is applied as a transformation. This description
       probably also does not help very much either if we do not have a clear understanding
