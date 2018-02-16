@@ -149,7 +149,7 @@ const BasisSection = () => (
         zyInterp: { begin: 0, end: 1 },
       }}
       render={({ xyInterp, xzInterp, yxInterp, yzInterp, zxInterp, zyInterp }) => (
-        <Visualization width={320} height={240} >
+        <Visualization>
           <Axis basis={[1, xyInterp.value, xzInterp.value]} extents={[-10, 10]} color={0xff0000} />
           <Axis basis={[yxInterp.value, 1, yzInterp.value]} extents={[-10, 10]} color={0x00ff00} />
           <Axis basis={[zxInterp.value, zyInterp.value, 1]} extents={[-10, 10]} color={0x0000ff} />

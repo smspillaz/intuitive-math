@@ -59,7 +59,7 @@ const DeterminantSection = () => (
         rot.makeRotationFromEuler(new Euler(0.5, 0.5, 0));
 
         return (
-          <Visualization width={320} height={240} matrix={rot.multiply(mat)}>
+          <Visualization matrix={rot.multiply(mat)}>
             <XAxis />
             <YAxis />
             <ZAxis />
@@ -95,7 +95,7 @@ const DeterminantSection = () => (
         rot.makeRotationFromEuler(new Euler(0.5, 0.5, 0));
 
         return (
-          <Visualization width={320} height={240} matrix={rot.multiply(mat)}>
+          <Visualization matrix={rot.multiply(mat)}>
             <XAxis />
             <YAxis />
             <ZAxis />
@@ -138,7 +138,7 @@ const DeterminantSection = () => (
         rot.makeRotationFromEuler(new Euler(0.5, 0.5, 0));
 
         return (
-          <Visualization width={320} height={240} matrix={rot.multiply(mat)}>
+          <Visualization matrix={rot.multiply(mat)}>
             <XAxis />
             <YAxis />
             <ZAxis />
@@ -260,7 +260,7 @@ const DeterminantSection = () => (
 
         return (
           <div>
-            <Visualization width={320} height={240}>
+            <Visualization>
               <XAxis />
               <YAxis />
               <group>
@@ -307,7 +307,7 @@ const DeterminantSection = () => (
 
         return (
           <div>
-            <Visualization width={320} height={240}>
+            <Visualization>
               <XAxis />
               <YAxis />
               <group>
