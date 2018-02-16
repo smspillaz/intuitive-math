@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import styled from 'styled-components';
 
+import Media from 'react-media';
 import TrackVisibility from 'react-on-screen';
 import React3 from 'react-three-renderer';
 import { Vector3 } from 'three';
@@ -34,9 +35,13 @@ const Overlay = styled.div`
 
 const OverlayParent = styled.div`
   position: relative;
-  width: 320px;
+  width: ${(props) => props.width};
   display: inline-block;
 `;
+
+OverlayParent.propTypes = {
+  width: PropTypes.number.isRequired,
+};
 
 const TweenOverlayVisualization = ({ width, height, rotation, position, matrix, children, overlayOpacity }) => (
   <Centered>
@@ -180,14 +185,67 @@ class Visualization extends React.Component {
   }
 }
 
+// eslint-disable-next-line react/prop-types
+const SizesForMediaQueries = (Component) => ({ queries, ...props }) => (
+  <div>
+    {queries.map(({ query, width, height }) => (
+      <Media query={query} key={query}>
+        {(matches) => matches ? <Component width={width} height={height} {...props} /> : <span />}
+      </Media>
+    ))}
+  </div>
+);
+
+SizesForMediaQueries.propTypes = {
+  queries: PropTypes.arrayOf(PropTypes.shape({
+    query: PropTypes.string.isRequired,
+    width: PropTypes.number.isRequired,
+    height: PropTypes.number.isRequired,
+  })).isRequired,
+};
+
+const SizedVisualization = SizesForMediaQueries(Visualization);
+
+const visualizationSizes = [
+  {
+    query: '(max-width: 320px)',
+    width: 280,
+    height: 215,
+  },
+  {
+    query: '(max-width: 800px) and (min-width: 321px)',
+    width: 320,
+    height: 240,
+  },
+  {
+    query: '(min-width: 801px)',
+    width: 420,
+    height: 320,
+  },
+];
+
+const OptionallySizedVisualization = (props) => (
+  <div>
+    {props.width ? (
+      <Visualization {...props} />
+    ) : (
+      <SizedVisualization queries={visualizationSizes} {...props} />
+    )}
+  </div>
+);
+
+OptionallySizedVisualization.propTypes = {
+  width: PropTypes.number,
+};
+
 export const BlankableVisualization = (props) => (
   <TrackVisibility offset={100}>
-    {({ isVisible }) => <Visualization {...props} animationIsRunning={isVisible} />}
+    {({ isVisible }) => <OptionallySizedVisualization {...props} animationIsRunning={isVisible} />}
   </TrackVisibility>
 );
 
 const BlankableByContextVisualization = (props, { animationIsRunning = true }) => (
-  <Visualization animationIsRunning={animationIsRunning} {...props} />
+  <OptionallySizedVisualization animationIsRunning={animationIsRunning} {...props} />
 );
 
 BlankableByContextVisualization.contextTypes = {
