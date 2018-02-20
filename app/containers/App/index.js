@@ -25,6 +25,7 @@ import { AtlaskitThemeProvider } from '@atlaskit/theme';
 const sections = [
   {
     title: 'Main',
+    numbered: false,
     children: [
       {
         text: 'Home',
@@ -34,6 +35,7 @@ const sections = [
   },
   {
     title: 'Linear Algebra',
+    numbered: true,
     children: [
       {
         text: 'Co-ordinate Systems',

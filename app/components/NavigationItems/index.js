@@ -16,8 +16,12 @@ const NavigationItems = ({ sections }) => (
   <div>
     {sections.map((section) => (
       <AkNavigationItemGroup title={section.title} key={section.title}>
-        {section.children.map((child) => (
-          <AkNavigationItem text={child.text} href={child.href} key={child.href} />
+        {section.children.map((child, index) => (
+          <AkNavigationItem
+            text={section.numbered ? `${index + 1}) ${child.text}` : child.text}
+            href={child.href}
+            key={child.href}
+          />
          ))}
       </AkNavigationItemGroup>
      ))}
