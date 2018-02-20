@@ -24,6 +24,15 @@ import { AtlaskitThemeProvider } from '@atlaskit/theme';
 
 const sections = [
   {
+    title: 'Main',
+    children: [
+      {
+        text: 'Home',
+        href: '/',
+      },
+    ],
+  },
+  {
     title: 'Linear Algebra',
     children: [
       {
