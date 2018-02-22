@@ -11,10 +11,12 @@ module.exports = require('./webpack.prod.babel')({
   externals: [nodeExternals()],
 
   output: {
-    filename: 'lambda.js',
+    filename: 'prodLambda.js',
     libraryTarget: 'umd',
     library: 'lambda',
-    path: path.join(process.cwd(), 'build'),
+    // Needs to go in process.cwd in order to be imported
+    // correctly from lambda
+    path: path.join(process.cwd()),
   },
 
   target: 'node',
