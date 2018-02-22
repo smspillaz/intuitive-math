@@ -112,6 +112,7 @@ module.exports = (options) => ({
     ],
   },
   devtool: options.devtool,
-  target: 'web', // Make web variables accessible to webpack, e.g. window
+  target: options.target || 'web', // Make web variables accessible to webpack, e.g. window
+  externals: options.externals || [],
   performance: options.performance || {},
 });
