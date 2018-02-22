@@ -25,7 +25,7 @@ env:
     - secure: f6S9OA3Bdq+PYDZDi3R9T8/3sRe2s/dY98eI7eFHTwVdl+8mnu2Gg7EikHab/vxrcnvOiY8Blbba5GluP4MGBGNclAVGd25Sluaq+2iKb1a8j7GS4nj2GjHLHyjOWHdMFS0UPrD5rSx+dMYS4+tHv24ChjSSP0/iFsjwpXNnn7xLGZ+QC4hlhIAlGs6Ua1kQBOnhejRCv5CUbD/XQaPfBsT8sjgtDj/oERmFlv/cAh9mdnbFGEj/AeVqGlTUscX9w/RHT4Uodu8ucFYr8sIbwR9KkdIU/2LMwZIXfV/gk8WKdlrmhfItjDuSEzZsRv/zZkdmUABXOmSacxKjLzAG4Yx+WyLhMjO01PGjg9AK4Y2TuIOAI4GjTx9mor3YYzWQHjR7DK4QD6r64FgtvrUboTYZGiRgstXxXppqUygKeIrSVMXUSpGbjcO5yI95xUMt9zML5caLjdOMEondB/Gs6g0UJ9FfZxs/FgS35jXzYyyOq8xvNi9xxIvfzSePWQUxkj/2zjmfy0RhOw1bcPWPlXYYizAP1G7eWUd91BUtRtj9IQ2vtOiRR5bo6T1x4Hnzy9BfgAjDq0cs6ocE+NwXB6VeB4ezwXSaDdRpk8Sdu/e7Aukg3gysXE/1nlV17qSPRcz4BYQDJiTK5KFPQOS/Tfc2aSY0vZIUp5GyZ9QpHR0=
 deploy:
   provider: script
-  script: travis_wait bash scripts/deploy.sh
+  script: bash scripts/deploy.sh
   on:
     branch: master
     node_js: '7'
