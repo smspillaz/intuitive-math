@@ -248,6 +248,7 @@
     "styled-components": "2.0.0",
     "three": "^0.89.0",
     "warning": "3.0.0",
+    "webpack-node-externals": "^1.6.0",
     "whatwg-fetch": "2.0.3"
   },
   "devDependencies": {
