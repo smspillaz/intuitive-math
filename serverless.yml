@@ -4,7 +4,7 @@ provider:
   runtime: nodejs6.10
 functions:
   api:
-    handler: lambda.handler
+    handler: ./prodLambda.handler
     environment:
       NODE_ENV: production
     events:
