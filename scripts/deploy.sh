@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x
 
 # We'll need to set up our credentials
 mkdir -p ../intuimath-credentials/config/app/
