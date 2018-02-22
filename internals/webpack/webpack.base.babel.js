@@ -16,6 +16,8 @@ module.exports = (options) => ({
   output: Object.assign({ // Compile into js/build.js
     path: path.resolve(process.cwd(), 'build'),
     publicPath: '/',
+    libraryTarget: options.libraryTarget,
+    library: options.library,
   }, options.output), // Merge with env dependent settings
   module: {
     rules: [
