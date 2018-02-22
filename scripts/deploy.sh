@@ -1,6 +1,8 @@
 #!/bin/bash
 
 # We'll need to set up our credentials
+mkdir -p ../intuimath-credentials/config/app/
+
 echo <<< EOL
 credentials:
   accessKeyId: ${AWS_ACCESS_KEY_ID}
