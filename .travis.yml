@@ -1,5 +1,4 @@
 language: node_js
-
 node_js:
   - 9
   - 8
@@ -8,18 +7,14 @@ script:
   - node ./internals/scripts/generate-templates-for-linting
   - npm test -- --maxWorkers=4
   - npm run build
-
 before_install:
-  - export CHROME_BIN=chromium-browser
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
-
+- export CHROME_BIN=chromium-browser
+- export DISPLAY=:99.0
+- sh -e /etc/init.d/xvfb start
 notifications:
   email:
     on_failure: change
-
-after_success: 'npm run coveralls'
-
+after_success: npm run coveralls
 cache:
   yarn: true
   directories:
@@ -28,3 +23,8 @@ env:
   global:
     - secure: iu+ASL+6HROx+tpqCfTdL97/GPYl4aj12WxdZy+F0SgaKP3m9/W3yAxQi7xg653l0EAkNJrV+SgghWJXAp/u9//wJCZPp00hWCGhS4rw1i15Q6JAtxo+kgLfGNRX8YaHU+oTzsUbj+zB7MFp7sSUJyk52M0+Q/PLbsv0dvq2b84/lcyaPxiEhJG/MbaxyEHT+PO7JsI3o/WyScyjy3gKlLoTsoANlTshXgIOygyIv22hjJGZ4PxC2OWsn3idqSFH2U1QocJ9RmrKV3U+BVN+EbEpwdabedYb25gllZU+7cWlUhMELWlclcfMPpQpVVTIh7gPMBJAUARgQSIUivI/fRaAEZ4SzklQ0z9ngcArgDJHZMBaUr+uhIjp6R28unWXWelFRAOIS/OPnqMlQSig7bNID8OUsmEPqUyxXDVQOokApnBNb3w0z/69j33j8AtiLxDPReneKLXsstQO1yA4BwDBGSoUV1E7lE5Y3+o5mBUMi6+/HVTQgsMF8L70jgujatQolXDRW0h016DTzvpYuEL2dBf90fxKu7lp0kecXq2FJ7yQBdV422D/pPvmFqd0xxNkwLQxXjcqah3ICOBjmTyinnvGS1RfRU4icOzy8ZiKQJc2Agt48FeJBDGw+RRr18AfBpVQT/VHxy/BxgSkvDxclL6QDgtZH8R4SGoPoP8=
     - secure: f6S9OA3Bdq+PYDZDi3R9T8/3sRe2s/dY98eI7eFHTwVdl+8mnu2Gg7EikHab/vxrcnvOiY8Blbba5GluP4MGBGNclAVGd25Sluaq+2iKb1a8j7GS4nj2GjHLHyjOWHdMFS0UPrD5rSx+dMYS4+tHv24ChjSSP0/iFsjwpXNnn7xLGZ+QC4hlhIAlGs6Ua1kQBOnhejRCv5CUbD/XQaPfBsT8sjgtDj/oERmFlv/cAh9mdnbFGEj/AeVqGlTUscX9w/RHT4Uodu8ucFYr8sIbwR9KkdIU/2LMwZIXfV/gk8WKdlrmhfItjDuSEzZsRv/zZkdmUABXOmSacxKjLzAG4Yx+WyLhMjO01PGjg9AK4Y2TuIOAI4GjTx9mor3YYzWQHjR7DK4QD6r64FgtvrUboTYZGiRgstXxXppqUygKeIrSVMXUSpGbjcO5yI95xUMt9zML5caLjdOMEondB/Gs6g0UJ9FfZxs/FgS35jXzYyyOq8xvNi9xxIvfzSePWQUxkj/2zjmfy0RhOw1bcPWPlXYYizAP1G7eWUd91BUtRtj9IQ2vtOiRR5bo6T1x4Hnzy9BfgAjDq0cs6ocE+NwXB6VeB4ezwXSaDdRpk8Sdu/e7Aukg3gysXE/1nlV17qSPRcz4BYQDJiTK5KFPQOS/Tfc2aSY0vZIUp5GyZ9QpHR0=
+deploy:
+  provider: script
+  script: bash scripts/deploy.sh
+  on:
+    branch: master
