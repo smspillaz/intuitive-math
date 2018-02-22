@@ -67,7 +67,9 @@
     "env": {
       "production": {
         "only": [
-          "app"
+          "app",
+          "internals",
+          "server"
         ],
         "plugins": [
           "transform-react-remove-prop-types",
