@@ -28,3 +28,4 @@ deploy:
   script: bash scripts/deploy.sh
   on:
     branch: master
+    node_js: '7'
