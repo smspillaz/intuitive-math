@@ -11,7 +11,7 @@ staging:
   NODE_ENV: production
 production:
   NODE_ENV: production
-EOL >> ../intuimath-config/config/app/env.yml
+EOL >> ../intuimath-credentials/config/app/env.yml
 
 yarn install
 yarn build:dll
