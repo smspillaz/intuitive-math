@@ -1,5 +1,11 @@
 #!/bin/bash
-set -x
+progress() {
+  while true
+  do
+    echo -n "."
+    sleep 5
+  done
+}
 
 # We'll need to set up our credentials
 mkdir -p ../intuimath-credentials/config/app/
@@ -16,7 +22,12 @@ production:
   NODE_ENV: production
 EOL >> ../intuimath-credentials/config/app/env.yml
 
+progress &
+PROGRESS=$!
+
 yarn install
 yarn build:dll
 yarn build
 yarn serverless-deploy
+
+kill $PROGRESS >/dev/null 2>&1
