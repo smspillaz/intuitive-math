@@ -54,6 +54,9 @@ module.exports = require('./webpack.base.babel')({
 
   optimization: {
     minimize: false,
+    splitChunks: {
+      cacheGroups: {},
+    },
   },
 
   // Add development plugins
