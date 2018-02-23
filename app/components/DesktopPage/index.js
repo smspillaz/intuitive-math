@@ -10,10 +10,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import NavigationItems from 'components/NavigationItems';
+import Navigation, { AkContainerTitle } from 'components/MonkeyPatchedNavigation';
 
 import GraphLineIcon from '@atlaskit/icon/glyph/graph-line';
 import Page from '@atlaskit/page';
-import Navigation, { AkContainerTitle } from '@atlaskit/navigation';
 
 const DesktopNavigator = ({ title, sections }) => (
   <Navigation
