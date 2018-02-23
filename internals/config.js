@@ -29,6 +29,7 @@ const ReactBoilerplate = {
         'ip',
         'minimist',
         'sanitize.css',
+        'webpack-node-externals',
       ],
 
       /**
