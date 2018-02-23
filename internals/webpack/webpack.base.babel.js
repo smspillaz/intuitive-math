@@ -94,9 +94,13 @@ module.exports = (options) => ({
     // inside your code for any environment checks; UglifyJS will automatically
     // drop any unreachable code.
     new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify(process.env.NODE_ENV),
-      },
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+      // Put a define in place if we're server-side rendering
+      ...(options.server ? {
+        __SERVER__: true,
+      } : {
+        __SERVER__: false,
+      }),
     }),
     new webpack.NamedModulesPlugin(),
   ]),
