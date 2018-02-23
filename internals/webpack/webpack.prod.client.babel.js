@@ -8,7 +8,7 @@ const { HashedModuleIdsPlugin } = require('webpack');
 const config = require('./webpack.prod.babel')({
   // In production, we skip all hot-reloading stuff
   entry: [
-    path.join(process.cwd(), 'app/app.js'),
+    path.join(process.cwd(), 'app/client.js'),
   ],
 
   // Utilize long-term caching by adding content hashes (not compilation hashes) to compiled assets
