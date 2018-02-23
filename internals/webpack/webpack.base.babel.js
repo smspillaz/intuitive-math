@@ -114,6 +114,14 @@ module.exports = options => ({
     new webpack.EnvironmentPlugin({
       NODE_ENV: 'development',
     }),
+    new webpack.DefinePlugin({
+      // Put a define in place if we're server-side rendering
+      ...(options.server ? {
+        __SERVER__: true,
+      } : {
+        __SERVER__: false,
+      }),
+    }),
   ]),
   resolve: {
     modules: ['node_modules', 'app'],
