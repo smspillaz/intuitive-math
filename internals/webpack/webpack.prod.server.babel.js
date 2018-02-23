@@ -16,4 +16,5 @@ module.exports = require('./webpack.prod.babel')({
   },
 
   target: 'node',
+  server: true,
 });
