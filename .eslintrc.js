@@ -22,6 +22,9 @@ module.exports = {
       jsx: true,
     },
   },
+  globals: {
+    __SERVER__: true,
+  },
   rules: {
     'prettier/prettier': ['error', prettierOptions],
     'arrow-body-style': [2, 'as-needed'],
