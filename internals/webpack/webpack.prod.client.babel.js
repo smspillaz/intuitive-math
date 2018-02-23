@@ -39,7 +39,7 @@ config.plugins.push.apply(config.plugins, [
   // assets manipulations and do leak its manipulations to HtmlWebpackPlugin
   new OfflinePlugin({
     relativePaths: false,
-    publicPath: '/',
+    publicPath: '/static',
 
     // No need to cache .htaccess. See http://mxs.is/googmp,
     // this is applied before any match in `caches` section

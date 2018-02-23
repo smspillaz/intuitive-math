@@ -2,7 +2,7 @@ const path = require('path');
 const express = require('express');
 
 module.exports = function addProdMiddlewares(app, options) {
-  const publicPath = options.publicPath || '/';
+  const publicPath = options.publicPath || '/static';
   const outputPath = options.outputPath || path.resolve(process.cwd(), 'build');
 
   // compression middleware compresses your server responses which makes them
