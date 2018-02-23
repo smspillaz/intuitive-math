@@ -97,6 +97,9 @@
       "jest": true,
       "es6": true
     },
+    "globals": {
+      "__SERVER__": true
+    },
     "plugins": [
       "redux-saga",
       "react",
