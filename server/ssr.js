@@ -1,5 +1,3 @@
-const fs = require('fs');
-
 const React = require('react');
 const ReactDOMServer = require('react-dom/server');
 
@@ -11,7 +9,7 @@ const Root = require('../app/app').default;
 const messages = require('../app/i18n').translationMessages;
 const configureStore = require('../app/configureStore').default;
 
-module.exports = (app) => {
+module.exports = (app, fs, indexHTMLTemplatePath) => {
   app.use((req, res) => {
     // Should not have gotten here, but if we did, the resource
     // was not found
@@ -30,7 +28,7 @@ module.exports = (app) => {
     // This should read the compiled index.html file when running from the
     // webpack bundle and the non-compiled index.html file when running
     // from babel-node
-    fs.readFile('./build/index.html', 'utf8', (err, data) => {
+    fs.readFile(indexHTMLTemplatePath, 'utf8', (err, data) => {
       // Set a dummy user agent based on the request user agent.
       global.navigator = { userAgent: req.headers['user-agent'] };
       res.send(data.replace(/<div id="app">\s*<\/div>/,
