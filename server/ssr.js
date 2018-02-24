@@ -13,6 +13,13 @@ const configureStore = require('../app/configureStore').default;
 
 module.exports = (app) => {
   app.use((req, res) => {
+    // Should not have gotten here, but if we did, the resource
+    // was not found
+    if (req.url.startsWith('/static')) {
+      res.status(404);
+      return;
+    }
+
     const memoryHistory = createMemoryHistory(req.url);
     memoryHistory.push(req.originalUrl);
     const store = configureStore({}, memoryHistory);
