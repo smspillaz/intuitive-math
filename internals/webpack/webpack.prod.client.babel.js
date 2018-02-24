@@ -7,14 +7,28 @@ const { HashedModuleIdsPlugin } = require('webpack');
 
 const config = require('./webpack.prod.babel')({
   // In production, we skip all hot-reloading stuff
-  entry: [
-    path.join(process.cwd(), 'app/client.js'),
-  ],
+  entry: [path.join(process.cwd(), 'app/client.js')],
 
   // Utilize long-term caching by adding content hashes (not compilation hashes) to compiled assets
   output: {
     filename: '[name].[chunkhash].js',
     chunkFilename: '[name].[chunkhash].chunk.js',
+  },
+
+  optimization: {
+    minimize: true,
+    nodeEnv: 'production',
+    sideEffects: true,
+    // We need to disable this until a release
+    // of react-loadable is shipped with:
+    // https://github.com/jamiebuilds/react-loadable/commit/65abc58456a1bf027b883be78fbe32da9d6a4f53
+    //
+    // concatenateModules: true,
+    splitChunks: {
+      chunks: 'all',
+      cacheGroups: {},
+    },
+    runtimeChunk: true,
   },
 });
 
