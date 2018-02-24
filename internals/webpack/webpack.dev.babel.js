@@ -10,7 +10,10 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
 const CircularDependencyPlugin = require('circular-dependency-plugin');
 const logger = require('../../server/logger');
-const pkg = require(path.resolve(process.cwd(), 'package.json'));
+
+// We don't want webpack to try resolving this during builds, use
+// fs.readFileSync instead
+const pkg = JSON.parse(fs.readFileSync((path.resolve(process.cwd(), 'package.json'))));
 const dllPlugin = pkg.dllPlugin;
 
 const plugins = [
@@ -105,7 +108,7 @@ function dependencyHandlers() {
     return [
       new webpack.DllReferencePlugin({
         context: process.cwd(),
-        manifest: require(manifestPath), // eslint-disable-line global-require
+        manifest: JSON.parse(fs.readFileSync(manifestPath)),
       }),
     ];
   }
@@ -126,7 +129,7 @@ function dependencyHandlers() {
 
     return new webpack.DllReferencePlugin({
       context: process.cwd(),
-      manifest: require(manifestPath), // eslint-disable-line global-require
+      manifest: JSON.parse(fs.readFileSync(manifestPath)),
     });
   });
 }
