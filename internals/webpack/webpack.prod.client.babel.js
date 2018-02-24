@@ -43,8 +43,12 @@ const config = require('./webpack.prod.babel')({
     ],
     nodeEnv: 'production',
     sideEffects: true,
-    concatenateModules: true,
     runtimeChunk: 'single',
+    // We need to disable this until a release
+    // of react-loadable is shipped with:
+    // https://github.com/jamiebuilds/react-loadable/commit/65abc58456a1bf027b883be78fbe32da9d6a4f53
+    //
+    // concatenateModules: true,
     splitChunks: {
       chunks: 'all',
       maxInitialRequests: 10,
