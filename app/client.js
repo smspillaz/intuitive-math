@@ -38,6 +38,9 @@ import configureStore from './configureStore';
 // Import root containers
 import Root from './app';
 
+// Import analytics HOC
+import analytics from './analytics';
+
 // Import i18n messages
 import { translationMessages } from './i18n';
 
@@ -59,10 +62,12 @@ const store = configureStore(initialState, history);
 
 const MOUNT_NODE = document.getElementById('app');
 
+const AnalyticsRoot = analytics(Root);
+
 const render = (messages) => {
   Loadable.preloadReady().then(() => {
     ReactDOM.render(
-      <Root messages={messages} history={history} store={store} />,
+      <AnalyticsRoot messages={messages} history={history} store={store} />,
       MOUNT_NODE
     );
   });
