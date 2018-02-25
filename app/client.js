@@ -8,6 +8,7 @@
 // Import all the third party stuff
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Loadable from 'react-loadable';
 import 'sanitize.css/sanitize.css';
 
 import FontFaceObserver from 'fontfaceobserver';
@@ -59,10 +60,12 @@ const store = configureStore(initialState, history);
 const MOUNT_NODE = document.getElementById('app');
 
 const render = (messages) => {
-  ReactDOM.render(
-    <Root messages={messages} history={history} store={store} />,
-    MOUNT_NODE
-  );
+  Loadable.preloadReady().then(() => {
+    ReactDOM.render(
+      <Root messages={messages} history={history} store={store} />,
+      MOUNT_NODE
+    );
+  });
 };
 
 if (module.hot) {
