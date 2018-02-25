@@ -270,5 +270,8 @@
     "svg-url-loader": "2.3.2",
     "url-loader": "1.0.1",
     "webpack-cli": "3.0.8"
+  },
+  "resolutions": {
+    "styled-components": "^3.3.2"
   }
 }
