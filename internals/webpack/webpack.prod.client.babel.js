@@ -1,5 +1,6 @@
 // Important modules this config uses
 const path = require('path');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const OfflinePlugin = require('offline-plugin');
 
@@ -33,6 +34,7 @@ config.plugins.push.apply(config.plugins, [
       minifyURLs: true,
     },
     inject: true,
+    excludeChunks: ['manifest'],
   }),
 
   // Put it in the end to capture all the HtmlWebpackPlugin's
@@ -58,6 +60,11 @@ config.plugins.push.apply(config.plugins, [
     safeToUseOptionalCaches: true,
 
     AppCache: false,
+  }),
+  new webpack.optimize.CommonsChunkPlugin({
+    name: 'manifest',
+    filename: 'manifest.js',
+    minChunks: Infinity,
   }),
 ]);
 
