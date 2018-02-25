@@ -57,6 +57,7 @@
   "pre-commit": "lint:staged",
   "babel": {
     "plugins": [
+      "react-loadable/babel",
       "styled-components"
     ],
     "presets": [
