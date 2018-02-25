@@ -14,6 +14,11 @@ import 'sanitize.css/sanitize.css';
 import '!file-loader?name=[name].[ext]!./images/favicon.ico';
 import 'file-loader?name=.htaccess!./.htaccess'; // eslint-disable-line import/extensions
 
+// Listen for changes to location
+import withLocation from 'components/CaptureLocation';
+
+// Import history creator and store configure func
+import createHistory from 'history/createBrowserHistory';
 import configureStore from './configureStore';
 
 // Import root containers
@@ -39,7 +44,7 @@ const initialState = {};
 const store = configureStore(initialState, history);
 const MOUNT_NODE = document.getElementById('app');
 
-const AnalyticsRoot = analytics(Root);
+const AnalyticsRoot = withLocation(analytics(Root));
 const render = messages => {
   Loadable.preloadReady().then(() => {
     ReactDOM.render(
