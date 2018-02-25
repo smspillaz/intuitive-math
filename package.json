@@ -262,6 +262,7 @@
     "serverless-http": "^1.5.2",
     "styled-components": "^2.4.0",
     "three": "^0.89.0",
+    "uid": "0.0.2",
     "warning": "3.0.0",
     "webpack": "3.5.5",
     "webpack-dev-middleware": "1.11.0",
