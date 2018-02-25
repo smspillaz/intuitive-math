@@ -12,10 +12,10 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import NavigationItems from 'components/NavigationItems';
-import { AkContainerTitle } from 'components/MonkeyPatchedNavigation';
 
 import GraphLineIcon from '@atlaskit/icon/glyph/graph-line';
 import MenuIcon from '@atlaskit/icon/glyph/menu';
+import { AkContainerTitle } from '@atlaskit/navigation';
 
 const MobileNavigationItemsDrawer = styled.div`
   visibility: ${(props) => props.visible ? 'visible' : 'hidden'};
