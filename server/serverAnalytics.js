@@ -8,7 +8,7 @@
 import { metrics } from 'react-metrics';
 import Analytics from 'analytics-node';
 
-const SEGMENT_CLIENT_ID = 'PLACEHOLDER_KEY';
+const SEGMENT_CLIENT_ID = process.env.SEGMENT_CLIENT_ID || 'PLACEHOLDER_KEY';
 
 class SegmentAnalyticsApi {
   constructor() {
