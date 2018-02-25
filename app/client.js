@@ -31,6 +31,9 @@ import '!file-loader?name=[name].[ext]!./manifest.json';
 import 'file-loader?name=[name].[ext]!./.htaccess'; // eslint-disable-line import/extensions
 /* eslint-enable import/no-webpack-loader-syntax */
 
+// Listen for changes to location
+import withLocation from 'components/CaptureLocation';
+
 // Import history creator and store configure func
 import createHistory from 'history/createBrowserHistory';
 import configureStore from './configureStore';
@@ -62,12 +65,16 @@ const store = configureStore(initialState, history);
 
 const MOUNT_NODE = document.getElementById('app');
 
-const AnalyticsRoot = analytics(Root);
+const AnalyticsRoot = withLocation(analytics(Root));
 
 const render = (messages) => {
   Loadable.preloadReady().then(() => {
     ReactDOM.render(
-      <AnalyticsRoot messages={messages} history={history} store={store} />,
+      <AnalyticsRoot
+        messages={messages}
+        history={history}
+        store={store}
+      />,
       MOUNT_NODE
     );
   });
