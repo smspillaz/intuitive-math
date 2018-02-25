@@ -132,8 +132,16 @@ NavigationFooterFromRouteDescriptions.propTypes = {
 const RoutableRouteDescriptions = withRouter(RouteDescriptions);
 const NavigationFooterWithRouteDescriptions = withRouteDescriptions(NavigationFooterFromRouteDescriptions);
 
+const MaybeAtlaskitThemeProvider = ({ children }) => (
+  __SERVER__ ? <div>{children}</div> : <AtlaskitThemeProvider>{children}</AtlaskitThemeProvider>
+);
+
+MaybeAtlaskitThemeProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+
 const NavigatablePage = () => (
-  <AtlaskitThemeProvider>
+  <MaybeAtlaskitThemeProvider>
     <ResponsivePage
       title="Intuitive Math"
       sections={sections}
@@ -156,7 +164,7 @@ const NavigatablePage = () => (
         <NavigationFooterWithRouteDescriptions />
       </RoutableRouteDescriptions>
     </ResponsivePage>
-  </AtlaskitThemeProvider>
+  </MaybeAtlaskitThemeProvider>
 );
 
 export default function App() {

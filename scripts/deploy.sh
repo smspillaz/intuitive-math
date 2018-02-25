@@ -27,7 +27,8 @@ PROGRESS=$!
 
 yarn install
 yarn build:dll
-yarn build
+yarn build:client
+yarn build:serverless
 yarn serverless-deploy
 
 kill $PROGRESS >/dev/null 2>&1

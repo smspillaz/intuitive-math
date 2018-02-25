@@ -15,7 +15,9 @@ module.exports = (options) => ({
   entry: options.entry,
   output: Object.assign({ // Compile into js/build.js
     path: path.resolve(process.cwd(), 'build'),
-    publicPath: '/',
+    publicPath: '/static',
+    libraryTarget: options.libraryTarget,
+    library: options.library,
   }, options.output), // Merge with env dependent settings
   module: {
     rules: [
@@ -92,9 +94,11 @@ module.exports = (options) => ({
     // inside your code for any environment checks; UglifyJS will automatically
     // drop any unreachable code.
     new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify(process.env.NODE_ENV),
-      },
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+      // Put a define in place if we're server-side rendering
+      ...(options.server ? {
+        __SERVER__: '1',
+      } : {}),
     }),
     new webpack.NamedModulesPlugin(),
   ]),
@@ -112,6 +116,7 @@ module.exports = (options) => ({
     ],
   },
   devtool: options.devtool,
-  target: 'web', // Make web variables accessible to webpack, e.g. window
+  target: options.target || 'web', // Make web variables accessible to webpack, e.g. window
+  externals: options.externals || [],
   performance: options.performance || {},
 });
