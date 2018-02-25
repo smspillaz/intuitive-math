@@ -10,7 +10,7 @@ import React from 'react';
 
 import PropTypes from 'prop-types';
 
-import { AkNavigationItemGroup, AkNavigationItem } from 'components/MonkeyPatchedNavigation';
+import { AkNavigationItemGroup, AkNavigationItem } from '@atlaskit/navigation';
 
 const NavigationItems = ({ sections }) => (
   <div>
