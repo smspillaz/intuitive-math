@@ -6,6 +6,7 @@ const WebpackPwaManifest = require('webpack-pwa-manifest');
 const TerserPlugin = require('terser-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const { HashedModuleIdsPlugin } = require('webpack');
+const ReactLoadablePlugin = require('react-loadable/webpack').ReactLoadablePlugin;
 
 const config = require('./webpack.prod.babel')({
   // In production, we skip all hot-reloading stuff
@@ -138,6 +139,10 @@ config.plugins.push.apply(config.plugins, [
     hashFunction: 'sha256',
     hashDigest: 'hex',
     hashDigestLength: 20,
+  }),
+
+  new ReactLoadablePlugin({
+    filename: './build/react-loadable.json',
   }),
 ]);
 
