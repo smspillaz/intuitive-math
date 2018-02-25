@@ -6,7 +6,7 @@
 
 import { metrics } from 'react-metrics';
 
-const SEGMENT_CLIENT_ID = 'PLACEHOLDER_KEY';
+const SEGMENT_CLIENT_ID = '6xgb9xkJ3HOKzat6CmrUHNA70vX1GLLd';
 
 class SegmentAnalyticsApi {
   constructor() {
