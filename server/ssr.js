@@ -7,6 +7,9 @@ const physicalFS = require('fs');
 // Memory history
 const createMemoryHistory = require('history/createMemoryHistory').default;
 
+// Server-side metrics
+const analytics = require('./serverAnalytics').default;
+
 // Import root containers
 const Root = require('../app/app').default;
 const messages = require('../app/i18n').translationMessages;
@@ -18,6 +21,9 @@ const ServerStyleSheet = require('styled-components').ServerStyleSheet;
 // Server rendering for react-loadable
 const Loadable = require('react-loadable');
 const getBundles = require('react-loadable/webpack').getBundles;
+
+// Wrap root container to get some analytics
+const AnalyticsRoot = analytics(Root);
 
 module.exports = (app, fs, indexHTMLTemplatePath) => {
   app.use((req, res) => {
@@ -36,7 +42,7 @@ module.exports = (app, fs, indexHTMLTemplatePath) => {
     const html = ReactDOMServer.renderToString(
       stylesheet.collectStyles(
         <Loadable.Capture report={(moduleName) => modules.push(moduleName)}>
-          <Root messages={messages} history={memoryHistory} store={store} />
+          <AnalyticsRoot messages={messages} history={memoryHistory} store={store} />
         </Loadable.Capture>
       )
     );
