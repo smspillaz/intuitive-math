@@ -5,7 +5,7 @@ provider:
   credentials: ${file(../intuimath-credentials/config/app/env.yml):credentials}
 functions:
   api:
-    handler: lambda.handler
+    handler: ./prodLambda.handler
     environment:
       NODE_ENV: production
     events:

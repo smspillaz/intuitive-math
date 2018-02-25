@@ -1,8 +1,10 @@
 const path = require('path');
 const express = require('express');
+const fs = require('fs');
+const ssr = require('../ssr');
 
 module.exports = function addProdMiddlewares(app, options) {
-  const publicPath = options.publicPath || '/';
+  const publicPath = options.publicPath || '/static';
   const outputPath = options.outputPath || path.resolve(process.cwd(), 'build');
 
   // compression middleware compresses your server responses which makes them
@@ -12,6 +14,5 @@ module.exports = function addProdMiddlewares(app, options) {
   // Except that for now it doesn't work on serverless.
   // app.use(compression());
   app.use(publicPath, express.static(outputPath));
-
-  app.get('*', (req, res) => res.sendFile(path.resolve(outputPath, 'index.html')));
+  ssr(app, fs, path.join('./build', 'index.html'));
 };

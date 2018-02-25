@@ -21,13 +21,18 @@
     "preinstall": "npm run npmcheckversion",
     "postinstall": "npm run build:dll",
     "prebuild": "npm run build:clean",
-    "build": "cross-env NODE_ENV=production webpack --config internals/webpack/webpack.prod.babel.js --color -p --progress --hide-modules --display-optimization-bailout",
+    "build": "npm run build:server && npm run build:client",
+    "build:dev:server": "cross-env NODE_ENV=development webpack --config internals/webpack/webpack.dev.server.babel.js --color --progress",
+    "build:server": "cross-env NODE_ENV=production webpack --config internals/webpack/webpack.prod.server.babel.js --color -p --progress --hide-modules --display-optimization-bailout",
+    "build:serverless": "cross-env NODE_ENV=production webpack --config internals/webpack/webpack.prod.serverless.babel.js -p --progress --hide-modules --display-optimization-bailout",
+    "build:client": "cross-env NODE_ENV=production webpack --config internals/webpack/webpack.prod.client.babel.js --color -p --progress --hide-modules --display-optimization-bailout",
     "build:clean": "rimraf ./build",
     "build:dll": "node ./internals/scripts/dependencies.js",
-    "start": "cross-env NODE_ENV=development node server",
-    "start:tunnel": "cross-env NODE_ENV=development ENABLE_TUNNEL=true node server",
+    "start": "npm run build:dev:server && npm run start:dev",
+    "start:dev": "cross-env NODE_ENV=development node build/devServer.js",
+    "start:tunnel": "cross-env NODE_ENV=development ENABLE_TUNNEL=true npm run start:dev",
     "start:production": "npm run test && npm run build && npm run start:prod",
-    "start:prod": "cross-env NODE_ENV=production node server",
+    "start:prod": "cross-env NODE_ENV=production node build/prodServer.js",
     "presetup": "npm i chalk shelljs",
     "setup": "node ./internals/scripts/setup.js",
     "postsetup": "npm run build:dll",
@@ -52,6 +57,7 @@
   "pre-commit": "lint:staged",
   "babel": {
     "plugins": [
+      "react-loadable/babel",
       "styled-components"
     ],
     "presets": [
@@ -67,7 +73,9 @@
     "env": {
       "production": {
         "only": [
-          "app"
+          "app",
+          "internals",
+          "server"
         ],
         "plugins": [
           "transform-react-remove-prop-types",
@@ -91,6 +99,9 @@
       "node": true,
       "jest": true,
       "es6": true
+    },
+    "globals": {
+      "__SERVER__": true
     },
     "plugins": [
       "redux-saga",
@@ -209,15 +220,19 @@
     "@atlaskit/navigation": "^27.0.4",
     "@atlaskit/page": "^5.0.5",
     "@atlaskit/theme": "^2.2.9",
+    "add-asset-html-webpack-plugin": "2.0.1",
+    "add-asset-webpack-plugin": "^0.1.0",
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
     "babel-polyfill": "6.23.0",
     "chalk": "1.1.3",
+    "circular-dependency-plugin": "3.0.0",
     "compression": "1.6.2",
     "cross-env": "5.0.0",
     "express": "4.15.3",
     "fontfaceobserver": "2.0.9",
     "history": "4.6.3",
     "hoist-non-react-statics": "2.1.1",
+    "html-webpack-plugin": "2.29.0",
     "immutable": "3.8.1",
     "intl": "1.2.5",
     "invariant": "2.2.2",
@@ -229,7 +244,7 @@
     "react-dom": "15.6.1",
     "react-helmet": "5.1.3",
     "react-intl": "2.3.0",
-    "react-loadable": "4.0.3",
+    "react-loadable": "^5.3.1",
     "react-mathjax": "^0.1.1",
     "react-media": "^1.6.1",
     "react-number-editor": "^4.0.3",
@@ -245,13 +260,17 @@
     "reselect": "3.0.1",
     "sanitize.css": "4.1.0",
     "serverless-http": "^1.5.2",
-    "styled-components": "2.0.0",
+    "styled-components": "^2.4.0",
     "three": "^0.89.0",
+    "uid": "0.0.2",
     "warning": "3.0.0",
+    "webpack": "3.5.5",
+    "webpack-dev-middleware": "1.11.0",
+    "webpack-hot-middleware": "2.18.0",
+    "webpack-node-externals": "^1.6.0",
     "whatwg-fetch": "2.0.3"
   },
   "devDependencies": {
-    "add-asset-html-webpack-plugin": "2.0.1",
     "babel-cli": "6.24.1",
     "babel-core": "6.24.1",
     "babel-eslint": "7.2.3",
@@ -267,7 +286,6 @@
     "babel-preset-env": "1.5.1",
     "babel-preset-react": "6.24.1",
     "babel-preset-stage-0": "6.24.1",
-    "circular-dependency-plugin": "3.0.0",
     "coveralls": "2.13.1",
     "css-loader": "0.28.4",
     "enzyme": "2.8.2",
@@ -283,7 +301,6 @@
     "exports-loader": "0.6.4",
     "file-loader": "0.11.1",
     "html-loader": "0.4.5",
-    "html-webpack-plugin": "2.29.0",
     "image-webpack-loader": "2.0.0",
     "imports-loader": "0.7.1",
     "jest-cli": "20.0.4",
@@ -299,9 +316,9 @@
     "serverless": "^1.25.0",
     "shelljs": "0.7.7",
     "style-loader": "0.18.1",
-    "url-loader": "0.5.8",
-    "webpack": "3.5.5",
-    "webpack-dev-middleware": "1.11.0",
-    "webpack-hot-middleware": "2.18.0"
+    "url-loader": "0.5.8"
+  },
+  "resolutions": {
+    "styled-components": "^2.4.0"
   }
 }
