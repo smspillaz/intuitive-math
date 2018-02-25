@@ -3,6 +3,7 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const OfflinePlugin = require('offline-plugin');
+const ReactLoadablePlugin = require('react-loadable/webpack').ReactLoadablePlugin;
 
 const config = require('./webpack.prod.babel')({
   // In production, we skip all hot-reloading stuff
@@ -65,6 +66,9 @@ config.plugins.push.apply(config.plugins, [
     name: 'manifest',
     filename: 'manifest.js',
     minChunks: Infinity,
+  }),
+  new ReactLoadablePlugin({
+    filename: './build/react-loadable.json',
   }),
 ]);
 

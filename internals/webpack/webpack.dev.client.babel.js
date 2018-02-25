@@ -6,6 +6,7 @@ const path = require('path');
 
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ReactLoadablePlugin = require('react-loadable/webpack').ReactLoadablePlugin;
 
 const config = require('./webpack.dev.babel.js')({
   // Add hot reloading in development
@@ -33,6 +34,9 @@ config.plugins.push.apply(config.plugins, [
     name: 'manifest',
     filename: 'manifest.js',
     minChunks: Infinity,
+  }),
+  new ReactLoadablePlugin({
+    filename: './build/react-loadable.json',
   }),
 ]);
 
