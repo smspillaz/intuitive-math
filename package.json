@@ -255,7 +255,7 @@
     "reselect": "3.0.1",
     "sanitize.css": "4.1.0",
     "serverless-http": "^1.5.2",
-    "styled-components": "2.0.0",
+    "styled-components": "^2.4.0",
     "three": "^0.89.0",
     "warning": "3.0.0",
     "webpack-node-externals": "^1.6.0",
