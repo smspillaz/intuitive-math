@@ -8,7 +8,19 @@ module.exports = require('./webpack.prod.babel')({
     path.join(process.cwd(), 'lambda.js'),
   ],
 
-  externals: [nodeExternals()],
+  externals: [nodeExternals({
+    // Need to whitelist @atlaskit/dropdown-menu things here,
+    // otherwise when building the library it gets directly required, which in
+    // turn causes node to trip up because navigator is not defined.
+    whitelist: [
+      '@atlaskit/avatar',
+      '@atlaskit/dropdown-menu',
+      '@atlaskit/droplist',
+      '@atlaskit/navigation',
+      'react-spinkit',
+      'loaders.css',
+    ],
+  })],
 
   output: {
     filename: 'prodLambda.js',
