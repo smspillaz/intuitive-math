@@ -81,6 +81,9 @@
 
   <dt>SEO</dt>
   <dd>We support SEO (document head tags management) for search engines that support indexing of JavaScript content. (eg. Google)</dd>
+
+  <dt>Server Rendering</dt>
+  <dd>This fork supports server rendering, and does all the setup required to make styled-components and react-loadable work with server-rendering</dd>
 </dl>
 
 But wait... there's more!
