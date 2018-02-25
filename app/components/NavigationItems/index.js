@@ -7,21 +7,32 @@
  */
 
 import React from 'react';
+import { Link } from 'react-router-dom';
+
+import styled from 'styled-components';
 
 import PropTypes from 'prop-types';
 
 import { AkNavigationItemGroup, AkNavigationItem } from 'components/MonkeyPatchedNavigation';
+
+const LinkStyle = styled.span`
+  a {
+    text-decoration: none;
+  }
+`;
 
 const NavigationItems = ({ sections }) => (
   <div>
     {sections.map((section) => (
       <AkNavigationItemGroup title={section.title} key={section.title}>
         {section.children.map((child, index) => (
-          <AkNavigationItem
-            text={section.numbered ? `${index + 1}) ${child.text}` : child.text}
-            href={child.href}
-            key={child.href}
-          />
+          <LinkStyle>
+            <Link to={child.href} key={child.href}>
+              <AkNavigationItem
+                text={section.numbered ? `${index + 1}) ${child.text}` : child.text}
+              />
+            </Link>
+          </LinkStyle>
          ))}
       </AkNavigationItemGroup>
      ))}
