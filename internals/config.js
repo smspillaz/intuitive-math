@@ -21,14 +21,21 @@ const ReactBoilerplate = {
        * by listing them here.
        */
       exclude: [
+        'add-asset-html-webpack-plugin',
+        'add-asset-webpack-plugin',
         'chalk',
+        'circular-dependency-plugin',
         'compression',
         'cross-env',
         'express',
         'ip',
+        'html-webpack-plugin',
         'minimist',
         'sanitize.css',
         'webpack-node-externals',
+        'webpack',
+        'webpack-dev-middleware',
+        'webpack-hot-middleware',
       ],
 
       /**
