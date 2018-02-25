@@ -314,5 +314,8 @@
     "webpack": "3.5.5",
     "webpack-dev-middleware": "1.11.0",
     "webpack-hot-middleware": "2.18.0"
+  },
+  "resolutions": {
+    "styled-components": "^2.4.0"
   }
 }
