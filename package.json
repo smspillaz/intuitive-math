@@ -104,13 +104,20 @@
   "dllPlugin": {
     "path": "node_modules/react-boilerplate-dlls",
     "exclude": [
+      "add-asset-html-webpack-plugin",
+      "add-asset-webpack-plugin",
       "chalk",
       "compression",
       "cross-env",
       "express",
       "ip",
+      "html-webpack-plugin",
       "minimist",
-      "sanitize.css"
+      "sanitize.css",
+      "webpack-node-externals",
+      "webpack",
+      "webpack-dev-middleware",
+      "webpack-hot-middleware"
     ],
     "include": [
       "core-js",

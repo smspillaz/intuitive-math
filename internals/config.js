@@ -22,13 +22,13 @@ const ReactBoilerplate = {
        */
       exclude: [
         'chalk',
+        'circular-dependency-plugin',
         'compression',
         'cross-env',
         'express',
         'ip',
         'minimist',
         'sanitize.css',
-        'webpack-node-externals',
       ],
 
       /**
