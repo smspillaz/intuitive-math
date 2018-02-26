@@ -19,6 +19,9 @@ import '!file-loader?name=[name].[ext]!./images/favicon.ico';
 import 'file-loader?name=[name].[ext]!./.htaccess'; // eslint-disable-line import/extensions
 /* eslint-enable import/no-webpack-loader-syntax */
 
+// Import hotjar
+import { hotjar } from 'react-hotjar';
+
 // Listen for changes to location
 import withLocation from 'components/CaptureLocation';
 
@@ -38,6 +41,9 @@ import { translationMessages } from './i18n';
 // Observe loading of Open Sans (to remove open sans, remove the <link> tag in
 // the index.html file and this observer)
 const openSansObserver = new FontFaceObserver('Open Sans', {});
+
+// Initialize hotjar with our tracking code
+hotjar.initialize('793002');
 
 // When Open Sans is loaded, add a font-family using Open Sans to the body
 openSansObserver.load().then(

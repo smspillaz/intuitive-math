@@ -9204,6 +9204,10 @@ react-intl@2.4.0:
     intl-relativeformat "^2.0.0"
     invariant "^2.1.1"
 
+react-hotjar@^1.0.11:
+  version "1.0.11"
+  resolved "https://registry.yarnpkg.com/react-hotjar/-/react-hotjar-1.0.11.tgz#d802ca46ecc2bd4aed44cde595bb89c9fb35cc54"
+
 react-is@^16.3.1, react-is@^16.4.1, react-is@^16.5.2:
   version "16.5.2"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.5.2.tgz#e2a7b7c3f5d48062eb769fcb123505eb928722e3"
