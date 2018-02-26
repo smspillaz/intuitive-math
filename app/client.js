@@ -58,8 +58,9 @@ openSansObserver.load().then(() => {
   document.body.classList.remove('fontLoaded');
 });
 
-// Create redux store with history
-const initialState = {};
+// Create redux store with history and hydrate state from server, if available
+// eslint-disable-next-line no-underscore-dangle
+const initialState = window.__SERVER_STATE || {};
 const history = createHistory();
 const store = configureStore(initialState, history);
 

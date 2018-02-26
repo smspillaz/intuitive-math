@@ -60,6 +60,9 @@ module.exports = (app, fs, indexHTMLTemplatePath) => {
         const bundlesHTML = bundles.map((bundle) =>
           `<script src="/static/${bundle.file}"></script>`
         ).join('\n');
+        const stateHydrationHTML = (
+          `<script>window.__SERVER_STATE = ${JSON.stringify(store.getState())}</script>`
+        );
 
         // This should read the compiled index.html file when running from the
         // webpack bundle and the non-compiled index.html file when running
@@ -70,7 +73,7 @@ module.exports = (app, fs, indexHTMLTemplatePath) => {
           res.send(data.replace(/<\/head>/,
                                 `${styleTags}</head>`)
                        .replace(/<div id="app">\s*<\/div>/,
-                                `${bundlesHTML}<div id="app">${html}</div>`));
+                                `${bundlesHTML}${stateHydrationHTML}<div id="app">${html}</div>`));
         });
       });
     });
