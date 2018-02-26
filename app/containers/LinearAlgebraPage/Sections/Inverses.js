@@ -183,7 +183,7 @@ const InversesSection = () => (
       }}
     />
     <p>
-      Now, consider just multiplying the transforemd basis vectors by
+      Now, consider just multiplying the transformed basis vectors by
       the rearranged matrix we saw earlier. Does this get us back to
       the standard basis vectors?
     </p>
