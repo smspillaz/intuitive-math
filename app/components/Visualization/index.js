@@ -1,18 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { exposeMetrics } from 'react-metrics';
 
 import styled from 'styled-components';
 
-<<<<<<< HEAD
 import THREE, {
   PerspectiveCamera,
   Scene,
   Vector3,
   WebGLRenderer,
 } from 'three';
-=======
 import Media from 'react-media';
->>>>>>> cf93061... Visualization: Support media-query based visualization sizing
 import TrackVisibility from 'react-on-screen';
 
 import memoize from 'memoize-one';
@@ -382,6 +380,36 @@ const OptionallySizedVisualization = (props) => (
 OptionallySizedVisualization.propTypes = {
   width: PropTypes.number,
 };
+
+// eslint-disable-next-line react/no-multi-comp
+class MetricsVisualization extends React.Component {
+  static propTypes = {
+    animationIsRunning: PropTypes.bool.isRequired,
+    metrics: PropTypes.object.isRequired,
+    title: PropTypes.string,
+  }
+  componentWillReceiveProps(nextProps) {
+    if (!this.props.metrics) {
+      return;
+    }
+
+    const title = this.props.title || 'Untitled Visualization';
+
+    if (nextProps.animationIsRunning && !this.props.animationIsRunning) {
+      this.props.metrics.track('animationStartedRunning', { title });
+    } else if (!nextProps.animationIsRunning && this.props.animationIsRunning) {
+      this.props.metrics.track('animationStoppedRunning', { title });
+    }
+  }
+
+  render() {
+    return (
+      <OptionallySizedVisualization {...this.props} />
+    );
+  }
+}
+
+const ExposedMetricsVisualization = exposeMetrics(MetricsVisualization);
 
 export const BlankableVisualization = props => (
   <TrackVisibility offset={100}>
