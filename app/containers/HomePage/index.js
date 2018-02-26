@@ -50,6 +50,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                 render={({ xPosition, yPosition, zPosition }) => (
                   <div>
                     <AxisVisualization3D
+                      title="Home page visualization"
                       render={() => (
                         <group>
                           <Vector
