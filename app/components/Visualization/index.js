@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { exposeMetrics } from 'react-metrics';
 
 import styled from 'styled-components';
 
@@ -238,14 +239,44 @@ OptionallySizedVisualization.propTypes = {
   width: PropTypes.number,
 };
 
+// eslint-disable-next-line react/no-multi-comp
+class MetricsVisualization extends React.Component {
+  static propTypes = {
+    animationIsRunning: PropTypes.bool.isRequired,
+    metrics: PropTypes.object.isRequired,
+    title: PropTypes.string,
+  }
+  componentWillReceiveProps(nextProps) {
+    if (!this.props.metrics) {
+      return;
+    }
+
+    const title = this.props.title || 'Untitled Visualization';
+
+    if (nextProps.animationIsRunning && !this.props.animationIsRunning) {
+      this.props.metrics.track('animationStartedRunning', { title });
+    } else if (!nextProps.animationIsRunning && this.props.animationIsRunning) {
+      this.props.metrics.track('animationStoppedRunning', { title });
+    }
+  }
+
+  render() {
+    return (
+      <OptionallySizedVisualization {...this.props} />
+    );
+  }
+}
+
+const ExposedMetricsVisualization = exposeMetrics(MetricsVisualization);
+
 export const BlankableVisualization = (props) => (
   <TrackVisibility offset={100}>
-    {({ isVisible }) => <OptionallySizedVisualization {...props} animationIsRunning={isVisible} />}
+    {({ isVisible }) => <ExposedMetricsVisualization {...props} animationIsRunning={isVisible} />}
   </TrackVisibility>
 );
 
 const BlankableByContextVisualization = (props, { animationIsRunning = true }) => (
-  <OptionallySizedVisualization animationIsRunning={animationIsRunning} {...props} />
+  <ExposedMetricsVisualization animationIsRunning={animationIsRunning} {...props} />
 );
 
 BlankableByContextVisualization.contextTypes = {
