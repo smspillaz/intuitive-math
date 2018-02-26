@@ -12,12 +12,13 @@ import PropTypes from 'prop-types';
 import MathJaxMatrix from 'components/MathJaxMatrix';
 import TweenedAffineTransformCube from 'components/TweenedAffineTransformCube';
 
-const CubeVectorsAnimatedERO = ({ matrix }) => (
+const CubeVectorsAnimatedERO = ({ matrix, title = null }) => (
   <div>
     <MathJaxMatrix matrix={matrix} />
     <TweenedAffineTransformCube
       start={[[1, 0, 0], [0, 1, 0], [0, 0, 1]]}
       end={matrix}
+      title={title}
     />
   </div>
 );
@@ -28,6 +29,7 @@ CubeVectorsAnimatedERO.propTypes = {
       PropTypes.number.isRequired
     ).isRequired
   ).isRequired,
+  title: PropTypes.string,
 };
 
 export default CubeVectorsAnimatedERO;
