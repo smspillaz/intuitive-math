@@ -12,8 +12,9 @@ import PropTypes from 'prop-types';
 import AxisVisualization3D from 'components/AxisVisualization3D';
 import Plane from 'components/Plane';
 
-const TriplePlanes = ({ first, second, third, extents = [-1, 1] }) => (
+const TriplePlanes = ({ first, second, third, extents = [-1, 1], title = null }) => (
   <AxisVisualization3D
+    title={title}
     render={() => (
       <group>
         <Plane extents={extents} a={first[0]} b={first[1]} c={first[2]} d={first[3]} color={0xffff00} transparent opacity={0.8} />
@@ -29,6 +30,7 @@ TriplePlanes.propTypes = {
   second: PropTypes.arrayOf(PropTypes.number).isRequired,
   third: PropTypes.arrayOf(PropTypes.number).isRequired,
   extents: PropTypes.arrayOf(PropTypes.number),
+  title: PropTypes.string,
 };
 
 export default TriplePlanes;
