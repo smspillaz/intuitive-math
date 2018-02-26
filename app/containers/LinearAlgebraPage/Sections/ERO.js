@@ -52,6 +52,7 @@ const EROSection = () => (
       first={[1, 1, 0, 2]}
       second={[1, 0, -1, 1]}
       third={[0, 1, -1, 0]}
+      title="Three non-orthogonal planes intersecting at a point"
     />
     <p>
       Now, if we recall that any vector multiplied by the three standard basis
@@ -73,30 +74,35 @@ const EROSection = () => (
       first={[1, 1, 0, 2]}
       second={[0, -1, -1, -1]}
       third={[0, 1, -1, 0]}
+      title="Elementary Row Operations - Planes (1)"
     />
     <p>Then, add the second row to the third</p>
     <EROVisualization
       first={[1, 1, 0, 2]}
       second={[0, -1, -1, -1]}
       third={[0, 0, -2, -1]}
+      title="Elementary Row Operations - Planes (2)"
     />
     <p>Now, subtract half of the third row from the second</p>
     <EROVisualization
       first={[1, 1, 0, 2]}
       second={[0, -1, 0, -0.5]}
       third={[0, 0, -2, -1]}
+      title="Elementary Row Operations - Planes (3)"
     />
     <p>Add the second row to the first</p>
     <EROVisualization
       first={[1, 0, 0, 1.5]}
       second={[0, -1, 0, -0.5]}
       third={[0, 0, -2, -1]}
+      title="Elementary Row Operations - Planes (4)"
     />
     <p>Clean everything up by dividing the second row by -1 and the third row by -2</p>
     <EROVisualization
       first={[1, 0, 0, 1.5]}
       second={[0, 1, 0, 0.5]}
       third={[0, 0, 1, 0.5]}
+      title="Elementary Row Operations - Planes (5)"
     />
     <p>
       As you will have noticed, the intersection between the planes is the point
@@ -112,6 +118,7 @@ const EROSection = () => (
       }}
       render={({ xInterp, yInterp, zInterp, fade }) => (
         <AxisVisualization3D
+          title="Vector pointing to intersection of orthogonal planes"
           render={() => (
             <group>
               <Vector position={new Vector3(xInterp.value, yInterp.value, zInterp.value)} color={0xffff00} />

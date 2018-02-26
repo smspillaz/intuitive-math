@@ -55,6 +55,7 @@ const EigenvectorsSection = () => (
 
         return (
           <AxisVisualization2D
+            title="Simple x-y scalar system"
             render={() => (
               <group>
                 <SpanningPlane2D matrix={mat} />
@@ -91,6 +92,7 @@ const EigenvectorsSection = () => (
 
         return (
           <AxisVisualization2D
+            title="x-y shearing system"
             render={() => (
               <group>
                 <SpanningPlane2D matrix={mat} />

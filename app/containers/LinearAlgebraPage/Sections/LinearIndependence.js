@@ -45,6 +45,7 @@ const LinearIndependenceSection = () => (
     </p>
     <MathJaxMatrix matrix={[[1, 2], [2, 4]]} />
     <AxisVisualization2D
+      title="Two vectors on the same line"
       render={() => (
         <group>
           <Vector position={new Vector3(1, 2, 0)} color={0xffff00} />
@@ -74,6 +75,7 @@ const LinearIndependenceSection = () => (
       <MathJaxMatrix inline matrix={[[4], [5]]} />
     </CenteredParagraph>
     <AxisVisualization2D
+      title="Three vectors on the same plane"
       render={() => (
         <group>
           <Vector position={new Vector3(1, 1, 0)} color={0xffff00} />
@@ -110,6 +112,7 @@ const LinearIndependenceSection = () => (
       <MathJaxMatrix inline matrix={[[-1], [-2], [-3]]} />
     </CenteredParagraph>
     <AxisVisualization3D
+      title="Three vectors on the same line"
       render={() => (
         <group>
           <Vector position={new Vector3(1, 2, 3)} color={0xffff00} />
@@ -125,6 +128,7 @@ const LinearIndependenceSection = () => (
       <MathJaxMatrix inline matrix={[[2], [1], [2]]} />
     </CenteredParagraph>
     <AxisVisualization3D
+      title="Three vectors on the same plane, one is a linear combination of the other two"
       render={() => {
         const first = new Vector3(1, 1, 1);
         const second = new Vector3(1, 0, 1);
@@ -163,6 +167,7 @@ const LinearIndependenceSection = () => (
       <MathJaxMatrix inline matrix={[[1], [0], [1]]} />
     </CenteredParagraph>
     <AxisVisualization3D
+      title="Same plane, two vectors"
       render={() => {
         const first = new Vector3(1, 1, 1);
         const second = new Vector3(1, 0, 1);

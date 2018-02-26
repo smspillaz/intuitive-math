@@ -27,6 +27,7 @@ const VectorsSection = () => (
   <Section title="Vectors" anchor="vectors">
     <p>The fundamental building block of linear systems is the humble <Strong>Vector</Strong></p>
     <AxisVisualization3D
+      title="A single vector in 3D space"
       render={() =>
         <Vector position={new Vector3(2, 2, 2)} color={0xff8800} />
       }
@@ -72,6 +73,7 @@ const VectorsSection = () => (
       render={({ xPosition }) => (
         <div>
           <AxisVisualization1D
+            title="A vector in 1D space"
             render={() => (
               <Vector position={new Vector3(xPosition.value, 0, 0)} color={0xff8800} />
             )}
@@ -99,6 +101,7 @@ const VectorsSection = () => (
       render={({ xPosition, yPosition }) => (
         <div>
           <AxisVisualization2D
+            title="A vector ranging around a circle"
             render={() => (
               <group>
                 <Vector position={new Vector3(xPosition.value, yPosition.value, 0)} color={0xff8800} />
@@ -142,6 +145,7 @@ const VectorsSection = () => (
       render={({ xPosition, yPosition, zPosition }) => (
         <div>
           <AxisVisualization3D
+            title="A vector ranging around a circle in 3D space"
             render={() => (
               <group>
                 <Vector
@@ -212,7 +216,7 @@ const VectorsSection = () => (
 
         return (
           <div>
-            <Visualization>
+            <Visualization title="Adding two vectors">
               <XAxis />
               <YAxis />
               <Vector position={a} color={0xffff00} />
@@ -256,7 +260,7 @@ const VectorsSection = () => (
 
         return (
           <div>
-            <Visualization>
+            <Visualization title="Component-wise multiplication, scaling information is lost">
               <XAxis />
               <YAxis />
               <Vector position={a} color={0xffff00} />

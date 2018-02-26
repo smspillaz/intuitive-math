@@ -65,6 +65,7 @@ const SubspacesSection = () => (
       might be <MathJax.Node inline>z = 2x + 3y</MathJax.Node>, which is a plane:
     </p>
     <AxisVisualization3D
+      title="A plane, which is a subspace"
       render={() => (
         <group>
           <Plane a={2} b={3} c={-1} d={0} transparent opacity={0.5} extents={[-1, 1]} color={0x0099bb} />

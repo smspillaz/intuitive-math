@@ -37,13 +37,14 @@ const matrix4FromMatrix3Arrays = ([row1, row2, row3]) => {
   return mat;
 };
 
-const CubeVectorsAnimatedSuperERO = ({ matrix, inverse }) => (
+const CubeVectorsAnimatedSuperERO = ({ matrix, inverse, title = null }) => (
   <div>
     <CenteredParagraph>
       <MathJaxMatrix inline matrix={matrix} />
       <MathJaxMatrix inline matrix={inverse} />
     </CenteredParagraph>
     <AxisVisualization3D
+      title={title}
       render={() => <CubeVectors3D matrix={matrix4FromMatrix3Arrays(matrix)} />}
     />
   </div>
@@ -60,6 +61,7 @@ CubeVectorsAnimatedSuperERO.propTypes = {
       PropTypes.number.isRequired
     ).isRequired
   ).isRequired,
+  title: PropTypes.string,
 };
 
 const InversesSection = () => (
@@ -126,6 +128,7 @@ const InversesSection = () => (
       start={[[1, 0, 0], [0, 1, 0], [0, 0, 1]]}
       end={[[1, 1, 0], [1, 1, 0], [0, 0, 1]]}
       wireframe
+      title="Matrix that squishes space into a plane"
     />
     <p>
       In this case, it would be impossible to find a matrix that would go back to
@@ -172,6 +175,7 @@ const InversesSection = () => (
 
         return (
           <AxisVisualization2D
+            title="System that rotates clockwise through two shears and negative scale by 2"
             render={() => (
               <group>
                 <Vector position={iHat} color={0xffff00} />
@@ -217,6 +221,7 @@ const InversesSection = () => (
 
         return (
           <AxisVisualization2D
+            title="Attempt to invert a system by just multiplying by rearranged matrix"
             render={() => (
               <group>
                 <Vector position={iHat} color={0xffff00} />
@@ -283,6 +288,7 @@ const InversesSection = () => (
 
         return (
           <AxisVisualization2D
+            title="Inverting the system by rearranging and undoing the change in determinant"
             render={() => (
               <group>
                 <Vector position={iHat} color={0xffff00} />
@@ -318,6 +324,7 @@ const InversesSection = () => (
     <CubeVectorsAnimatedSuperERO
       matrix={[[1, -1, 0], [-1, -1, 0], [2, 1, 2]]}
       inverse={[[1, 0, 0], [0, 1, 0], [0, 0, 1]]}
+      title="Setting out a super-elementary-row-reduction"
     />
     <p>
       First, subtract 2 times the first row from the third.
@@ -325,6 +332,7 @@ const InversesSection = () => (
     <CubeVectorsAnimatedSuperERO
       matrix={[[1, -1, 0], [-1, -1, 0], [0, 3, 2]]}
       inverse={[[1, 0, 0], [0, 1, 0], [-2, 0, 1]]}
+      title="Super-elementary-row-reduction (1)"
     />
     <p>
       Now subtract the second row from the first.
@@ -332,6 +340,7 @@ const InversesSection = () => (
     <CubeVectorsAnimatedSuperERO
       matrix={[[2, 0, 0], [-1, -1, 0], [0, 3, 2]]}
       inverse={[[1, -1, 0], [0, 1, 0], [-2, 0, 1]]}
+      title="Super-elementary-row-reduction (2)"
     />
     <p>
       Then add half of the first row to the second.
@@ -339,6 +348,7 @@ const InversesSection = () => (
     <CubeVectorsAnimatedSuperERO
       matrix={[[2, 0, 0], [0, -1, 0], [0, 3, 2]]}
       inverse={[[1, -1, 0], [0.5, 0.5, 0], [-2, 0, 1]]}
+      title="Super-elementary-row-reduction (3)"
     />
     <p>
       Add three times the second row to the third
@@ -346,6 +356,7 @@ const InversesSection = () => (
     <CubeVectorsAnimatedSuperERO
       matrix={[[2, 0, 0], [0, -1, 0], [0, 0, 2]]}
       inverse={[[1, -1, 0], [0.5, 0.5, 0], [0.5, 1.5, 1]]}
+      title="Super-elementary-row-reduction (4)"
     />
     <p>
       Clean up the matrix by multipying the first
@@ -355,6 +366,7 @@ const InversesSection = () => (
     <CubeVectorsAnimatedSuperERO
       matrix={[[1, 0, 0], [0, 1, 0], [0, 0, 1]]}
       inverse={[[0.5, -0.5, 0], [-0.5, -0.5, 0], [-0.25, 0.75, 0.5]]}
+      title="Super-elementary-row-reduction (5)"
     />
     <p>
       And with that, we have found the inverse

@@ -57,6 +57,7 @@ const EigenvaluesSection = () => (
         return (
           <div>
             <AxisVisualization2D
+              title="Scaling into a zero-determinant"
               render={() => (
                 <group>
                   <Vector position={new Vector3(xScale.value, 1, 0)} color={0xffff00} />
@@ -118,6 +119,7 @@ const EigenvaluesSection = () => (
         return (
           <div>
             <AxisVisualization2D
+              title="Adjusting lambda so that the determinant is zero"
               render={() => (
                 <group>
                   <SpanningPlane2D matrix={mat} />
@@ -172,6 +174,7 @@ const EigenvaluesSection = () => (
         return (
           <div>
             <AxisVisualization2D
+              title="Shearing system, adjusting towards lambda = 1"
               render={() => (
                 <group>
                   <SpanningPlane2D matrix={mat} />
@@ -223,6 +226,7 @@ const EigenvaluesSection = () => (
         return (
           <div>
             <AxisVisualization2D
+              title="Shearing system, adjusting towards lambda = 2"
               render={() => (
                 <group>
                   <SpanningPlane2D matrix={mat} />

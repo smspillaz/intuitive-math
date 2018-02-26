@@ -39,6 +39,7 @@ const NullSpaceSection = () => (
       Consider the same case above where space was squished on to a plane.
     </p>
     <AxisVisualization3D
+      title="Plane of all zero-solutions"
       render={() => (
         <group>
           <Vector position={new Vector3(2, 1, 0)} color={0xffff00} />
@@ -55,6 +56,7 @@ const NullSpaceSection = () => (
       zero vector under the transformation, so it <Strong>is</Strong> the Null Space.
     </p>
     <AxisVisualization3D
+      title="Plane of all zero-solutions (2)"
       render={() => (
         <group>
           <Vector position={new Vector3(-1, 2, -1)} color={0xffff00} />
@@ -148,6 +150,7 @@ const NullSpaceSection = () => (
       normal vector to the plane.
     </p>
     <AxisVisualization3D
+      title="Normal vector to plane"
       render={() => (
         <group>
           <Vector position={new Vector3(1, -2, 1)} color={0xffff00} />
