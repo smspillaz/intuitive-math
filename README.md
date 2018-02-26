@@ -86,7 +86,7 @@
   <dd>This fork supports server rendering, and does all the setup required to make styled-components and react-loadable work with server-rendering</dd>
 
   <dt>Analytics</dt>
-  <dd>This fork also has in-built analytics, though the use of [react-metrics](https://github.com/nfl/react-metrics). Configure a Segment.io API key in `app/analytics.js` and page views will be automatically recorded.</dd>
+  <dd>This fork also has in-built analytics, though the use of (react-metrics)[https://github.com/nfl/react-metrics]. Configure a Segment.io API key in `app/analytics.js` and page views will be automatically recorded.</dd>
 </dl>
 
 But wait... there's more!
