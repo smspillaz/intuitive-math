@@ -15,7 +15,7 @@ import AxisVisualization3D from 'components/AxisVisualization3D';
 import CubeVectors3D from 'components/CubeVectors3D';
 import InterpolatedAnimation from 'components/InterpolatedAnimation';
 
-const TweenedAffineTransformCube = ({ start, end, wireframe = false }) => (
+const TweenedAffineTransformCube = ({ start, end, title = null, wireframe = false }) => (
   <InterpolatedAnimation
     values={{
       xScale: { begin: start[0][0], end: end[0][0] },
@@ -48,6 +48,7 @@ const TweenedAffineTransformCube = ({ start, end, wireframe = false }) => (
       return (
         <div>
           <AxisVisualization3D
+            title={title}
             render={() => (
               <CubeVectors3D matrix={mat} wireframe={wireframe} />
             )}
@@ -70,6 +71,7 @@ TweenedAffineTransformCube.propTypes = {
     ).isRequired
   ).isRequired,
   wireframe: PropTypes.bool,
+  title: PropTypes.string,
 };
 
 export default TweenedAffineTransformCube;
