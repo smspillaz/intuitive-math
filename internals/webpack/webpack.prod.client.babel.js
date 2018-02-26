@@ -19,6 +19,10 @@ const config = require('./webpack.prod.babel')({
 });
 
 config.plugins.push.apply(config.plugins, [
+  new webpack.ProvidePlugin({
+    // make fetch available
+    fetch: 'exports-loader?self.fetch!whatwg-fetch',
+  }),
   // Minify and optimize the index.html
   new HtmlWebpackPlugin({
     template: 'app/index.html',
