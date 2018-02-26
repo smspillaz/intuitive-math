@@ -61,6 +61,7 @@ const ColumnSpaceSection = () => (
 
         return (
           <AxisVisualization2D
+            title="Transforming i-hat and j-hat"
             render={() => (
               <group>
                 <Vector position={transformedIHat} color={0xffff00} />
@@ -103,6 +104,7 @@ const ColumnSpaceSection = () => (
       first={[1, 1, 2, 0]}
       second={[1, 1, 3, 0]}
       third={[2, 1, 6, 0]}
+      title="Planar visualization of transpose"
     />
     <p>
       Now we can row-reduce as usual:
@@ -116,6 +118,7 @@ const ColumnSpaceSection = () => (
       first={[-1, 0, 1, 0]}
       second={[0, 1, 3, 0]}
       third={[0, 0, 0, 0]}
+      title="Row-reduction of transpose"
     />
     <p>
       Transposing our row-reduced matrix, we get a new matrix with our column space.
@@ -130,6 +133,7 @@ const ColumnSpaceSection = () => (
       and <MathJaxMatrix inline matrix={[[0], [1], [3]]} />{' '}
     </p>
     <AxisVisualization3D
+      title="Column space vectors"
       render={() => (
         <group>
           <Vector position={new Vector3(-1, 0, 0)} color={0xff00ff} />
@@ -141,6 +145,7 @@ const ColumnSpaceSection = () => (
       Which, you will notice, forms a plane, indicating that our output space is two dimensional.
     </p>
     <AxisVisualization3D
+      title="Column space vectors, spanning plane"
       render={() => (
         <group>
           <Vector position={new Vector3(-1, 0, 0)} color={0xff00ff} />

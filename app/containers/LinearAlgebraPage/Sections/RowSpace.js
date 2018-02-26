@@ -38,6 +38,7 @@ const RowSpaceSection = () => (
       <MathJaxMatrix matrix={[[1, 1], [2, 2]]} />
     </p>
     <AxisVisualization2D
+      title="Vectors of a simple 2D system with linearly dependent rows"
       render={() => (
         <group>
           <Vector color={0xffff00} position={new Vector3(1, 1, 0)} />
@@ -57,6 +58,7 @@ const RowSpaceSection = () => (
       <MathJaxMatrix matrix={[[1, 1], [1, -1]]} />
     </p>
     <AxisVisualization2D
+      title="Vectors of a simple 2D system with linearly independent rows"
       render={() => (
         <group>
           <Vector color={0xffff00} position={new Vector3(1, 1, 0)} />
@@ -84,6 +86,7 @@ const RowSpaceSection = () => (
       first={[1, 1, 0, 0]}
       second={[1, 0, -1, 0]}
       third={[0, 1, -1, 0]}
+      title="3D system with linearly independent planes"
     />
     <p>
       If you want to more rigorously prove what the dimension of the row space is,
@@ -103,6 +106,7 @@ const RowSpaceSection = () => (
       first={[1, 0, 0]}
       second={[0, 1, 0]}
       third={[0, 0, 1]}
+      title="Row-reduced 3D system with linearly independent planes"
     />
     <p>
       So, given that we have three vectors that are linearly independent, our
@@ -116,6 +120,7 @@ const RowSpaceSection = () => (
       first={[1, 1, 0]}
       second={[2, 2, 0]}
       third={[0, 0, 1]}
+      title="3D system with linearly dependent planes"
     />
     <p>
       With this matrix, we can immediately tell that the second row has a
@@ -126,6 +131,7 @@ const RowSpaceSection = () => (
       first={[1, 1, 0]}
       second={[0, 0, 0]}
       third={[0, 0, 1]}
+      title="Row-reduced 3D system with linearly dependent planes"
     />
     <p>
       So in reality, the dimension of the row-space of this matrix is is just 2. It makes more sense
@@ -151,6 +157,7 @@ const RowSpaceSection = () => (
       <MathJaxMatrix matrix={[[1, 1, 0], [2, 2, 0], [3, 3, 0]]} />
     </p>
     <AxisVisualization3D
+      title="3D system with overlapping lines"
       render={() => (
         <group>
           <Vector color={0xffff00} position={new Vector3(1, 1, 0)} />
@@ -174,6 +181,7 @@ const RowSpaceSection = () => (
       first={[1, 2, 3]}
       second={[2, 2, 2]}
       third={[-1, 0, 1]}
+      title="Elementary Row Operations setup for planes intersecting along a line"
     />
     <p>
       See what happens when we row-reduce it. First, add the first row
@@ -183,6 +191,7 @@ const RowSpaceSection = () => (
       first={[1, 2, 3]}
       second={[2, 2, 2]}
       third={[0, 2, 4]}
+      title="Elementary Row Operations for linearly dependent planes (1)"
     />
     <p>
       Now subtract half the third row from the second:
@@ -191,6 +200,7 @@ const RowSpaceSection = () => (
       first={[1, 2, 3]}
       second={[2, 1, 0]}
       third={[0, 2, 4]}
+      title="Elementary Row Operations for linearly dependent planes (2)"
     />
     <p>
       Then, multiply the first row by 4 and subtract 3 times the last row from it
@@ -199,6 +209,7 @@ const RowSpaceSection = () => (
       first={[4, 2, 0]}
       second={[2, 1, 0]}
       third={[0, 2, 4]}
+      title="Elementary Row Operations for linearly dependent planes (3)"
     />
     <p>
       Finally, notice that the first row is twice the second. Subtract twice the second row from it.
@@ -207,12 +218,14 @@ const RowSpaceSection = () => (
       first={[0, 0, 0]}
       second={[2, 1, 0]}
       third={[0, 2, 4]}
+      title="Elementary Row Operations for linearly dependent planes (4)"
     />
     <p>
       The final two rows are linearly independent of each other. We can represent them
       as basis vectors to show the basis of the row space.
     </p>
     <AxisVisualization3D
+      title="Basis vectors for row space"
       render={() => (
         <group>
           <Vector color={0xff00ff} position={new Vector3(2, 1, 0)} />
@@ -224,6 +237,7 @@ const RowSpaceSection = () => (
       Which, you will notice, forms a plane, indicating that our mapping space is two dimensional.
     </p>
     <AxisVisualization3D
+      title="Basis vectors for row space, with corresponding plane"
       render={() => (
         <group>
           <Vector color={0xff00ff} position={new Vector3(2, 1, 0)} />

@@ -69,6 +69,7 @@ const BasisSection = () => (
       that any point in that space can be reached.
     </p>
     <AxisVisualization3D
+      title="Standard Basis Vectors"
       render={() => (
         <group>
           <Vector position={new Vector3(1, 0, 0)} color={0xffff00} />
@@ -97,6 +98,7 @@ const BasisSection = () => (
       }}
       render={({ xInterp, yInterp, zInterp }) => (
         <AxisVisualization3D
+          title="Scaling Standard Basis Vectors"
           render={() => (
             <group>
               <Vector position={new Vector3(xInterp.value, 0, 0)} color={0xffff00} />
@@ -124,6 +126,7 @@ const BasisSection = () => (
       }}
       render={({ xyInterp, xzInterp, yxInterp, yzInterp, zxInterp, zyInterp }) => (
         <AxisVisualization3D
+          title="Squeezing basis vectors towards a line"
           render={() => (
             <group>
               <Vector position={new Vector3(1, xyInterp.value, xzInterp.value)} color={0xffff00} />
@@ -149,7 +152,7 @@ const BasisSection = () => (
         zyInterp: { begin: 0, end: 1 },
       }}
       render={({ xyInterp, xzInterp, yxInterp, yzInterp, zxInterp, zyInterp }) => (
-        <Visualization>
+        <Visualization title="Squeezing all of space towards a line">
           <Axis basis={[1, xyInterp.value, xzInterp.value]} extents={[-10, 10]} color={0xff0000} />
           <Axis basis={[yxInterp.value, 1, yzInterp.value]} extents={[-10, 10]} color={0x00ff00} />
           <Axis basis={[zxInterp.value, zyInterp.value, 1]} extents={[-10, 10]} color={0x0000ff} />

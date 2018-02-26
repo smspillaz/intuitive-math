@@ -32,7 +32,7 @@ const SpacesSection = () => (
         <MathJax.Node inline>{'x'}</MathJax.Node>, <MathJax.Node inline>{'y'}</MathJax.Node>,{' '}
         <MathJax.Node inline>{'z'}</MathJax.Node> and so on.
       </p>
-      <AxisVisualization3D />
+      <AxisVisualization3D title="3D space" />
       <p>
         There exist infinitely many points in the other corresponding
         dimensions for a single point on one dimension. For instance, if you
@@ -50,18 +50,18 @@ const SpacesSection = () => (
         line made up of every possible point:
       </p>
       <BlankableVisualization>
-        <XAxis />
+        <XAxis title="1D space" />
       </BlankableVisualization>
       <p>
         In <Strong>two</Strong> dimensional space, you have a co-ordinate plane
         made up of every possible line:
       </p>
-      <AxisVisualization2D />
+      <AxisVisualization2D title="2D space" />
       <p>
         In <Strong>three</Strong> dimensional space, you have a volume
         made up of every possible plane:
       </p>
-      <AxisVisualization3D />
+      <AxisVisualization3D title="3D space, again" />
       <p>
         Dimensions above the fourth are a little tricky to visualize, but the
         pattern continues. If two-dimensional space is a plane consisting of

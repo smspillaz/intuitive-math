@@ -48,6 +48,7 @@ const MatricesSection = () => (
       satisfies that relationship exists anywhere on that line
     </p>
     <AxisVisualization2D
+      title="Single line, infinite solutions"
       render={() => <Vector position={new Vector3(100, -65.3, 0)} color={0xffff00} />}
     />
     <p>
@@ -60,6 +61,7 @@ const MatricesSection = () => (
     <MathJax.Node>{'2y = 1 - 6x'}</MathJax.Node>
     <MathJax.Node>{'y = \\frac{1 - 6x}{2}'}</MathJax.Node>
     <AxisVisualization2D
+      title="Two lines, single solution for two unknowns"
       render={() => (
         <group>
           <Vector position={new Vector3(100, -65.3, 0)} color={0xff00ff} />
@@ -93,6 +95,7 @@ const MatricesSection = () => (
       If we were to visualize the rows of that matrix, we have these vectors:
     </p>
     <AxisVisualization2D
+      title="Visualizing the rows as lines"
       render={() => (
         <group>
           <Vector position={new Vector3(2, 3, 0)} color={0xff00ff} />
@@ -104,6 +107,7 @@ const MatricesSection = () => (
       And if we were to visualize the columns of that matrix, we have these vectors:
     </p>
     <AxisVisualization2D
+      title="Visualizing the columns as lines"
       render={() => (
         <group>
           <Vector position={new Vector3(2, 6, 0)} color={0xff00ff} />
@@ -144,6 +148,7 @@ const MatricesSection = () => (
         return (
           <div>
             <AxisVisualization2D
+              title="Matrix-matrix addition"
               render={() => (
                 <group>
                   <Vector position={a1} color={0xffff00} />
@@ -197,6 +202,7 @@ const MatricesSection = () => (
 
         return (
           <AxisVisualization2D
+            title="Matrix-vector multiplication"
             render={() => (
               <group>
                 <Vector position={new Vector3(mat.elements[0], mat.elements[1], 0)} color={0xffff00} />
@@ -237,6 +243,7 @@ const MatricesSection = () => (
         return (
           <div>
             <AxisVisualization2D
+              title="Matrix-matrix multiplication"
               render={() => (
                 <group>
                   <Vector position={new Vector3(mat.elements[0], mat.elements[1], 0)} color={0xffff00} />
@@ -286,6 +293,7 @@ const MatricesSection = () => (
         return (
           <div>
             <AxisVisualization2D
+              title="Reflection transformation"
               render={() => (
                 <group>
                   <Vector position={new Vector3(mat.elements[0], mat.elements[1], 0)} color={0xffff00} />
@@ -328,6 +336,7 @@ const MatricesSection = () => (
 
         return (
           <AxisVisualization2D
+            title="Rotation transformation"
             render={() => (
               <group>
                 <Vector position={new Vector3(mat.elements[0], mat.elements[1], 0)} color={0xffff00} />
@@ -377,6 +386,7 @@ const MatricesSection = () => (
 
         return (
           <AxisVisualization2D
+            title="Matrix-matrix multiplication, animated"
             render={() => (
               <group>
                 <Vector position={new Vector3(mat.elements[0], mat.elements[1], 0)} color={0x00ffff} />
@@ -434,6 +444,7 @@ const MatricesSection = () => (
 
         return (
           <AxisVisualization2D
+            title="Matrix-matrix multiplication as a rotation, animated vector space"
             render={() => (
               <group>
                 <Vector position={new Vector3(mat.elements[0], mat.elements[1], 0)} color={0x00ffff} />

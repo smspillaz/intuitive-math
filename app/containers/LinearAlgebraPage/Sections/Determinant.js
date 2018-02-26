@@ -59,7 +59,7 @@ const DeterminantSection = () => (
         rot.makeRotationFromEuler(new Euler(0.5, 0.5, 0));
 
         return (
-          <Visualization matrix={rot.multiply(mat)}>
+          <Visualization matrix={rot.multiply(mat)} title="Simple area scaling">
             <XAxis />
             <YAxis />
             <ZAxis />
@@ -95,7 +95,7 @@ const DeterminantSection = () => (
         rot.makeRotationFromEuler(new Euler(0.5, 0.5, 0));
 
         return (
-          <Visualization matrix={rot.multiply(mat)}>
+          <Visualization matrix={rot.multiply(mat)} title="Complex area transformation">
             <XAxis />
             <YAxis />
             <ZAxis />
@@ -138,7 +138,7 @@ const DeterminantSection = () => (
         rot.makeRotationFromEuler(new Euler(0.5, 0.5, 0));
 
         return (
-          <Visualization matrix={rot.multiply(mat)}>
+          <Visualization matrix={rot.multiply(mat)} title="Simple 2D vector scaling">
             <XAxis />
             <YAxis />
             <ZAxis />
@@ -166,6 +166,7 @@ const DeterminantSection = () => (
         return (
           <div>
             <AxisVisualization2D
+              title="Simple 2D area scaling"
               render={() => (
                 <group>
                   <SpanningPlane2D matrix={mat} />
@@ -215,6 +216,7 @@ const DeterminantSection = () => (
         return (
           <div>
             <AxisVisualization2D
+              title="A 2D shear that does not change the determinant"
               render={() => (
                 <group>
                   <SpanningPlane2D matrix={mat} />
@@ -260,7 +262,7 @@ const DeterminantSection = () => (
 
         return (
           <div>
-            <Visualization>
+            <Visualization title="A 2D shear that changes the determinant">
               <XAxis />
               <YAxis />
               <group>
@@ -307,7 +309,7 @@ const DeterminantSection = () => (
 
         return (
           <div>
-            <Visualization>
+            <Visualization title="A 2D shear that has a non-zero determinant">
               <XAxis />
               <YAxis />
               <group>
@@ -367,6 +369,7 @@ const DeterminantSection = () => (
       second={[0, 1, 0, 0]}
       third={[0, 0, 1, 0]}
       extents={[0, 1]}
+      title="3D Determinant with one inverted plane"
     />
     <p>
       Do you notice something that seems off about this visualization though? The plane along the
@@ -409,6 +412,7 @@ const DeterminantSection = () => (
         return (
           <div>
             <AxisVisualization3D
+              title="3D Determinant - x component"
               render={() => (
                 <CubeVectors3D matrix={mat} />
               )}
@@ -455,6 +459,7 @@ const DeterminantSection = () => (
         return (
           <div>
             <AxisVisualization3D
+              title="3D Determinant - y component, y-z determinant increases"
               render={() => (
                 <CubeVectors3D matrix={mat} />
               )}
@@ -496,6 +501,7 @@ const DeterminantSection = () => (
         return (
           <div>
             <AxisVisualization3D
+              title="3D Determinant - x component y shear, no determinant increase"
               render={() => (
                 <CubeVectors3D matrix={mat} />
               )}
@@ -545,6 +551,7 @@ const DeterminantSection = () => (
         return (
           <div>
             <AxisVisualization3D
+              title="3D Determinant - no determinant increase due to negative area increasing"
               render={() => (
                 <group>
                   <CubeVectors3D matrix={mat} />
@@ -592,6 +599,7 @@ const DeterminantSection = () => (
         return (
           <div>
             <AxisVisualization3D
+              title="3D Determinant - xy and yx shear, volume collapses to plane"
               render={() => (
                 <group>
                   <CubeVectors3D matrix={mat} wireframe />
@@ -639,6 +647,7 @@ const DeterminantSection = () => (
         return (
           <div>
             <AxisVisualization3D
+              title="3D Determinant - xy and yx shear, zx, plane scales outwards, but zero determinant"
               render={() => (
                 <group>
                   <CubeVectors3D matrix={mat} wireframe />
@@ -691,6 +700,7 @@ const DeterminantSection = () => (
         return (
           <div>
             <AxisVisualization3D
+              title="3D Determinant - xy and yx shear, zx and zx, volume expands out on z"
               render={() => (
                 <group>
                   <CubeVectors3D matrix={mat} wireframe />
@@ -822,6 +832,7 @@ const DeterminantSection = () => (
         return (
           <div>
             <AxisVisualization3D
+              title="3D Determinant - type one row excahnge, flipping space over"
               render={() => (
                 <group>
                   <CubeVectors3D matrix={mat} />
@@ -852,6 +863,7 @@ const DeterminantSection = () => (
         return (
           <div>
             <AxisVisualization3D
+              title="3D Determinant - type two row scale, scaling space"
               render={() => (
                 <group>
                   <CubeVectors3D matrix={mat} />
@@ -883,6 +895,7 @@ const DeterminantSection = () => (
         return (
           <div>
             <AxisVisualization3D
+              title="3D Determinant - linear operations, no determinant change"
               render={() => (
                 <group>
                   <CubeVectors3D matrix={mat} />
@@ -899,7 +912,10 @@ const DeterminantSection = () => (
       the transformation changes and the factor by which the area changes as
       we apply row reduction operations.
     </p>
-    <CubeVectorsAnimatedERO matrix={[[1, -1, 0], [-1, -1, 0], [2, 1, 2]]} />
+    <CubeVectorsAnimatedERO
+      title="Elementary Row Operations Setup for 3D determinant"
+      matrix={[[1, -1, 0], [-1, -1, 0], [2, 1, 2]]}
+    />
     <p>
       Before we begin, first observe a few things about this transformation. First,
       note that it inverts space along the <MathJax.Node inline>x</MathJax.Node> axis.
@@ -909,21 +925,33 @@ const DeterminantSection = () => (
       First, subtract 2 times the first row from the third. This is a Type 3 operation
       and will not affect the determinant.
     </p>
-    <CubeVectorsAnimatedERO matrix={[[1, -1, 0], [-1, -1, 0], [0, 3, 2]]} />
+    <CubeVectorsAnimatedERO
+      title="Elementary Row Operations Setup for 3D determinant (2)"
+      matrix={[[1, -1, 0], [-1, -1, 0], [0, 3, 2]]}
+    />
     <p>
       Now subtract the second row from the first. This is also a
       Type 3 operation and does not affect the determinant.
     </p>
-    <CubeVectorsAnimatedERO matrix={[[2, 0, 0], [-1, -1, 0], [0, 3, 2]]} />
+    <CubeVectorsAnimatedERO
+      title="Elementary Row Operations Setup for 3D determinant (3)"
+      matrix={[[2, 0, 0], [-1, -1, 0], [0, 3, 2]]}
+    />
     <p>
       Then add half of the first row to the second. This is Type 3 and
       als does not affect the determinant.
     </p>
-    <CubeVectorsAnimatedERO matrix={[[2, 0, 0], [0, -1, 0], [0, 3, 2]]} />
+    <CubeVectorsAnimatedERO
+      title="Elementary Row Operations Setup for 3D determinant (4)"
+      matrix={[[2, 0, 0], [0, -1, 0], [0, 3, 2]]}
+    />
     <p>
       Add three times the second row to the third, which is also Type 3
     </p>
-    <CubeVectorsAnimatedERO matrix={[[2, 0, 0], [0, -1, 0], [0, 0, 2]]} />
+    <CubeVectorsAnimatedERO
+      title="Elementary Row Operations Setup for 3D determinant (5)"
+      matrix={[[2, 0, 0], [0, -1, 0], [0, 0, 2]]}
+    />
     <p>
       Now, from here we can compute the determinant directly by just
       multiplying along the diagonal (recall that the determinant has not yet changed):
@@ -937,7 +965,10 @@ const DeterminantSection = () => (
       the third row by <MathJax.Node inline>1 \over 2</MathJax.Node>. These operations
       do change the determinant by an overall factor of <MathJax.Node inline>-1 \over 4</MathJax.Node>.
     </p>
-    <CubeVectorsAnimatedERO matrix={[[1, 0, 0], [0, 1, 0], [0, 0, 1]]} />
+    <CubeVectorsAnimatedERO
+      title="Elementary Row Operations Setup for 3D determinant (6)"
+      matrix={[[1, 0, 0], [0, 1, 0], [0, 0, 1]]}
+    />
     <p>
       Computing the determinant of this newly row-reduced matrix is straightforward
     </p>

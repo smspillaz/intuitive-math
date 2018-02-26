@@ -42,6 +42,7 @@ const EigenbasisSection = () => (
     <TweenedAffineTransformCube
       start={[[1, 0, 0], [0, 1, 0], [0, 0, 1]]}
       end={[[1, 0, 0], [0, 2, 1], [0, 0, 1]]}
+      title="Matrix scaling on y axis and shearing on xz axis"
     />
     <p>
       This transformation has Eigenvalues <MathJax.Node inline>\lambda = 2</MathJax.Node>
@@ -56,6 +57,7 @@ const EigenbasisSection = () => (
       visualized below:
     </p>
     <AxisVisualization3D
+      title="Eigenvectors of matrix"
       render={() => (
         <group>
           <Vector position={new Vector3(0, 1, 0)} color={0xffff00} />
@@ -90,6 +92,7 @@ const EigenbasisSection = () => (
       }}
       render={({ yScale, yzShear, zScale }) => (
         <AxisVisualization3D
+          title="Diagonalized and orthogonalized matrix"
           render={() => (
             <group>
               <Vector position={new Vector3(1, 0, 0)} color={0xffff00} />

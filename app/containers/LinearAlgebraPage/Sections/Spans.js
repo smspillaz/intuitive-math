@@ -42,6 +42,7 @@ const SpansSection = () => (
       in 2D space:
     </p>
     <AxisVisualization2D
+      title="Linearly independent 2D vectors"
       render={() => (
         <group>
           <Vector position={new Vector3(1, 0, 0)} color={0xffff00} />
@@ -72,6 +73,7 @@ const SpansSection = () => (
       }}
       render={({ xxInterp, yyInterp, zxInterp, zyInterp }) => (
         <AxisVisualization2D
+          title="Three linearly dependent 2D vectors"
           render={() => (
             <group>
               <Vector position={new Vector3(xxInterp.value, 0, 0)} color={0xffff00} />
@@ -98,6 +100,7 @@ const SpansSection = () => (
       render={({ xxInterp, xyInterp, yxInterp, yyInterp }) => (
         <div>
           <AxisVisualization2D
+            title="Reaching another vector using a combination of two"
             render={() => (
               <group>
                 <Vector position={new Vector3(xxInterp.value, xyInterp.value, 0)} color={0xffff00} />
@@ -142,6 +145,7 @@ const SpansSection = () => (
       render={({ xxInterp, xyInterp, yxInterp, yyInterp }) => (
         <div>
           <AxisVisualization2D
+            title="Two linearly dependent vectors, and a linearly independent one"
             render={() => (
               <group>
                 <Vector position={new Vector3(xxInterp.value, xyInterp.value, 0)} color={0xffff00} />
