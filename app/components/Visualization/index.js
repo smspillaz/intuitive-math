@@ -269,11 +269,20 @@ class MetricsVisualization extends React.Component {
 
 const ExposedMetricsVisualization = exposeMetrics(MetricsVisualization);
 
-export const BlankableVisualization = (props) => (
-  <TrackVisibility offset={100}>
-    {({ isVisible }) => <ExposedMetricsVisualization {...props} animationIsRunning={isVisible} />}
-  </TrackVisibility>
-);
+// eslint-disable-next-line react/no-multi-comp
+export class BlankableVisualization extends React.Component {
+  renderChild = (isVisible) => (
+    <ExposedMetricsVisualization {...this.props} animationIsRunning={isVisible} />
+  )
+
+  render() {
+    return (
+      <TrackVisibility offset={100}>
+        {this.renderChild}
+      </TrackVisibility>
+    );
+  }
+}
 
 const BlankableByContextVisualization = (props, { animationIsRunning = true }) => (
   <ExposedMetricsVisualization animationIsRunning={animationIsRunning} {...props} />
