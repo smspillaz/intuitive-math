@@ -154,6 +154,8 @@ export const Group = asSceneElement(
   props => constructConstructorlessThreeObject(THREE.Group, props),
 );
 
+import ClickToAnimate from 'components/ClickToAnimate';
+
 const Centered = styled.div`
   text-align: center;
 `;
@@ -237,8 +239,8 @@ TweenOverlayVisualization.propTypes = {
 
 class Visualization extends React.Component {
   static propTypes = {
-    animationIsRunning: PropTypes.bool,
     fadeTime: PropTypes.number,
+    isVisible: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -261,8 +263,8 @@ class Visualization extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.animationIsRunning !== this.props.animationIsRunning) {
-      if (nextProps.animationIsRunning) {
+    if (nextProps.isVisible !== this.props.isVisible) {
+      if (nextProps.isVisible) {
         this.setState({
           overlayOpacityTarget: 0.0,
           overlayOpacitySource: 1.0,
@@ -382,39 +384,50 @@ OptionallySizedVisualization.propTypes = {
 };
 
 // eslint-disable-next-line react/no-multi-comp
-class MetricsVisualization extends React.Component {
-  static propTypes = {
-    animationIsRunning: PropTypes.bool.isRequired,
-    metrics: PropTypes.object.isRequired,
-    title: PropTypes.string,
-  }
-  componentWillReceiveProps(nextProps) {
-    if (!this.props.metrics) {
-      return;
+const recordVisibilityMetric = (Component) => {
+  // eslint-disable-next-line react/no-multi-comp
+  class VisibilityMetricRecorder extends React.Component {
+    static propTypes = {
+      animationIsRunning: PropTypes.bool.isRequired,
+      isVisible: PropTypes.bool.isRequired,
+      metrics: PropTypes.object.isRequired,
+      title: PropTypes.string,
+    }
+    componentWillReceiveProps(nextProps) {
+      if (!this.props.metrics) {
+        return;
+      }
+
+      const title = this.props.title || 'Untitled Visualization';
+
+      if (nextProps.isVisible && !this.props.isVisible) {
+        this.props.metrics.track('becameVisible', { title });
+      } else if (!nextProps.isVisible && this.props.isVisible) {
+        this.props.metrics.track('becameInvisible', { title });
+      }
+
+      if (nextProps.animationIsRunning && !this.props.animationIsRunning) {
+        this.props.metrics.track('animationStartedRunning', { title });
+      } else if (!nextProps.animationIsRunning && this.props.animationIsRunning) {
+        this.props.metrics.track('animationStoppedRunning', { title });
+      }
     }
 
-    const title = this.props.title || 'Untitled Visualization';
-
-    if (nextProps.animationIsRunning && !this.props.animationIsRunning) {
-      this.props.metrics.track('animationStartedRunning', { title });
-    } else if (!nextProps.animationIsRunning && this.props.animationIsRunning) {
-      this.props.metrics.track('animationStoppedRunning', { title });
+    render() {
+      return (
+        <Component {...this.props} />
+      );
     }
   }
+  return VisibilityMetricRecorder;
+};
 
-  render() {
-    return (
-      <OptionallySizedVisualization {...this.props} />
-    );
-  }
-}
-
-const ExposedMetricsVisualization = exposeMetrics(MetricsVisualization);
+const ExposedMetricsVisualization = exposeMetrics(recordVisibilityMetric(OptionallySizedVisualization));
 
 // eslint-disable-next-line react/no-multi-comp
 export class BlankableVisualization extends React.Component {
   renderChild = isVisible => (
-    <ExposedMetricsVisualization {...this.props} animationIsRunning={isVisible} />
+    <ExposedMetricsVisualization {...this.props} isVisible={isVisible} />
   )
 
   render() {
@@ -428,11 +441,20 @@ export class BlankableVisualization extends React.Component {
 
 const BlankableByContextVisualization = (
   props,
-  { animationIsRunning = true },
-) => <OptionallySizedVisualization animationIsRunning={animationIsRunning} {...props} />;
+  { animationIsRunning = false, isVisible = true },
+) => (
+  <ClickToAnimate animationIsRunning={animationIsRunning}>
+    <ExposedMetricsVisualization
+      animationIsRunning={animationIsRunning}
+      isVisible={isVisible}
+      {...props}
+    />
+  </ClickToAnimate>
+);
 
 BlankableByContextVisualization.contextTypes = {
   animationIsRunning: PropTypes.bool,
+  isVisible: PropTypes.bool,
 };
 
 export default BlankableByContextVisualization;

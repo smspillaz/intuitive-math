@@ -6,13 +6,22 @@ import TrackVisibility from 'react-on-screen';
 class Animation extends React.Component {
   static propTypes = {
     initial: PropTypes.any,
+    isVisible: PropTypes.bool.isRequired,
     update: PropTypes.func.isRequired,
     render: PropTypes.func.isRequired,
     running: PropTypes.bool.isRequired,
   };
 
+  static contextTypes = {
+    stopAnimation: PropTypes.func,
+    startAnimation: PropTypes.func,
+  };
+
   static childContextTypes = {
     animationIsRunning: PropTypes.bool,
+    isVisible: PropTypes.bool,
+    stopAnimation: PropTypes.func,
+    startAnimation: PropTypes.func,
     withinAnimation: PropTypes.bool,
   };
 
@@ -20,6 +29,7 @@ class Animation extends React.Component {
     super(props);
     this.state = {
       ...props.initial,
+      animating: false,
     };
     this.frameId = -1;
     this.animationCountdownId = -1;
@@ -27,19 +37,18 @@ class Animation extends React.Component {
 
   getChildContext() {
     return {
-      animationIsRunning: this.frameId !== -1,
+      animationIsRunning: this.state.animating,
+      isVisible: this.props.isVisible,
+      startAnimation: this.animate,
+      stopAnimation: this.stop,
       withinAnimation: true,
     };
   }
 
-  componentDidMount() {
-    this.startAnimationCountdown();
-  }
-
   componentDidUpdate(prevProps) {
-    if (!prevProps.running && this.props.running) {
-      this.startAnimationCountdown();
-    } else if (prevProps.running && !this.props.running) {
+    // Only want to stop running automatically, to start
+    // running, the user must interact with us.
+    if (prevProps.running && !this.props.running) {
       this.stop();
     }
   }
@@ -48,28 +57,38 @@ class Animation extends React.Component {
     this.stop();
   }
 
-  animate() {
-    if (this.frameId === -1 && this.props.running) {
+  animate = () => {
+    if (this.frameId === -1) {
       const updater = () => {
         this.setState(this.props.update(this.state));
         this.frameId = requestAnimationFrame(updater);
       };
       this.frameId = requestAnimationFrame(updater);
+      this.setState({ animating: true });
     }
 
     this.animationCountdownId = -1;
+
+    if (this.context.startAnimation) {
+      this.context.startAnimation();
+    }
   }
 
-  startAnimationCountdown() {
+  startAnimationCountdown = () => {
     if (this.animationCountdownId === -1) {
       this.animationCountdownId = setTimeout(() => this.animate(), 50);
     }
   }
 
-  stop() {
+  stop = () => {
+    if (this.context.stopAnimation) {
+      this.context.stopAnimation();
+    }
+
     if (this.frameId !== -1) {
       cancelAnimationFrame(this.frameId);
       this.frameId = -1;
+      this.setState({ animating: false });
     }
 
     if (this.animationCountdownId !== -1) {
@@ -104,7 +123,7 @@ const PowerEfficientAnimation = ({ running = true, ...props }) => (
   <TrackVisibility offset={100}>
     {({ isVisible }) => (
       <PureVisibilityTracker isVisible={isVisible} {...props}>
-        <Animation {...props} running={running && isVisible} />
+        <Animation {...props} running={running && isVisible} isVisible={isVisible} />
       </PureVisibilityTracker>
     )}
   </TrackVisibility>
