@@ -41,6 +41,13 @@ export default class InterpolatedAnimation extends React.Component {
         {},
       ),
     };
+    this.updateHandlerMap(props);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (Object.keys(nextProps.values) !== Object.keys(this.props.values)) {
+      this.updateHandlerMap(nextProps);
+    }
   }
 
   handleChange = (key, value) => {
@@ -67,6 +74,16 @@ export default class InterpolatedAnimation extends React.Component {
       },
     },
   })
+
+  updateHandlerMap(props) {
+    this.handlers = Object.keys(props.values).reduce((acc, key) => ({
+      ...acc,
+      [key]: {
+        onChange: (value) => this.handleChange(key, value),
+        onClear: () => this.handleClear(key),
+      },
+    }), {});
+  }
 
   render() {
     return (
@@ -106,8 +123,8 @@ export default class InterpolatedAnimation extends React.Component {
                        this.state.values[key].override : state.values[key],
                 begin: this.props.values[key].begin,
                 end: this.props.values[key].end,
-                onChange: (value) => this.handleChange(key, value),
-                onClear: () => this.handleClear(key),
+                onChange: this.handlers[key].onChange,
+                onClear: this.handlers[key].onClear,
                 overridden: this.state.values[key].override !== null,
               },
             }),
