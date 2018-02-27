@@ -83,9 +83,30 @@ class Animation extends React.Component {
   }
 }
 
+// eslint-disable-next-line
+class PureVisibilityTracker extends React.Component {
+  static propTypes = {
+    children: PropTypes.node.isRequired,
+  }
+
+  shouldComponentUpdate(nextProps) {
+    return Object.keys(nextProps).some((prop) => (
+      prop === 'children' ? false : nextProps[prop] !== this.props[prop]
+    ));
+  }
+
+  render() {
+    return (<div>{this.props.children}</div>);
+  }
+}
+
 const PowerEfficientAnimation = ({ running = true, ...props }) => (
   <TrackVisibility offset={100}>
-    {({ isVisible }) => <Animation {...props} running={running && isVisible} />}
+    {({ isVisible }) => (
+      <PureVisibilityTracker isVisible={isVisible} {...props}>
+        <Animation {...props} running={running && isVisible} />
+      </PureVisibilityTracker>
+    )}
   </TrackVisibility>
 );
 
