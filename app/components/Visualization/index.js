@@ -361,7 +361,7 @@ export class BlankableVisualization extends React.Component {
 }
 
 const BlankableByContextVisualization = (props, { animationIsRunning = false, isVisible = true }) => (
-  <ClickToAnimate animationIsRunning={animationIsRunning}>
+  <ClickToAnimate>
     <ExposedMetricsVisualization
       animationIsRunning={animationIsRunning}
       isVisible={isVisible}
