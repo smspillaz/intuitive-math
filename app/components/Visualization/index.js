@@ -9,6 +9,7 @@ import TrackVisibility from 'react-on-screen';
 import React3 from 'react-three-renderer';
 import { Vector3 } from 'three';
 
+import callbackAnimator from 'components/CallbackAnimator';
 import ClickToAnimate from 'components/ClickToAnimate';
 
 const Centered = styled.div`
@@ -46,37 +47,101 @@ OverlayParent.propTypes = {
   width: PropTypes.number.isRequired,
 };
 
-const TweenOverlayVisualization = ({ width, height, rotation, position, matrix, children, overlayOpacity }) => (
+class React3Visualization extends React.Component {
+  oneManualRender = () => {
+    if (!this.props.animationIsRunning) {
+      this.manualRenderCallback(true);
+    }
+  }
+
+  handleManualRenderTriggerCreated = (trigger) => {
+    // Render a frame on the next tick (doing so immediately
+    // means that the canvas isn't yet realized).
+    this.manualRenderCallback = trigger;
+    setTimeout(this.oneManualRender, 1);
+
+    if (this.props.onRegisterManualRenderCallback) {
+      this.props.onRegisterManualRenderCallback(this.oneManualRender);
+    }
+  }
+
+  handleAnimationFrame = () => {
+    if (this.props.animationIsRunning) {
+      this.props.onAnimationFrame();
+    }
+  }
+
+  render() {
+    const {
+      animationIsRunning,
+      width,
+      height,
+      rotation,
+      position,
+      matrix,
+      children,
+    } = this.props;
+    return (
+      <React3
+        mainCamera="camera" // this points to the perspectiveCamera below
+        width={width}
+        height={height}
+        canvasStyle={{
+          borderRadius: '1em',
+        }}
+        onAnimate={this.handleAnimationFrame}
+        // Force "manual rendering" if animation is not running
+        forceManualRender={!animationIsRunning}
+        // When we get our manual render trigger, render a single
+        // frame. This usually happens when the component
+        // mounts and allows the contents of the canvas to be
+        // defined for future animation.
+        onManualRenderTriggerCreated={this.handleManualRenderTriggerCreated}
+      >
+        <scene>
+          <perspectiveCamera
+            name="camera"
+            fov={75}
+            aspect={width / height}
+            near={0.1}
+            far={1000}
+            position={position || new Vector3(0, 0, 5)}
+          />
+          <group
+            {...(rotation ? { rotation } : {})}
+            {...(matrix ? { matrix } : {})}
+          >
+            {children}
+          </group>
+        </scene>
+      </React3>
+    );
+  }
+}
+
+React3Visualization.propTypes = {
+  animationIsRunning: PropTypes.bool.isRequired,
+  width: PropTypes.number.isRequired,
+  height: PropTypes.number.isRequired,
+  rotation: PropTypes.object,
+  matrix: PropTypes.object,
+  position: PropTypes.object,
+  onAnimationFrame: PropTypes.func,
+  onRegisterManualRenderCallback: PropTypes.func,
+  children: PropTypes.element,
+};
+
+const AnimatedReact3Visualization = callbackAnimator(React3Visualization);
+
+const TweenOverlayVisualization = ({ width, height, children, overlayOpacity, ...props }) => (
   <Centered>
     <OverlayParent>
       {overlayOpacity !== 1.0 ? (
-        <React3
-          mainCamera="camera" // this points to the perspectiveCamera below
-          width={width}
-          height={height}
-          canvasStyle={{
-            borderRadius: '1em',
-          }}
-        >
-          <scene>
-            <perspectiveCamera
-              name="camera"
-              fov={75}
-              aspect={width / height}
-              near={0.1}
-              far={1000}
-              position={position || new Vector3(0, 0, 5)}
-            />
-            <group
-              {...(rotation ? { rotation } : {})}
-              {...(matrix ? { matrix } : {})}
-            >
-              {children}
-            </group>
-          </scene>
-        </React3>
+        <AnimatedReact3Visualization width={width} height={height} {...props}>
+          {children}
+        </AnimatedReact3Visualization>
       ) : <Box width={width} height={height} opacity={1.0} />}
-      {overlayOpacity !== 1.0 ? (
+      {overlayOpacity !== 1.0 && overlayOpacity !== 0.0 ? (
         <Overlay>
           <Box width={width} height={height} opacity={overlayOpacity} />
         </Overlay>
@@ -89,12 +154,10 @@ TweenOverlayVisualization.propTypes = {
   overlayOpacity: PropTypes.number.isRequired,
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
-  rotation: PropTypes.object,
-  matrix: PropTypes.object,
-  position: PropTypes.object,
   children: PropTypes.element,
 };
 
+// eslint-disable-next-line react/no-multi-comp
 class Visualization extends React.Component {
   static propTypes = {
     fadeTime: PropTypes.number,

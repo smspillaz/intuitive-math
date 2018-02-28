@@ -41,6 +41,7 @@ export default class InterpolatedAnimation extends React.Component {
         {},
       ),
     };
+    this.manualRenderCallback = null;
     this.updateHandlerMap(props);
   }
 
@@ -64,6 +65,13 @@ export default class InterpolatedAnimation extends React.Component {
         },
       },
     });
+
+    /* If the state changed, we need to queue a dependent
+     * manual re-render, since that might not happen on its
+     * own just by updating state. */
+    if (this.manualRenderCallback) {
+      this.manualRenderCallback();
+    }
   }
 
   handleClear = (key) => this.setState({
@@ -74,6 +82,10 @@ export default class InterpolatedAnimation extends React.Component {
       },
     },
   })
+
+  handleRegisterManualRenderCallback = (callback) => {
+    this.manualRenderCallback = callback;
+  }
 
   updateHandlerMap(props) {
     this.handlers = Object.keys(props.values).reduce((acc, key) => ({
@@ -131,6 +143,7 @@ export default class InterpolatedAnimation extends React.Component {
             {},
           ))
         }
+        onRegisterManualRenderCallback={this.handleRegisterManualRenderCallback}
       />
     );
   }

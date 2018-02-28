@@ -7,12 +7,15 @@ class Animation extends React.Component {
   static propTypes = {
     initial: PropTypes.any,
     isVisible: PropTypes.bool.isRequired,
+    onRegisterManualRenderCallback: PropTypes.func,
     update: PropTypes.func.isRequired,
     render: PropTypes.func.isRequired,
     running: PropTypes.bool.isRequired,
   };
 
   static contextTypes = {
+    onAnimationFrame: PropTypes.func,
+    onRegisterManualRenderCallback: PropTypes.func,
     stopAnimation: PropTypes.func,
     startAnimation: PropTypes.func,
   };
@@ -20,6 +23,8 @@ class Animation extends React.Component {
   static childContextTypes = {
     animationIsRunning: PropTypes.bool,
     isVisible: PropTypes.bool,
+    onAnimationFrame: PropTypes.func,
+    onRegisterManualRenderCallback: PropTypes.func,
     stopAnimation: PropTypes.func,
     startAnimation: PropTypes.func,
     withinAnimation: PropTypes.bool,
@@ -31,14 +36,19 @@ class Animation extends React.Component {
       ...props.initial,
       animating: false,
     };
-    this.frameId = -1;
     this.animationCountdownId = -1;
+    this.manualRenderCallback = null;
   }
 
   getChildContext() {
     return {
       animationIsRunning: this.state.animating,
       isVisible: this.props.isVisible,
+      onAnimationFrame: this.handleAnimationFrame,
+      onRegisterManualRenderCallback: (
+        this.props.onRegisterManualRenderCallback ||
+        this.context.onRegisterManualRenderCallback
+      ),
       startAnimation: this.animate,
       stopAnimation: this.stop,
       withinAnimation: true,
@@ -58,16 +68,7 @@ class Animation extends React.Component {
   }
 
   animate = () => {
-    if (this.frameId === -1) {
-      const updater = () => {
-        this.setState(this.props.update(this.state));
-        this.frameId = requestAnimationFrame(updater);
-      };
-      this.frameId = requestAnimationFrame(updater);
-      this.setState({ animating: true });
-    }
-
-    this.animationCountdownId = -1;
+    this.setState({ animating: true });
 
     if (this.context.startAnimation) {
       this.context.startAnimation();
@@ -85,15 +86,18 @@ class Animation extends React.Component {
       this.context.stopAnimation();
     }
 
-    if (this.frameId !== -1) {
-      cancelAnimationFrame(this.frameId);
-      this.frameId = -1;
-      this.setState({ animating: false });
-    }
+    this.setState({ animating: false });
 
     if (this.animationCountdownId !== -1) {
       clearTimeout(this.animationCountdownId);
       this.animationCountdownId = -1;
+    }
+  }
+
+  handleAnimationFrame = () => {
+    this.setState(this.props.update(this.state));
+    if (this.context.onAnimationFrame) {
+      this.context.onAnimationFrame();
     }
   }
 
