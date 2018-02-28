@@ -11,19 +11,19 @@ import PropTypes from 'prop-types';
 
 class ClickToAnimate extends React.Component {
   static contextTypes = {
-    startAnimation: PropTypes.func.isRequired,
-    stopAnimation: PropTypes.func.isRequired,
+    animationIsRunning: PropTypes.bool,
+    startAnimation: PropTypes.func,
+    stopAnimation: PropTypes.func,
   };
 
   static propTypes = {
-    animationIsRunning: PropTypes.bool.isRequired,
     children: PropTypes.node.isRequired,
   };
 
   handleClick = () => {
-    if (this.props.animationIsRunning) {
+    if (!!this.context.animationIsRunning && this.context.stopAnimation) {
       this.context.stopAnimation();
-    } else {
+    } else if (this.context.startAnimation) {
       this.context.startAnimation();
     }
   }
