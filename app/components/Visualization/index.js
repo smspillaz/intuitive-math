@@ -426,8 +426,10 @@ const ExposedMetricsVisualization = exposeMetrics(recordVisibilityMetric(Optiona
 
 // eslint-disable-next-line react/no-multi-comp
 export class BlankableVisualization extends React.Component {
-  renderChild = isVisible => (
-    <ExposedMetricsVisualization {...this.props} isVisible={isVisible} />
+  renderChild = ({ isVisible }) => (
+    <ClickToAnimate>
+      <ExposedMetricsVisualization {...this.props} isVisible={isVisible} />
+    </ClickToAnimate>
   )
 
   render() {
