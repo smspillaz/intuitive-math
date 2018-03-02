@@ -10,6 +10,8 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 
+import styled from 'styled-components';
+
 import EditorCloseIcon from '@atlaskit/icon/glyph/editor/close';
 import MathJax from 'react-mathjax';
 import { Vector3 } from 'three';
@@ -23,6 +25,14 @@ import Vector from 'components/Vector';
 import injectReducer from 'utils/injectReducer';
 import reducer from './reducer';
 
+const ImageBanner = styled.div`
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+`;
+
 /* eslint-disable react/prefer-stateless-function */
 export class HomePage extends React.PureComponent {
   render() {
@@ -34,7 +44,13 @@ export class HomePage extends React.PureComponent {
         </Helmet>
         <div>
           <MathJax.Context>
-            <Section title="Intuitive Math Primer" anchor="intuitive">
+            <Section anchor="intuitive">
+              <ImageBanner>
+                <img
+                  src="/static/intuitive-math-banner.png"
+                  alt="Intuitive Math Banner Logo"
+                />
+              </ImageBanner>
               <p>
                 This is a math primer that is a little different. It is written
                 using technologies such as React and WebGL with animated explanations
