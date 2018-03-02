@@ -25,6 +25,10 @@ import '!file-loader?name=[name].[ext]!./images/apple-touch-icon.png';
 import '!file-loader?name=[name].[ext]!./images/safari-pinned-tab.svg';
 import '!file-loader?name=[name].[ext]!./manifest.json';
 import 'file-loader?name=[name].[ext]!./.htaccess'; // eslint-disable-line import/extensions
+
+// Also load the banner image, which will be displayed on the homepage
+import '!file-loader?name=[name].[ext]!./images/intuitive-math-banner.png';
+
 /* eslint-enable import/no-webpack-loader-syntax */
 
 // Import hotjar
