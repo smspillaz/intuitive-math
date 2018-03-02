@@ -40,7 +40,7 @@ const Section = ({ title, anchor, children }) => (
       aria-hidden
     />
     <SectionContent>
-      <h1>{title}</h1>
+      {title ? <h1>{title}</h1> : <span />}
       <div>
         {children}
       </div>
@@ -49,7 +49,7 @@ const Section = ({ title, anchor, children }) => (
 );
 
 Section.propTypes = {
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
   anchor: PropTypes.string.isRequired,
   children: PropTypes.element.isRequired,
 };
