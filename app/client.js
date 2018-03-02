@@ -17,6 +17,10 @@ import FontFaceObserver from 'fontfaceobserver';
 /* eslint-disable import/no-webpack-loader-syntax */
 import '!file-loader?name=[name].[ext]!./images/favicon.ico';
 import 'file-loader?name=[name].[ext]!./.htaccess'; // eslint-disable-line import/extensions
+
+// Also load the banner image, which will be displayed on the homepage
+import '!file-loader?name=[name].[ext]!./images/intuitive-math-banner.png';
+
 /* eslint-enable import/no-webpack-loader-syntax */
 
 // Import hotjar
