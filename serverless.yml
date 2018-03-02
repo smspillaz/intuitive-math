@@ -12,6 +12,3 @@ functions:
       - http:
           path: /
           method: ANY
-      - http:
-          path: /{proxy+}
-          method: ANY
