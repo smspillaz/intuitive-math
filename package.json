@@ -262,6 +262,8 @@
     "redux-saga": "0.15.3",
     "reselect": "3.0.1",
     "sanitize.css": "4.1.0",
+    "serverless-apigw-binary": "^0.4.4",
+    "serverless-apigwy-binary": "^0.1.0",
     "serverless-http": "^1.5.2",
     "styled-components": "^2.4.0",
     "three": "^0.89.0",
