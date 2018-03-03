@@ -8244,6 +8244,16 @@ serverless:
     write-file-atomic "^2.1.0"
     yaml-ast-parser "0.0.34"
 
+serverless-apigw-binary@^0.4.4:
+  version "0.4.4"
+  resolved "https://registry.yarnpkg.com/serverless-apigw-binary/-/serverless-apigw-binary-0.4.4.tgz#f3cffd8365322a2a1d8bde5fd94b306b7a64d4fb"
+
+serverless-apigwy-binary@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/serverless-apigwy-binary/-/serverless-apigwy-binary-0.1.0.tgz#3a0ac4e4f0955c0c49f1f1f3c63244079a4824e8"
+  dependencies:
+    bluebird "^3.5.0"
+
 serverless-http@^1.5.2:
   version "1.5.2"
   resolved "https://registry.yarnpkg.com/serverless-http/-/serverless-http-1.5.2.tgz#efc78498a5cddda7274aa5ff77a33e1acfc901a5"
