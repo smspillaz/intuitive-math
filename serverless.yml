@@ -22,3 +22,7 @@ functions:
           path: /
           method: ANY
           contentHandling: CONVERT_TO_BINARY
+      - http:
+          path: /{proxy+}
+          method: ANY
+          contentHandling: CONVERT_TO_BINARY
