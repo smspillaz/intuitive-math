@@ -23,7 +23,7 @@ production:
 EOL
 )
 
-echo "${text}" >> ../intuimath-credentials/config/app/env.yml
+echo "${text}" > ../intuimath-credentials/config/app/env.yml
 
 progress &
 PROGRESS=$!
