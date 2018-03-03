@@ -10,7 +10,7 @@ progress() {
 # We'll need to set up our credentials
 mkdir -p ../intuimath-credentials/config/app/
 
-text=$(cat <<< EOL
+text=$(cat <<- EOL
 credentials:
   accessKeyId: ${AWS_ACCESS_KEY_ID}
   secretAccessKey: ${AWS_SECRET_ACCESS_KEY}
