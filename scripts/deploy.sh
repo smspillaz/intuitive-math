@@ -10,7 +10,7 @@ progress() {
 # We'll need to set up our credentials
 mkdir -p ../intuimath-credentials/config/app/
 
-echo <<< EOL
+text=$(cat <<< EOL
 credentials:
   accessKeyId: ${AWS_ACCESS_KEY_ID}
   secretAccessKey: ${AWS_SECRET_ACCESS_KEY}
@@ -20,7 +20,10 @@ staging:
   NODE_ENV: production
 production:
   NODE_ENV: production
-EOL >> ../intuimath-credentials/config/app/env.yml
+EOL
+)
+
+echo "${text}" >> ../intuimath-credentials/config/app/env.yml
 
 progress &
 PROGRESS=$!
