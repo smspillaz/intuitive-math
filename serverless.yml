@@ -5,9 +5,7 @@ plugins:
 custom:
    apigwBinary:
      type:
-       - 'image/jpeg'
-       - 'image/png'
-       - 'image/x-icon'
+       - '*/*'
 provider:
   name: aws
   runtime: nodejs6.10
