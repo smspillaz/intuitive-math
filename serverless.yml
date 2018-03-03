@@ -21,3 +21,4 @@ functions:
       - http:
           path: /
           method: ANY
+          contentHandling: CONVERT_TO_BINARY
