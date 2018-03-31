@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { DoubleSide, Vector3 } from 'three';
 
-import { tangentVectors } from 'utils/math';
+import { normalizeVector, tangentVectors } from 'utils/math';
 
 /**
  * Plane:
@@ -77,7 +77,8 @@ const Plane = ({
   opacity = 1.0,
 }) => {
   const normal = [a, b, c];
-  const [tangentVec1, tangentVec2] = tangentVectors(normal);
+  const tangentVecs = tangentVectors(normal);
+  const [unitTangentVec1, unitTangentVec2] = tangentVecs.map((t) => normalizeVector(t));
   const k = d / ((a ** 2) + (b ** 2) + (c ** 2));
   const point = [k * a, k * b, k * c];
 
@@ -88,9 +89,9 @@ const Plane = ({
           const s = (u * (extents[1] - extents[0])) + extents[0];
           const t = (v * (extents[1] - extents[0])) + extents[0];
 
-          return new Vector3(point[0] + (tangentVec1[0] * s) + (tangentVec2[0] * t),
-                             point[1] + (tangentVec1[1] * s) + (tangentVec2[1] * t),
-                             point[2] + (tangentVec1[2] * s) + (tangentVec2[2] * t));
+          return new Vector3(point[0] + (unitTangentVec1[0] * s) + (unitTangentVec2[0] * t),
+                             point[1] + (unitTangentVec1[1] * s) + (unitTangentVec2[1] * t),
+                             point[2] + (unitTangentVec1[2] * s) + (unitTangentVec2[2] * t));
         }}
         slices={Math.min(10, Math.round(extents[1] - extents[0]))}
         stacks={Math.min(10, Math.round(extents[1] - extents[0]))}
