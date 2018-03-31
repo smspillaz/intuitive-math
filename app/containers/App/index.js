@@ -13,6 +13,7 @@ import { Route, Switch, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import HomePage from 'containers/HomePage/Loadable';
+import GeometryPage from 'containers/GeometryPage/Loadable';
 import LinearAlgebraPage from 'containers/LinearAlgebraPage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 
@@ -103,6 +104,16 @@ const sections = [
       },
     ],
   },
+  {
+    title: 'Geometry',
+    numbered: true,
+    children: [
+      {
+        text: 'Planes',
+        href: '/geometry/planes',
+      },
+    ],
+  },
 ];
 
 const NavigationFooterFromRouteDescriptions = ({ routeDescriptions: { categories, categoryIndex, routeIndex } }) => (
@@ -159,6 +170,7 @@ const NavigatablePage = () => (
         <Switch>
           <Route exact path="/" component={HomePage} />
           <Route path="/linear-algebra" component={LinearAlgebraPage} />
+          <Route path="/geometry" component={GeometryPage} />
           <Route path="" component={NotFoundPage} />
         </Switch>
         <NavigationFooterWithRouteDescriptions />
