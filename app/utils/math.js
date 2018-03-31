@@ -27,3 +27,8 @@ export const tangentVectors = ([a, b, c]) => {
   }
   return [[b, -a, 0], cross([b, -a, 0], [a, b, c])];
 };
+
+export const normalizeVector = (vec) => {
+  const mag = Math.sqrt(vec.map((c) => c ** 2).reduce((s, c) => s + c, 0));
+  return vec.map((c) => c / mag);
+};
