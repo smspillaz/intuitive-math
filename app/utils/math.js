@@ -17,6 +17,10 @@ export const cross = (vec1, vec2) => (
   ]
 );
 
+export const dotProduct = (vec1, vec2) => (
+  vec1.reduce((acc, c, i) => acc + (c * vec2[i]), 0)
+);
+
 export const tangentVectors = ([a, b, c]) => {
   if (a === 0 && b === 0) {
     return [[1, 0, 0], [0, 1, 0]];
