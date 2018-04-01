@@ -1,6 +1,9 @@
 /* eslint-disable global-require */
 
-const redirect = (dst) => (req, res) => res.redirect(dst);
+const NO_CACHE_STATIC_REDIRECTS = [
+  '/sw.js',
+  '/favicon.ico',
+];
 
 /**
  * Front-end middleware
@@ -9,8 +12,16 @@ module.exports = (app, options) => {
   const isProd = process.env.NODE_ENV === 'production';
 
   // redirect favicons and service workers
-  app.get('/sw.js', redirect('/static/sw.js'));
-  app.get('/favicon.ico', redirect('/static/favicon.ico'));
+  app.use((req, res, next) => {
+    if (NO_CACHE_STATIC_REDIRECTS.some((p) => `/static${p}` === req.url)) {
+      res.setHeader('Cache-Control', 'no-cache');
+      next();
+    } else if (NO_CACHE_STATIC_REDIRECTS.some((p) => p === req.url)) {
+      res.redirect(`/static${req.url}`);
+    } else {
+      next();
+    }
+  });
 
   if (isProd) {
     const addProdMiddlewares = require('./addProdMiddlewares');
