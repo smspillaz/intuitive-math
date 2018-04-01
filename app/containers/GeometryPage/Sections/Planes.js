@@ -183,7 +183,7 @@ const PlanesSection = () => (
       write the equation for this particular plane. However, the equation{' '}
       <MathJax.Node inline>{'3x + 2y - z = 0'}</MathJax.Node> is sort of
       a {'"standard form"'} for writing equations for planes, generalizable
-      as <MathJax.Node>{'Ax + By + Cz = D'}</MathJax.Node>. As it turns out, this
+      as <MathJax.Node inline>{'Ax + By + Cz = D'}</MathJax.Node>. As it turns out, this
       notation has some very useful properties.
     </p>
     <p>
