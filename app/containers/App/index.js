@@ -112,6 +112,10 @@ const sections = [
         text: 'Planes',
         href: '/geometry/planes',
       },
+      {
+        text: 'Integrals',
+        href: '/geometry/integrals',
+      },
     ],
   },
 ];
