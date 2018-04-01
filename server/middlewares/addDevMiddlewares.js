@@ -1,3 +1,4 @@
+const express = require('express');
 const path = require('path');
 const webpack = require('webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware');
@@ -13,7 +14,7 @@ function createWebpackMiddleware(compiler, publicPath) {
   });
 }
 
-module.exports = function addDevMiddlewares(app, webpackConfig) {
+module.exports = function addDevMiddlewares(app, webpackConfig, options) {
   const compiler = webpack(webpackConfig);
   const middleware = createWebpackMiddleware(compiler, webpackConfig.output.publicPath);
 
@@ -25,5 +26,6 @@ module.exports = function addDevMiddlewares(app, webpackConfig) {
   const fs = middleware.fileSystem;
 
   // Use server-side rendering directly.
+  app.use(options.publicPath, express.static(options.outputPath));
   ssr(app, fs, path.join(compiler.outputPath, 'index.html'));
 };
