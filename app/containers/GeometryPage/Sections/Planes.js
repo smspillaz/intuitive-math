@@ -96,7 +96,7 @@ const PlanesSection = () => (
     <MathJax.Node>{'-\\frac{3}{2}x + \\frac{1}{2}z - y = 0'}</MathJax.Node>
     <p>
       What I have said up to this point carried an important assumption,
-      which was that Note that <MathJax.Node inline>y</MathJax.Node> had
+      which was that <MathJax.Node inline>y</MathJax.Node> had
       a dependency on <MathJax.Node inline>x</MathJax.Node> in the form
       of <MathJax.Node inline>y = x</MathJax.Node>. If we relax that
       restriction and allow <Strong>any</Strong> <MathJax.Node inline>y</MathJax.Node>{' '}
