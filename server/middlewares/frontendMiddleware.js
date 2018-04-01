@@ -12,7 +12,7 @@ module.exports = (app, options) => {
   } else {
     const webpackConfig = require('../../internals/webpack/webpack.dev.client.babel');
     const addDevMiddlewares = require('./addDevMiddlewares');
-    addDevMiddlewares(app, webpackConfig);
+    addDevMiddlewares(app, webpackConfig, options);
   }
 
   return app;
