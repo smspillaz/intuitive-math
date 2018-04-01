@@ -116,6 +116,10 @@ const sections = [
         text: 'Integrals',
         href: '/geometry/integrals',
       },
+      {
+        text: 'Parametric Surfaces',
+        href: '/geometry/parametric',
+      },
     ],
   },
 ];
