@@ -32,3 +32,12 @@ export const normalizeVector = (vec) => {
   const mag = Math.sqrt(vec.map((c) => c ** 2).reduce((s, c) => s + c, 0));
   return vec.map((c) => c / mag);
 };
+
+export const segment1D = (xMin, xMax, segments) => {
+  const integerSegments = Math.round(segments);
+  const segmentXLength = (xMax - xMin) / integerSegments;
+  return ([...new Array(integerSegments)]).map((v, i) => ([
+    (i * segmentXLength) + xMin,
+    ((i + 1) * segmentXLength) + xMin,
+  ]));
+};
