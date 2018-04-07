@@ -247,6 +247,47 @@ const IntegralsSection = () => (
       segments={15}
       wireframe={false}
     />
+    <MathJax.Node>
+      {'\\int_{-2}^2 \\int_{-2}^{2} -x^2 - y^2 + 2 \\, dx \\, dy'}
+    </MathJax.Node>
+    <p>
+      Working through that integral we have:
+    </p>
+    <MathJax.Node>
+      {'\\int_{-2}^2 \\biggl[\\frac{-x^3}{2} - y^2x + 2x\\biggr]_{-2}^{2} \\, dy'}
+    </MathJax.Node>
+    <MathJax.Node>
+      {'\\int_{-2}^2 \\biggl(\\biggl[\\frac{-2^3}{3} - y^2(2) + 2(2)\\biggr] - \\biggl[\\frac{-(-2)^3}{3} - y^2(-2) + 2(-2)\\biggr]\\biggr) \\, dy'}
+    </MathJax.Node>
+    <MathJax.Node>
+      {'\\int_{-2}^2 \\biggl(\\biggl[\\frac{-8}{3} - 2y^2 + 4\\biggr] - \\biggl[\\frac{8}{3} + 2y^2 - 4\\biggr]\\biggr) \\, dy'}
+    </MathJax.Node>
+    <MathJax.Node>
+      {'\\int_{-2}^2 \\frac{-16}{3} - 4y^2 + 8 \\, dy'}
+    </MathJax.Node>
+    <MathJax.Node>
+      {'\\biggl[\\frac{-16y}{3} - \\frac{4y^3}{3} + 8y\\biggl]_{-2}^{2}'}
+    </MathJax.Node>
+    <MathJax.Node>
+      {'\\biggl[\\frac{-16(2)}{3} - \\frac{4(2)^3}{3} + 8(2)\\biggl] - \\biggl[\\frac{-16(-2)}{3} - \\frac{4(-2)^3}{3} + 8(-2)\\biggl]'}
+    </MathJax.Node>
+    <MathJax.Node>
+      {'\\biggl[\\frac{-32}{3} - \\frac{32}{3} + 16\\biggl] - \\biggl[\\frac{32}{3} - \\frac{-32}{3} - 16\\biggl]'}
+    </MathJax.Node>
+    <MathJax.Node>
+      {'\\biggl[\\frac{-64}{3} + \\frac{48}{3}\\biggl] - \\biggl[\\frac{64}{3} - \\frac{48}{3}\\biggl]'}
+    </MathJax.Node>
+    <MathJax.Node>
+      {'\\biggl[\\frac{-16}{3}\\biggl] - \\biggl[\\frac{16}{3}\\biggl]'}
+    </MathJax.Node>
+    <MathJax.Node>
+      {'\\frac{-32}{3}'}
+    </MathJax.Node>
+    <p>
+      Looking at the graph, the volume exists in the negative{' '}
+      <MathJax.Node inline>z</MathJax.Node> direction, hence, our final answer
+      is negative.
+    </p>
   </Section>
 );
 
