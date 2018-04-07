@@ -124,6 +124,10 @@ const sections = [
         text: 'Surface Area',
         href: '/geometry/surface-area',
       },
+      {
+        text: 'Cylinders',
+        href: '/geometry/cylinders',
+      },
     ],
   },
 ];
