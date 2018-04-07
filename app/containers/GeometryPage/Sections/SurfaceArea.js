@@ -20,13 +20,13 @@ import {
 } from 'components/ParametricVisualization';
 import Section from 'components/Section';
 import SpanningPlane2D from 'components/SpanningPlane2D';
+import SurfaceNormalsIntegral from 'components/SurfaceNormalsIntegral';
 import Tweakable from 'components/Tweakable';
 import Vector from 'components/Vector';
 
 import {
   cross,
   magnitude,
-  segment1D,
 } from 'utils/math';
 
 const VectorNormalVisualization = ({ firstVectorExtents, secondVectorExtents, area = false }) => (
@@ -125,49 +125,6 @@ VectorNormalVisualization.propTypes = {
   firstVectorExtents: PropTypes.arrayOf(PropTypes.number).isRequired,
   secondVectorExtents: PropTypes.arrayOf(PropTypes.number).isRequired,
   area: PropTypes.boolean,
-};
-
-const SurfaceNormalsIntegral = ({
-  uMin,
-  uMax,
-  vMin,
-  vMax,
-  segments,
-  func,
-  uGradientVecFunc,
-  vGradientVecFunc,
-}) => (
-  <group>
-    {segment1D(uMin, uMax, segments).map(([uBegin, uEnd]) => {
-      const uCenter = uBegin + ((uEnd - uBegin) / 2);
-      return segment1D(vMin, vMax, segments).map(([vBegin, vEnd]) => {
-        const vCenter = vBegin + ((vEnd - vBegin) / 2);
-        const baseVector = func(uCenter, vCenter);
-        const uGradientVec = uGradientVecFunc(uCenter, vCenter).multiplyScalar(uEnd - uBegin);
-        const vGradientVec = vGradientVecFunc(uCenter, vCenter).multiplyScalar(vEnd - vBegin);
-        const normalVec = cross([uGradientVec.x, uGradientVec.y, uGradientVec.z],
-                                [vGradientVec.x, vGradientVec.y, vGradientVec.z]);
-        return (
-          <Vector
-            base={baseVector}
-            position={new Vector3(...normalVec).add(baseVector)}
-            color={0xff00ff}
-          />
-        );
-      });
-    })}
-  </group>
-);
-
-SurfaceNormalsIntegral.propTypes = {
-  uMin: PropTypes.number.isRequired,
-  uMax: PropTypes.number.isRequired,
-  vMin: PropTypes.number.isRequired,
-  vMax: PropTypes.number.isRequired,
-  segments: PropTypes.number.isRequired,
-  func: PropTypes.func.isRequired,
-  uGradientVecFunc: PropTypes.func.isRequired,
-  vGradientVecFunc: PropTypes.func.isRequired,
 };
 
 const SurfaceAreaSection = () => (
