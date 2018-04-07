@@ -86,6 +86,44 @@ Parametric3DPositionVisualization.propTypes = {
   color: PropTypes.number.isRequired,
 };
 
+export const Parametric2DSurfaceVisualization = ({
+  func,
+  children,
+  color = 0xffff00,
+  opacity = 0.8,
+  wireframe = false,
+}) => (
+  <AxisVisualization2D
+    render={() => (
+      <group>
+        <mesh>
+          <parametricGeometry
+            parametricFunction={func}
+            slices={20}
+            stacks={20}
+          />
+          <meshBasicMaterial
+            color={color}
+            wireframe={wireframe}
+            opacity={opacity}
+            transparent
+            side={DoubleSide}
+          />
+        </mesh>
+        {children}
+      </group>
+    )}
+  />
+);
+
+Parametric2DSurfaceVisualization.propTypes = {
+  func: PropTypes.func.isRequired,
+  color: PropTypes.number.isRequired,
+  opacity: PropTypes.number,
+  wireframe: PropTypes.boolean,
+  children: PropTypes.node,
+};
+
 export const Parametric3DSurfaceVisualization = ({
   func,
   color = 0xffff00,
