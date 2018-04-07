@@ -222,11 +222,11 @@ const SurfaceAreaSection = () => (
         func={(u, v) => new Vector3(3 * ((Math.sin(u + v)) ** 2),
                                     3 * (Math.sin(v + (u / 4)) ** 2),
                                     0)}
-        uGradientVecFunc={(u, v) => new Vector3(6 * Math.sin(u + v),
-                                                (3 / 2) * Math.sin(v + (u / 4)),
+        uGradientVecFunc={(u, v) => new Vector3(6 * Math.sin(u + v) * Math.cos(u + v),
+                                                (3 / 2) * Math.sin(v + (u / 4)) * Math.cos(v + (u / 4)),
                                                 0)}
-        vGradientVecFunc={(u, v) => new Vector3(6 * Math.sin(u + v),
-                                                6 * Math.sin(v + (u / 4)),
+        vGradientVecFunc={(u, v) => new Vector3(-6 * Math.sin(u + v) * Math.cos(u + v),
+                                                -6 * Math.sin(v + (u / 4)) * Math.cos(v + (u / 4)),
                                                 0)}
         segments={10}
       />
