@@ -14,10 +14,12 @@ import { Vector3, Matrix4 } from 'three';
 
 import InterpolatedAnimation from 'components/InterpolatedAnimation';
 import AxisVisualization3D from 'components/AxisVisualization3D';
+import CubeVectors3D from 'components/CubeVectors3D';
 import { DoubleIntegral } from 'components/DoubleIntegralVisualization';
 import {
   Parametric3DSurfaceVisualization,
 } from 'components/ParametricVisualization';
+import Plane from 'components/Plane';
 import Section from 'components/Section';
 import SpanningPlane2D from 'components/SpanningPlane2D';
 import SurfaceNormalsIntegral from 'components/SurfaceNormalsIntegral';
@@ -181,10 +183,27 @@ const SurfaceAreaSection = () => (
       value these two things do not seem to be related. After all the normal vector
       is just a vector that sticks out from the shape, perpendicular to its surface.
     </p>
-    <VectorNormalVisualization
-      firstVectorExtents={[1.0, 1.0, 1.0]}
-      secondVectorExtents={[0.0, 1.0, 0.0]}
+    <AxisVisualization3D
+      render={() => (
+        <group>
+          <Plane
+            a={0}
+            b={1}
+            c={0}
+            d={0}
+            color={0xff00ff}
+            extents={[-2, 2]}
+            transparent
+            opacity={0.8}
+          />
+          <Vector
+            position={new Vector3(0, 1, 0)}
+            color={0xffff00}
+          />
+        </group>
+      )}
     />
+
     <p>
       But remember that the normal vector has a magnitude like any other vector and
       its magnitude is actually proportionate to the lengths of the vectors that
@@ -193,20 +212,71 @@ const SurfaceAreaSection = () => (
     <VectorNormalVisualization
       firstVectorExtents={[1.0, 1.0, 1.0]}
       secondVectorExtents={[0.0, 1.0, 0.0]}
-      area
     />
     <p>
       As it turns out, the normal vector becomes a proxy for working out the area
       of a quadrialteral defined by two vectors. If the normal vector is short, then
       the area will be quite small. If the normal vector is long, then the area
-      will be larger. (Astute readers may recognize the link between the normal
-      vector defined as the cross product between two vectors and the determinant
-      of a square 3x3 matrix).
+      will be larger.
     </p>
+    <VectorNormalVisualization
+      firstVectorExtents={[1.0, 1.0, 1.0]}
+      secondVectorExtents={[0.0, 1.0, 0.0]}
+      area
+    />
     <p>
-      So, we reformulate the problem in another way - divide up the surface into
-      small patches and then add up the magnitude of their normal vectors. That
-      will give you the surface area!
+      Astute readers may recognize the link between the normal
+      vector defined as the cross product between two vectors and the determinant
+      of a square 3x3 matrix. This is because the determinant of a 3x3 matrix
+      will compute the volume of a parallelepiped having the basis vectors{' '}
+      <MathJax.Node inline>a</MathJax.Node>, <MathJax.Node inline>b</MathJax.Node> and{' '}
+      <MathJax.Node inline>c</MathJax.Node> as edges.
+    </p>
+    <AxisVisualization3D
+      title="Parallelepiped"
+      render={() => {
+        const mat = new Matrix4();
+        mat.set(2, 1, 3, 0,
+                0, 1, 0, 0,
+                0, 0, 1, 0,
+                0, 0, 0, 1);
+        return (
+          <CubeVectors3D matrix={mat} wireframe />
+        );
+      }}
+    />
+    <MathJax.Node>
+      {`\\det \\begin{pmatrix} a_1 & a_2 & a_3 \\\\
+                               b_1 & b_2 & b_3 \\\\
+                               c_1 & c_2 & c_3 \\end{pmatrix} =
+        c_1(a_2b_3 - a_3b_2) - c_2(a_1b_3 - a_3b_1) + c_3(a_1b_2 - a_2b_1)`}
+    </MathJax.Node>
+    <MathJax.Node>
+      {`\\left\\| (a \\times b) \\cdot c \\right\\|  =
+        c_1(a_2b_3 - a_3b_2) - c_2(a_1b_3 - a_3b_1) + c_3(a_1b_2 - a_2b_1)`}
+    </MathJax.Node>
+    <p>
+      So if we divide by <MathJax.Node inline>c</MathJax.Node> and drop the depth
+      dimension, we are just left with area, which is the cross product between
+      <MathJax.Node inline>a</MathJax.Node> and <MathJax.Node inline>b</MathJax.Node>
+    </p>
+    <AxisVisualization3D
+      title="Parallelepiped - no depth"
+      render={() => {
+        const mat = new Matrix4();
+        mat.set(2, 1, 0, 0,
+                0, 1, 0, 0,
+                0, 0, 0, 0,
+                0, 0, 0, 1);
+        return (
+          <CubeVectors3D matrix={mat} wireframe />
+        );
+      }}
+    />
+    <p>
+      Back to surface areas, we reformulate the problem in another way -
+      divide up the surface into small patches and then add up the magnitude
+      of their normal vectors. That will give you the surface area!
     </p>
     <Parametric3DSurfaceVisualization
       func={(u, v) => new Vector3(3 * ((Math.sin(u + v)) ** 2),
