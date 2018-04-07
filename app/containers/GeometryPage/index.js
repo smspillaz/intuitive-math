@@ -21,6 +21,7 @@ import CylindersSection from './Sections/Cylinders';
 import IntegralsSection from './Sections/Integrals';
 import ParametricSurfacesSection from './Sections/ParametricSurfaces';
 import PlanesSection from './Sections/Planes';
+import SpheresSection from './Sections/Spheres';
 import SurfaceAreaSection from './Sections/SurfaceArea';
 
 import reducer from './reducer';
@@ -41,6 +42,7 @@ export class GeometryPage extends React.PureComponent { // eslint-disable-line r
               <Route path={`${this.props.match.path}/parametric`} component={ParametricSurfacesSection} />
               <Route path={`${this.props.match.path}/surface-area`} component={SurfaceAreaSection} />
               <Route path={`${this.props.match.path}/cylinders`} component={CylindersSection} />
+              <Route path={`${this.props.match.path}/spheres`} component={SpheresSection} />
             </Switch>
           </MathJax.Context>
         </div>

@@ -128,6 +128,10 @@ const sections = [
         text: 'Cylinders',
         href: '/geometry/cylinders',
       },
+      {
+        text: 'Spheres',
+        href: '/geometry/spheres',
+      },
     ],
   },
 ];
