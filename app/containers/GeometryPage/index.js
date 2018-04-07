@@ -20,6 +20,7 @@ import injectReducer from 'utils/injectReducer';
 import IntegralsSection from './Sections/Integrals';
 import ParametricSurfacesSection from './Sections/ParametricSurfaces';
 import PlanesSection from './Sections/Planes';
+import SurfaceAreaSection from './Sections/SurfaceArea';
 
 import reducer from './reducer';
 
@@ -37,6 +38,7 @@ export class GeometryPage extends React.PureComponent { // eslint-disable-line r
               <Route path={`${this.props.match.path}/planes`} component={PlanesSection} />
               <Route path={`${this.props.match.path}/integrals`} component={IntegralsSection} />
               <Route path={`${this.props.match.path}/parametric`} component={ParametricSurfacesSection} />
+              <Route path={`${this.props.match.path}/surface-area`} component={SurfaceAreaSection} />
             </Switch>
           </MathJax.Context>
         </div>
