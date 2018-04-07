@@ -126,26 +126,30 @@ Parametric2DSurfaceVisualization.propTypes = {
 
 export const Parametric3DSurfaceVisualization = ({
   func,
+  children,
   color = 0xffff00,
   opacity = 0.8,
   wireframe = false,
 }) => (
   <AxisVisualization3D
     render={() => (
-      <mesh>
-        <parametricGeometry
-          parametricFunction={func}
-          slices={20}
-          stacks={20}
-        />
-        <meshBasicMaterial
-          color={color}
-          wireframe={wireframe}
-          opacity={opacity}
-          transparent
-          side={DoubleSide}
-        />
-      </mesh>
+      <group>
+        <mesh>
+          <parametricGeometry
+            parametricFunction={func}
+            slices={20}
+            stacks={20}
+          />
+          <meshBasicMaterial
+            color={color}
+            wireframe={wireframe}
+            opacity={opacity}
+            transparent
+            side={DoubleSide}
+          />
+        </mesh>
+        {children}
+      </group>
     )}
   />
 );
@@ -155,4 +159,5 @@ Parametric3DSurfaceVisualization.propTypes = {
   color: PropTypes.number.isRequired,
   opacity: PropTypes.number,
   wireframe: PropTypes.boolean,
+  children: PropTypes.node,
 };
