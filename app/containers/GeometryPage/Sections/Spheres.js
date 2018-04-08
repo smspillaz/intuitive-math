@@ -65,16 +65,13 @@ const SphereSection = () => (
       <Strong>triple integral</Strong> as the input space has three parameters.
     </p>
     <MathJax.Node>
-      {'\\int_0^{\\pi} \\int_0^{2\\pi} \\int_0^2 -r\\sin(\\phi) \\times  \\, dr \\, d\\theta \\, d\\phi'}
+      {'\\int_0^{\\pi} \\int_0^{2\\pi} \\int_0^2 -r\\sin(\\phi) \\, dr \\, d\\theta \\, d\\phi'}
     </MathJax.Node>
     <p>
       Note also that we need to apply a density correction which is the determinant
       of the Jacobian matrix for each component. In the case of a cylinder,
-      that is <MathJax.Node inline>r</MathJax.Node>, as we have:
+      that is <MathJax.Node inline>{'-r\\sin(\\theta)'}</MathJax.Node>.
     </p>
-    <MathJax.Node>
-      {'-r\\sin(\\phi)'}
-    </MathJax.Node>
     <p>
       Finding the surface area of a cylinder requires us to find a parameterization
       in terms of two parameters. Because this sphere has a constant radius,
