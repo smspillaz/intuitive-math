@@ -89,6 +89,8 @@ Parametric3DPositionVisualization.propTypes = {
 export const Parametric2DSurfaceVisualization = ({
   func,
   children,
+  slices = 20,
+  stacks = 20,
   color = 0xffff00,
   opacity = 0.8,
   wireframe = false,
@@ -99,8 +101,8 @@ export const Parametric2DSurfaceVisualization = ({
         <mesh>
           <parametricGeometry
             parametricFunction={func}
-            slices={20}
-            stacks={20}
+            slices={slices}
+            stacks={stacks}
           />
           <meshBasicMaterial
             color={color}
@@ -120,6 +122,8 @@ Parametric2DSurfaceVisualization.propTypes = {
   func: PropTypes.func.isRequired,
   color: PropTypes.number.isRequired,
   opacity: PropTypes.number,
+  slices: PropTypes.number,
+  stacks: PropTypes.number,
   wireframe: PropTypes.boolean,
   children: PropTypes.node,
 };
