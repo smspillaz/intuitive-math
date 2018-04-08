@@ -109,7 +109,10 @@ class Animation extends React.Component {
 // eslint-disable-next-line
 class PureVisibilityTracker extends React.Component {
   static propTypes = {
-    children: PropTypes.node.isRequired,
+    children: PropTypes.oneOfType([
+      PropTypes.node,
+      PropTypes.arrayOf(PropTypes.node),
+    ]),
   }
 
   shouldComponentUpdate(nextProps) {
