@@ -121,6 +121,10 @@ const sections = [
         href: '/geometry/parametric',
       },
       {
+        text: 'Paths',
+        href: '/geometry/paths',
+      },
+      {
         text: 'Surface Area',
         href: '/geometry/surface-area',
       },
