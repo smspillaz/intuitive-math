@@ -37,7 +37,10 @@ const MeshLineParametricVisualization = ({ func, radius = 0.02, children }) => (
 MeshLineParametricVisualization.propTypes = {
   func: PropTypes.func.isRequired,
   radius: PropTypes.number,
-  children: PropTypes.arrayOf(PropTypes.node),
+  children: PropTypes.oneOfType([
+    PropTypes.node,
+    PropTypes.arrayOf(PropTypes.node),
+  ]),
 };
 
 const VectorApproximatedMeshLineParametricVisualization = ({ func, segments, ...props }) => (
