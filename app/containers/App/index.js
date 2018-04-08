@@ -172,7 +172,10 @@ const MaybeAtlaskitThemeProvider = ({ children }) => (
 );
 
 MaybeAtlaskitThemeProvider.propTypes = {
-  children: PropTypes.node.isRequired,
+  children: PropTypes.oneOfType([
+    PropTypes.node,
+    PropTypes.arrayOf(PropTypes.node),
+  ]),
 };
 
 const NavigatablePage = () => (
