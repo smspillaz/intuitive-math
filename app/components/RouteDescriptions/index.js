@@ -33,7 +33,10 @@ class RouteDescriptions extends React.Component {
         })).isRequired,
       })).isRequired,
     }).isRequired,
-    children: PropTypes.node,
+    children: PropTypes.oneOfType([
+      PropTypes.node,
+      PropTypes.arrayOf(PropTypes.node),
+    ]),
     location: PropTypes.object.isRequired,
   };
 
