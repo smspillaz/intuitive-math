@@ -25,9 +25,9 @@ const EROVisualization = ({ first, second, third, ...props }) => (
       <MathJaxMatrix
         inline
         matrix={[
-          [[first[0]], [first[1]], [first[2]]],
-          [[second[0]], [second[1]], [second[2]]],
-          [[third[0]], [third[1]], [third[2]]],
+          [first[0], first[1], first[2]],
+          [second[0], second[1], second[2]],
+          [third[0], third[1], third[2]],
         ]}
       />
       {first.length === 4 ? (
