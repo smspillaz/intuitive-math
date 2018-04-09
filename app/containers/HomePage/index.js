@@ -116,7 +116,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                 by dragging it from side to side, or just double-clicking and editing
                 it. Animation will stop for that value as soon as you edit it, and you
                 can undo the stopped animation by clicking the close button:
-                <EditorCloseIcon size="small" />.
+                <EditorCloseIcon size="small" label="Editor Close Icon" />.
               </p>
               <p>
                 Note that due to the limit on the number of concurrently running
