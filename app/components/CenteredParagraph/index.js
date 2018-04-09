@@ -6,7 +6,7 @@
 
 import styled from 'styled-components';
 
-const CenteredParagraph = styled.p`
+const CenteredParagraph = styled.div`
   text-align: center;
 `;
 
