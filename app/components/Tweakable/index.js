@@ -64,7 +64,7 @@ class Tweakable extends React.Component {
             width: `${Math.max(String(value.toFixed(2)).length, 5) * 9}px`,
           }}
         />
-        {overridden ? <EditorCloseIcon onClick={onClear} size="small" /> : <span />}
+        {overridden ? <EditorCloseIcon onClick={onClear} size="small" label="Close Editor" /> : <span />}
       </CenteredGlyphText>
     );
   }
