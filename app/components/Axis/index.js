@@ -10,7 +10,7 @@ export const Axis = ({ basis, extents, color }) => (
     {[...Array(Math.trunc(extents[1]) - Math.trunc(extents[0])).keys()].map((index) => {
       const tick = index + Math.trunc(extents[0]);
       return (
-        <line>
+        <line key={tick}>
           <geometry
             vertices={[
               new Vector3((basis[0] * tick) - (0.125 * basis[1]),
