@@ -150,10 +150,29 @@ export default class InterpolatedAnimation extends React.Component {
 }
 
 InterpolatedAnimation.propTypes = {
-  values: PropTypes.shape({
-    begin: PropTypes.number.isRequired,
-    end: PropTypes.number.isRequired,
-  }).isRequired,
+  values: (props, propName, componentName) => {
+    const validator = {
+      begin: PropTypes.number.isRequired,
+      end: PropTypes.number.isRequired,
+    };
+
+    // eslint-disable-next-line no-restricted-syntax
+    for (const key of Object.keys(props[propName])) {
+      // eslint-disable-next-line no-restricted-syntax
+      for (const subPropName of ['begin', 'end']) {
+        const error = PropTypes.checkPropTypes(validator,
+                                               props[propName][key],
+                                               subPropName,
+                                               componentName);
+
+        if (error !== null) {
+          return error;
+        }
+      }
+    }
+
+    return null;
+  },
   render: PropTypes.func.isRequired,
 };
 
