@@ -18,7 +18,11 @@ import Page from '@atlaskit/page';
 const DesktopNavigator = ({ title, sections }) => (
   <Navigation
     containerHeaderComponent={() => (
-      <AkContainerTitle text={title} href="/" icon={<GraphLineIcon />} />
+      <AkContainerTitle
+        text={title}
+        href="/"
+        icon={<GraphLineIcon label="Intuitive Math" />}
+      />
     )}
   >
     <NavigationItems sections={sections} />
