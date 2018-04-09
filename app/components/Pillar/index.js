@@ -55,7 +55,7 @@ Pillar.propTypes = {
   z: PropTypes.number.isRequired,
   color: PropTypes.number.isRequired,
   opacity: PropTypes.number,
-  wireframe: PropTypes.boolean,
+  wireframe: PropTypes.bool,
 };
 
 export default Pillar;
