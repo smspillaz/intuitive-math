@@ -26,8 +26,8 @@ const NavigationItems = ({ sections }) => (
     {sections.map((section) => (
       <AkNavigationItemGroup title={section.title} key={section.title}>
         {section.children.map((child, index) => (
-          <LinkStyle>
-            <Link to={child.href} key={child.href}>
+          <LinkStyle key={child.href}>
+            <Link to={child.href}>
               <AkNavigationItem
                 text={section.numbered ? `${index + 1}) ${child.text}` : child.text}
               />
