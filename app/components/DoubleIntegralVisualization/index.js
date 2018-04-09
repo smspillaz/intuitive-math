@@ -61,7 +61,7 @@ DoubleIntegral.propTypes = {
   func: PropTypes.func.isRequired,
   opacityFunc: PropTypes.func,
   segments: PropTypes.number.isRequired,
-  wireframe: PropTypes.boolean,
+  wireframe: PropTypes.bool,
 };
 
 const DoubleIntegralVisualization = (props) => (
@@ -82,7 +82,7 @@ DoubleIntegralVisualization.propTypes = {
   func: PropTypes.func.isRequired,
   opacityFunc: PropTypes.func,
   segments: PropTypes.number.isRequired,
-  wireframe: PropTypes.boolean,
+  wireframe: PropTypes.bool,
 };
 
 export default DoubleIntegralVisualization;
