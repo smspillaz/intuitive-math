@@ -115,7 +115,7 @@ Plane.propTypes = {
   extents: PropTypes.arrayOf(PropTypes.number).isRequired,
   color: PropTypes.number.isRequired,
   transparent: PropTypes.bool,
-  wireframe: PropTypes.wireframe,
+  wireframe: PropTypes.bool,
   opacity: PropTypes.number,
 };
 
