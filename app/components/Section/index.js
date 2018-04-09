@@ -30,7 +30,10 @@ const SectionContent = ({ children }) => (
 );
 
 SectionContent.propTypes = {
-  children: PropTypes.element.isRequired,
+  children: PropTypes.oneOfType([
+    PropTypes.element,
+    PropTypes.arrayOf(PropTypes.element),
+  ]),
 };
 
 const Section = ({ title, anchor, children }) => (
@@ -51,7 +54,10 @@ const Section = ({ title, anchor, children }) => (
 Section.propTypes = {
   title: PropTypes.string,
   anchor: PropTypes.string.isRequired,
-  children: PropTypes.element.isRequired,
+  children: PropTypes.oneOfType([
+    PropTypes.element,
+    PropTypes.arrayOf(PropTypes.element),
+  ]),
 };
 
 export default Section;
