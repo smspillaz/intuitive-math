@@ -234,7 +234,10 @@ TweenOverlayVisualization.propTypes = {
   rotation: PropTypes.object,
   matrix: PropTypes.object,
   position: PropTypes.object,
-  children: PropTypes.element,
+  children: PropTypes.oneOfType([
+    PropTypes.element,
+    PropTypes.arrayOf(PropTypes.element),
+  ]),
 };
 
 class Visualization extends React.Component {
