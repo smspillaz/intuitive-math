@@ -15,7 +15,10 @@ const MathJaxMatrix = ({ matrix, ...props }) => (
 );
 
 MathJaxMatrix.propTypes = {
-  matrix: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
+  matrix: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.string,
+  ]))).isRequired,
 };
 
 export default MathJaxMatrix;
