@@ -114,14 +114,14 @@ const SpansSection = () => (
               </group>
             )}
           />
-          <p>
+          <div>
             <div>
               <Tweakable {...xxInterp} /><MathJaxMatrix inline matrix={[[1], [-1]]} />
             </div>
             <div>
               <Tweakable {...yxInterp} /><MathJaxMatrix inline matrix={[[-1], [-1]]} />
             </div>
-          </p>
+          </div>
         </div>
       )}
     />
@@ -154,14 +154,14 @@ const SpansSection = () => (
               </group>
             )}
           />
-          <p>
+          <div>
             <div>
               <Tweakable {...xxInterp} /><MathJaxMatrix inline matrix={[[1], [-1]]} />
             </div>
             <div>
               <Tweakable {...yxInterp} /><MathJaxMatrix inline matrix={[[-1], [-1]]} />
             </div>
-          </p>
+          </div>
         </div>
       )}
     />
