@@ -78,7 +78,7 @@ Tweakable.propTypes = {
   onChange: PropTypes.func.isRequired,
   onClear: PropTypes.func.isRequired,
   overridden: PropTypes.bool.isRequired,
-  children: PropTypes.element,
+  children: PropTypes.any,
   step: PropTypes.number,
 };
 

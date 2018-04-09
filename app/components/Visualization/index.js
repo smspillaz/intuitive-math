@@ -154,7 +154,10 @@ TweenOverlayVisualization.propTypes = {
   overlayOpacity: PropTypes.number.isRequired,
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
-  children: PropTypes.element,
+  children: PropTypes.oneOfType([
+    PropTypes.element,
+    PropTypes.arrayOf(PropTypes.element),
+  ]),
 };
 
 // eslint-disable-next-line react/no-multi-comp
