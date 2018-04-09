@@ -48,7 +48,7 @@ Parametric2DPositionVisualization.propTypes = {
   func: PropTypes.func.isRequired,
   min: PropTypes.number.isRequired,
   max: PropTypes.number.isRequired,
-  color: PropTypes.number.isRequired,
+  color: PropTypes.number,
 };
 
 export const Parametric3DPositionVisualization = ({ func, min, max, color = 0xffff00 }) => (
@@ -83,7 +83,7 @@ Parametric3DPositionVisualization.propTypes = {
   func: PropTypes.func.isRequired,
   min: PropTypes.number.isRequired,
   max: PropTypes.number.isRequired,
-  color: PropTypes.number.isRequired,
+  color: PropTypes.number,
 };
 
 export const Parametric2DSurfaceVisualization = ({
@@ -120,7 +120,7 @@ export const Parametric2DSurfaceVisualization = ({
 
 Parametric2DSurfaceVisualization.propTypes = {
   func: PropTypes.func.isRequired,
-  color: PropTypes.number.isRequired,
+  color: PropTypes.number,
   opacity: PropTypes.number,
   slices: PropTypes.number,
   stacks: PropTypes.number,
@@ -163,7 +163,7 @@ export const Parametric3DSurfaceVisualization = ({
 
 Parametric3DSurfaceVisualization.propTypes = {
   func: PropTypes.func.isRequired,
-  color: PropTypes.number.isRequired,
+  color: PropTypes.number,
   opacity: PropTypes.number,
   wireframe: PropTypes.boolean,
   children: PropTypes.oneOfType([
