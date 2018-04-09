@@ -12,7 +12,7 @@ import Section from 'components/Section';
 export default Loadable({
   loader: () => import('./index'),
   loading: () => (
-    <Section title="">
+    <Section title="" anchor="none">
       <CenteredParagraph>
         <Spinner name="folding-cube" />
       </CenteredParagraph>
