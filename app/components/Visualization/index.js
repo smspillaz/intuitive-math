@@ -128,14 +128,17 @@ React3Visualization.propTypes = {
   position: PropTypes.object,
   onAnimationFrame: PropTypes.func,
   onRegisterManualRenderCallback: PropTypes.func,
-  children: PropTypes.element,
+  children: PropTypes.oneOfType([
+    PropTypes.element,
+    PropTypes.arrayOf(PropTypes.element),
+  ]),
 };
 
 const AnimatedReact3Visualization = callbackAnimator(React3Visualization);
 
 const TweenOverlayVisualization = ({ width, height, children, overlayOpacity, ...props }) => (
   <Centered>
-    <OverlayParent>
+    <OverlayParent width={width}>
       {overlayOpacity !== 1.0 ? (
         <AnimatedReact3Visualization width={width} height={height} {...props}>
           {children}
