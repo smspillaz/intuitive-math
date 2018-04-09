@@ -195,7 +195,7 @@ const Visualization = ({
   overlayOpacity,
 }) => (
   <Centered>
-    <OverlayParent>
+    <OverlayParent width={width}>
       {overlayOpacity !== 1.0 ? (
         <ThreeJSRenderer
           camera={(() => {
