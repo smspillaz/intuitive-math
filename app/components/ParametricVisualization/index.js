@@ -124,7 +124,7 @@ Parametric2DSurfaceVisualization.propTypes = {
   opacity: PropTypes.number,
   slices: PropTypes.number,
   stacks: PropTypes.number,
-  wireframe: PropTypes.boolean,
+  wireframe: PropTypes.bool,
   children: PropTypes.oneOfType([
     PropTypes.node,
     PropTypes.arrayOf(PropTypes.node),
@@ -165,7 +165,7 @@ Parametric3DSurfaceVisualization.propTypes = {
   func: PropTypes.func.isRequired,
   color: PropTypes.number,
   opacity: PropTypes.number,
-  wireframe: PropTypes.boolean,
+  wireframe: PropTypes.bool,
   children: PropTypes.oneOfType([
     PropTypes.node,
     PropTypes.arrayOf(PropTypes.node),
