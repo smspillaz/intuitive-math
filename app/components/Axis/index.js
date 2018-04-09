@@ -58,6 +58,7 @@ export const Axis = ({ basis, extents, color }) => (
               );
               return geometry;
             })()}
+            key={tick}
           />
         );
       },
