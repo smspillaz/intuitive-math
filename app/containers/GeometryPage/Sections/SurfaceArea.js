@@ -70,6 +70,7 @@ const VectorNormalVisualization = ({ firstVectorExtents, secondVectorExtents, ar
                   position={
                     new Vector3(...normal)
                   }
+                  color={0xffffff}
                 />
                 {area && (() => {
                   const mat = new Matrix4();
