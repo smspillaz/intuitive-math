@@ -127,7 +127,7 @@ const VectorNormalVisualization = ({ firstVectorExtents, secondVectorExtents, ar
 VectorNormalVisualization.propTypes = {
   firstVectorExtents: PropTypes.arrayOf(PropTypes.number).isRequired,
   secondVectorExtents: PropTypes.arrayOf(PropTypes.number).isRequired,
-  area: PropTypes.boolean,
+  area: PropTypes.bool,
 };
 
 const SurfaceAreaSection = () => (
