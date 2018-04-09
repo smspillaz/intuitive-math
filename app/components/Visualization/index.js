@@ -431,7 +431,11 @@ const ExposedMetricsVisualization = exposeMetrics(recordVisibilityMetric(Optiona
 export class BlankableVisualization extends React.Component {
   renderChild = ({ isVisible }) => (
     <ClickToAnimate>
-      <ExposedMetricsVisualization {...this.props} isVisible={isVisible} />
+      <ExposedMetricsVisualization
+        {...this.props}
+        animationIsRunning={!!this.props.animationIsRunning}
+        isVisible={isVisible}
+      />
     </ClickToAnimate>
   )
 
