@@ -67,8 +67,14 @@ openSansObserver.load().then(() => {
 // Create redux store with history and hydrate state from server, if available
 // eslint-disable-next-line no-underscore-dangle
 const initialState = window.__SERVER_STATE || {};
+const initialStateAllowedKeys = new Set(['global', 'language', 'route']);
 const history = createHistory();
-const store = configureStore(initialState, history);
+const store = configureStore(Object.keys(initialState).filter((k) =>
+  initialStateAllowedKeys.has(k)
+).reduce((acc, key) => ({
+  ...acc,
+  [key]: initialState[key],
+}), {}), history);
 
 const MOUNT_NODE = document.getElementById('app');
 
