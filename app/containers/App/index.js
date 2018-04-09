@@ -144,8 +144,8 @@ const NavigationFooterFromRouteDescriptions = ({ routeDescriptions: { categories
   <div>
     {categoryIndex > -1 && (
       <NavigationFooter
-        prev={routeIndex > 0 && categories[categoryIndex].routes[routeIndex - 1]}
-        next={routeIndex !== categories[categoryIndex].routes.length - 1 && categories[categoryIndex].routes[routeIndex + 1]}
+        prev={routeIndex > 0 ? categories[categoryIndex].routes[routeIndex - 1] : null}
+        next={routeIndex !== categories[categoryIndex].routes.length - 1 ? categories[categoryIndex].routes[routeIndex + 1] : null}
       />
     )}
   </div>
