@@ -51,7 +51,10 @@ const DesktopPage = ({ children, ...props }) => (
 );
 
 DesktopPage.propTypes = {
-  children: PropTypes.arrayOf(PropTypes.children),
+  children: PropTypes.oneOfType([
+    PropTypes.node,
+    PropTypes.arrayOf(PropTypes.node),
+  ]),
 };
 
 export default DesktopPage;
