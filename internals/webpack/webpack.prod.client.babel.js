@@ -50,7 +50,7 @@ config.plugins.push.apply(config.plugins, [
 
     // No need to cache .htaccess. See http://mxs.is/googmp,
     // this is applied before any match in `caches` section
-    excludes: ['.htaccess'],
+    excludes: ['.htaccess*'],
 
     caches: {
       main: [':rest:'],
