@@ -170,17 +170,87 @@ React3Visualization.propTypes = {
 
 const AnimatedReact3Visualization = callbackAnimator(React3Visualization);
 
-const TweenOverlayVisualization = ({ width, height, children, overlayOpacity, ...props }) => (
+const SVGPlayButton = () => (
+  <svg height="128" width="128">
+    <circle
+      cx="64"
+      cy="64"
+      r="48"
+      fillOpacity="0.5"
+      fill="#000000"
+      style={{
+        stroke: '#fefefe',
+        strokeWidth: 1.5,
+      }}
+    />
+    <path
+      d="M 44 84 L 44 44 L 84 64 Z"
+      fill="white"
+      fillOpacity="0.9"
+    />
+  </svg>
+);
+
+const HoverIndicator = styled.div`
+  background-color: ${(props) => props.color};
+  opacity: 0.0;
+
+  :hover {
+    background-color: ${(props) => props.color};
+    opacity: ${(props) => props.opacity};
+  }
+`;
+
+HoverIndicator.propTypes = {
+  color: PropTypes.string.isRequired,
+  opacity: PropTypes.number.isRequired,
+};
+
+const TweenOverlayVisualization = ({ animationIsRunning, isAnimated, width, height, children, overlayOpacity, ...props }) => (
   <Centered>
     <OverlayParent width={width}>
       {overlayOpacity !== 1.0 ? (
-        <AnimatedReact3Visualization width={width} height={height} {...props}>
-          {children}
-        </AnimatedReact3Visualization>
-      ) : <Box width={width} height={height} opacity={1.0} />}
+        <div>
+          <OverlayParent width={width}>
+            <AnimatedReact3Visualization width={width} height={height} {...props}>
+              {children}
+            </AnimatedReact3Visualization>
+            {animationIsRunning === false && isAnimated && overlayOpacity === 0.0 && (
+              <div>
+                <Overlay>
+                  <Box width={width} height={height}>
+                    <VerticallyCentered height={height}>
+                      <Centered>
+                        <SVGPlayButton />
+                      </Centered>
+                    </VerticallyCentered>
+                  </Box>
+                </Overlay>
+                <Overlay>
+                  <HoverIndicator color="#fefefe" opacity={0.3}>
+                    <Box width={width} height={height} />
+                  </HoverIndicator>
+                </Overlay>
+              </div>
+            )}
+          </OverlayParent>
+        </div>
+      ) : (
+        <Box
+          width={width}
+          height={height}
+          opacity={1.0}
+          backgroundColor={'#000000'}
+        />
+      )}
       {overlayOpacity !== 1.0 && overlayOpacity !== 0.0 ? (
         <Overlay>
-          <Box width={width} height={height} opacity={overlayOpacity} />
+          <Box
+            width={width}
+            height={height}
+            opacity={overlayOpacity}
+            backgroundColor={'#000000'}
+          />
         </Overlay>
       ) : <span />}
     </OverlayParent>
@@ -188,6 +258,8 @@ const TweenOverlayVisualization = ({ width, height, children, overlayOpacity, ..
 );
 
 TweenOverlayVisualization.propTypes = {
+  animationIsRunning: PropTypes.bool,
+  isAnimated: PropTypes.bool,
   overlayOpacity: PropTypes.number.isRequired,
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
@@ -392,6 +464,7 @@ export class BlankableVisualization extends React.Component {
       <ExposedMetricsVisualization
         {...this.props}
         animationIsRunning={!!this.props.animationIsRunning}
+        isAnimated={!!this.props.isAnimated}
         isVisible={isVisible}
       />
     </ClickToAnimate>
@@ -408,6 +481,7 @@ export class BlankableVisualization extends React.Component {
 
 BlankableVisualization.propTypes = {
   animationIsRunning: PropTypes.bool,
+  isAnimated: PropTypes.bool,
 };
 
 const BlankableByContextVisualization = (props, { animationIsRunning = false, withinAnimation = false, isVisible = true }) => (
