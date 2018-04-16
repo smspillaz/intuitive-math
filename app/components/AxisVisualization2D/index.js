@@ -39,4 +39,8 @@ const MaybeBlankableAxisVisualization2D = (props, context) => (
   </div>
 );
 
+MaybeBlankableAxisVisualization2D.contextTypes = {
+  withinAnimation: PropTypes.bool,
+};
+
 export default MaybeBlankableAxisVisualization2D;
