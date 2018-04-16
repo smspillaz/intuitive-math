@@ -195,7 +195,38 @@ OverlayParent.propTypes = {
   width: PropTypes.number.isRequired,
 };
 
-const Visualization = ({
+<<<<<<< HEAD
+const VerticallyCenteredChild = styled.div`
+  display: inline-block;
+  vertical-align: middle;
+  line-height: normal;
+`;
+
+const VerticallyCenteredParent = styled.div`
+  height: ${(props) => props.height}px;
+  line-height: ${(props) => props.height}px;
+`;
+
+VerticallyCenteredParent.propTypes = {
+  height: PropTypes.number.isRequired,
+};
+
+const VerticallyCentered = ({ children, ...props }) => (
+  <VerticallyCenteredParent {...props}>
+    <VerticallyCenteredChild>
+      {children}
+    </VerticallyCenteredChild>
+  </VerticallyCenteredParent>
+);
+
+VerticallyCentered.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.Node),
+    PropTypes.node,
+  ]),
+};
+
+const TweenOverlayVisualization = ({
   width,
   height,
   rotation,
