@@ -195,7 +195,6 @@ OverlayParent.propTypes = {
   width: PropTypes.number.isRequired,
 };
 
-<<<<<<< HEAD
 const VerticallyCenteredChild = styled.div`
   display: inline-block;
   vertical-align: middle;
@@ -491,11 +490,12 @@ export class BlankableVisualization extends React.Component {
 
 const BlankableByContextVisualization = (
   props,
-  { animationIsRunning = false, isVisible = true },
+  { animationIsRunning = false, withinAnimation = false, isVisible = true },
 ) => (
   <ClickToAnimate animationIsRunning={animationIsRunning}>
     <ExposedMetricsVisualization
       animationIsRunning={animationIsRunning}
+      isAnimated={withinAnimation}
       isVisible={isVisible}
       {...props}
     />
@@ -505,6 +505,7 @@ const BlankableByContextVisualization = (
 BlankableByContextVisualization.contextTypes = {
   animationIsRunning: PropTypes.bool,
   isVisible: PropTypes.bool,
+  withinAnimation: PropTypes.bool,
 };
 
 export default BlankableByContextVisualization;
