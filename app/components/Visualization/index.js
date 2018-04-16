@@ -164,11 +164,21 @@ const Box = styled.div`
   width: ${props => props.width}px;
   height: ${props => props.height}px;
   opacity: ${(props) => props.opacity};
-  background-color: #000000;
+  ${props =>
+    props.backgroundColor !== undefined ?
+    `background-color: ${props.backgroundColor}` : ''
+  };
   text-align: center;
   display: inline-block;
   border-radius: 1em;
 `;
+
+Box.propTypes = {
+  backgroundColor: PropTypes.string,
+  width: PropTypes.number.isRequired,
+  height: PropTypes.number.isRequired,
+  opacity: PropTypes.number,
+};
 
 const Overlay = styled.div`
   position: absolute;
