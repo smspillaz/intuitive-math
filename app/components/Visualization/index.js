@@ -410,10 +410,11 @@ BlankableVisualization.propTypes = {
   animationIsRunning: PropTypes.bool,
 };
 
-const BlankableByContextVisualization = (props, { animationIsRunning = false, isVisible = true }) => (
+const BlankableByContextVisualization = (props, { animationIsRunning = false, withinAnimation = false, isVisible = true }) => (
   <ClickToAnimate>
     <ExposedMetricsVisualization
       animationIsRunning={animationIsRunning}
+      isAnimated={withinAnimation}
       isVisible={isVisible}
       {...props}
     />
@@ -423,6 +424,7 @@ const BlankableByContextVisualization = (props, { animationIsRunning = false, is
 BlankableByContextVisualization.contextTypes = {
   animationIsRunning: PropTypes.bool,
   isVisible: PropTypes.bool,
+  withinAnimation: PropTypes.bool,
 };
 
 export default BlankableByContextVisualization;
