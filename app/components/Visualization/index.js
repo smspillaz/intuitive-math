@@ -236,6 +236,45 @@ HoverIndicator.propTypes = {
   opacity: PropTypes.number.isRequired,
 };
 
+const PlayButtonOverlay = ({ width, height }) => (
+  <div>
+    <Overlay>
+      <Box width={width} height={height}>
+        <VerticallyCentered height={height}>
+          <Centered>
+            <SVGPlayButton />
+          </Centered>
+        </VerticallyCentered>
+      </Box>
+    </Overlay>
+    <Overlay>
+      <HoverIndicator color="#fefefe" opacity={0.3}>
+        <Box width={width} height={height} />
+      </HoverIndicator>
+    </Overlay>
+  </div>
+);
+
+PlayButtonOverlay.propTypes = {
+  width: PropTypes.number.isRequired,
+  height: PropTypes.number.isRequired,
+};
+
+const BlankBox = ({ width, height, opacity = 1.0 }) => (
+  <Box
+    width={width}
+    height={height}
+    opacity={opacity}
+    backgroundColor={'#000000'}
+  />
+);
+
+BlankBox.propTypes = {
+  width: PropTypes.number.isRequired,
+  height: PropTypes.number.isRequired,
+  opacity: PropTypes.number,
+};
+
 const TweenOverlayVisualization = ({ animationIsRunning, isAnimated, width, height, children, overlayOpacity, ...props }) => (
   <Centered>
     <OverlayParent width={width}>
@@ -246,41 +285,14 @@ const TweenOverlayVisualization = ({ animationIsRunning, isAnimated, width, heig
               {children}
             </AnimatedReact3Visualization>
             {animationIsRunning === false && isAnimated && overlayOpacity === 0.0 && (
-              <div>
-                <Overlay>
-                  <Box width={width} height={height}>
-                    <VerticallyCentered height={height}>
-                      <Centered>
-                        <SVGPlayButton />
-                      </Centered>
-                    </VerticallyCentered>
-                  </Box>
-                </Overlay>
-                <Overlay>
-                  <HoverIndicator color="#fefefe" opacity={0.3}>
-                    <Box width={width} height={height} />
-                  </HoverIndicator>
-                </Overlay>
-              </div>
+              <PlayButtonOverlay width={width} height={height} />
             )}
           </OverlayParent>
         </div>
-      ) : (
-        <Box
-          width={width}
-          height={height}
-          opacity={1.0}
-          backgroundColor={'#000000'}
-        />
-      )}
+      ) : <BlankBox width={width} height={height} />}
       {overlayOpacity !== 1.0 && overlayOpacity !== 0.0 ? (
         <Overlay>
-          <Box
-            width={width}
-            height={height}
-            opacity={overlayOpacity}
-            backgroundColor={'#000000'}
-          />
+          <BlankBox width={width} height={height} opacity={overlayOpacity} />
         </Overlay>
       ) : <span />}
     </OverlayParent>
