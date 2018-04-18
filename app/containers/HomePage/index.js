@@ -21,6 +21,7 @@ import InterpolatedAnimation, { sineInterpolator, cosineInterpolator } from 'com
 import Section from 'components/Section';
 import Tweakable from 'components/Tweakable';
 import Vector from 'components/Vector';
+import { TweakablesBox } from 'components/Visualization';
 
 import injectReducer from 'utils/injectReducer';
 import reducer from './reducer';
