@@ -81,6 +81,36 @@ VerticallyCentered.propTypes = {
   ]),
 };
 
+const TweakablesBoxBorder = styled.div`
+  border-color: #45516C;
+  border-radius: 0 0 1em 1em;
+  border-width: 1px;
+  border-style: solid;
+  display: inline-block;
+  padding: 20px;
+  width: ${(props) => props.width}
+`;
+
+TweakablesBoxBorder.propTypes = {
+  width: PropTypes.number.isRequired,
+};
+
+export const TweakablesBox = ({ width, children }) => (
+  <Centered>
+    <TweakablesBoxBorder width={width}>
+      {children}
+    </TweakablesBoxBorder>
+  </Centered>
+);
+
+TweakablesBox.propTypes = {
+  width: PropTypes.number,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]),
+};
+
 class React3Visualization extends React.Component {
   oneManualRender = () => {
     if (!this.props.animationIsRunning) {
