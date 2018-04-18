@@ -291,6 +291,7 @@ HoverIndicator.propTypes = {
   opacity: PropTypes.number.isRequired,
 };
 
+<<<<<<< HEAD
 const TweenOverlayVisualization = ({
   width,
   height,
@@ -348,13 +349,65 @@ const TweenOverlayVisualization = ({
         />
       )}
       {overlayOpacity !== 1.0 ? (
+=======
+const PlayButtonOverlay = ({ width, height }) => (
+  <div>
+    <Overlay>
+      <Box width={width} height={height}>
+        <VerticallyCentered height={height}>
+          <Centered>
+            <SVGPlayButton />
+          </Centered>
+        </VerticallyCentered>
+      </Box>
+    </Overlay>
+    <Overlay>
+      <HoverIndicator color="#fefefe" opacity={0.3}>
+        <Box width={width} height={height} />
+      </HoverIndicator>
+    </Overlay>
+  </div>
+);
+
+PlayButtonOverlay.propTypes = {
+  width: PropTypes.number.isRequired,
+  height: PropTypes.number.isRequired,
+};
+
+const BlankBox = ({ width, height, opacity = 1.0 }) => (
+  <Box
+    width={width}
+    height={height}
+    opacity={opacity}
+    backgroundColor={'#000000'}
+  />
+);
+
+BlankBox.propTypes = {
+  width: PropTypes.number.isRequired,
+  height: PropTypes.number.isRequired,
+  opacity: PropTypes.number,
+};
+
+const TweenOverlayVisualization = ({ animationIsRunning, isAnimated, width, height, children, overlayOpacity, ...props }) => (
+  <Centered>
+    <OverlayParent width={width}>
+      {overlayOpacity !== 1.0 ? (
+        <div>
+          <OverlayParent width={width}>
+            <AnimatedReact3Visualization width={width} height={height} {...props}>
+              {children}
+            </AnimatedReact3Visualization>
+            {animationIsRunning === false && isAnimated && overlayOpacity === 0.0 && (
+              <PlayButtonOverlay width={width} height={height} />
+            )}
+          </OverlayParent>
+        </div>
+      ) : <BlankBox width={width} height={height} />}
+      {overlayOpacity !== 1.0 && overlayOpacity !== 0.0 ? (
+>>>>>>> d85c5c6... Visualization: Split out BlankBox and PlayButtonOverlay
         <Overlay>
-          <Box
-            width={width}
-            height={height}
-            opacity={overlayOpacity}
-            backgroundColor={'#000000'}
-          />
+          <BlankBox width={width} height={height} opacity={overlayOpacity} />
         </Overlay>
       ) : <span />}
     </OverlayParent>
