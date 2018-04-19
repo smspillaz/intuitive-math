@@ -458,6 +458,7 @@ const Visualization = ({
   width,
   height,
   children,
+  renderExtras,
   ...props
 }) => (
   <OverlayTweenFromVisibility
@@ -469,16 +470,19 @@ const Visualization = ({
           width={width}
           height={height}
           overlayOpacity={overlayOpacity}
+          curvedBottomCorners={!renderExtras}
         >
           <PlayableVisualization
             width={width}
             height={height}
             playable={animationIsRunning === false && isAnimated && overlayOpacity === 0.0}
+            curvedBottomCorners={!renderExtras}
             {...props}
           >
             {children}
           </PlayableVisualization>
         </TweenOverlayVisualization>
+        {renderExtras && renderExtras({ width, animationIsRunning })}
       </Centered>
     )}
   />
@@ -491,6 +495,7 @@ Visualization.propTypes = {
   isVisible: PropTypes.bool,
   width: PropTypes.number,
   height: PropTypes.number,
+  renderExtras: PropTypes.func,
   children: PropTypes.oneOfType([
     PropTypes.node,
     PropTypes.arrayOf(PropTypes.node),
