@@ -91,22 +91,26 @@ export class HomePage extends React.PureComponent {
                           />
                         </group>
                       )}
+                      renderExtras={({ width }) => (
+                        <TweakablesBox width={width}>
+                          <div>
+                            <Tweakable {...xPosition}>
+                              <MathJax.Node inline>{'x ='}</MathJax.Node>{' '}
+                            </Tweakable>
+                          </div>
+                          <div>
+                            <Tweakable {...yPosition}>
+                              <MathJax.Node inline>{'y ='}</MathJax.Node>{' '}
+                            </Tweakable>
+                          </div>
+                          <div>
+                            <Tweakable {...zPosition}>
+                              <MathJax.Node inline>{'z ='}</MathJax.Node>{' '}
+                            </Tweakable>
+                          </div>
+                        </TweakablesBox>
+                      )}
                     />
-                    <div>
-                      <Tweakable {...xPosition}>
-                        <MathJax.Node inline>{'x ='}</MathJax.Node>{' '}
-                      </Tweakable>
-                    </div>
-                    <div>
-                      <Tweakable {...yPosition}>
-                        <MathJax.Node inline>{'y ='}</MathJax.Node>{' '}
-                      </Tweakable>
-                    </div>
-                    <div>
-                      <Tweakable {...zPosition}>
-                        <MathJax.Node inline>{'z ='}</MathJax.Node>{' '}
-                      </Tweakable>
-                    </div>
                   </div>
                 )}
               />
