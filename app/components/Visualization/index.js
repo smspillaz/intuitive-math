@@ -297,13 +297,13 @@ HoverIndicator.propTypes = {
 const PlayButtonOverlay = ({ width, height }) => (
   <div>
     <Overlay>
-      <Box width={width} height={height}>
+      <div style={{ width, height }}>
         <VerticallyCentered height={height}>
           <Centered>
             <SVGPlayButton />
           </Centered>
         </VerticallyCentered>
-      </Box>
+      </div>
     </Overlay>
     <Overlay>
       <HoverIndicator color="#fefefe" opacity={0.3}>
