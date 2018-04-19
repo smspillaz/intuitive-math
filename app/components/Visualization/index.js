@@ -281,11 +281,12 @@ PlayButtonOverlay.propTypes = {
   height: PropTypes.number.isRequired,
 };
 
-const BlankBox = ({ width, height, opacity = 1.0 }) => (
+const BlankBox = ({ width, height, curvedBottomCorners, opacity = 1.0 }) => (
   <Box
     width={width}
     height={height}
     opacity={opacity}
+    curvedBottomCorners={curvedBottomCorners}
     backgroundColor={'#000000'}
   />
 );
@@ -293,6 +294,7 @@ const BlankBox = ({ width, height, opacity = 1.0 }) => (
 BlankBox.propTypes = {
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
+  curvedBottomCorners: PropTypes.bool.isRequired,
   opacity: PropTypes.number,
 };
 
