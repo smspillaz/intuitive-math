@@ -163,7 +163,7 @@ const Centered = styled.div`
 const Box = styled.div`
   width: ${props => props.width}px;
   height: ${props => props.height}px;
-  opacity: ${(props) => props.opacity};
+  opacity: ${(props) => props.opacity !== undefined ? props.opacity : 1.0};
   ${props =>
     props.backgroundColor !== undefined ?
     `background-color: ${props.backgroundColor}` : ''
@@ -291,65 +291,6 @@ HoverIndicator.propTypes = {
   opacity: PropTypes.number.isRequired,
 };
 
-<<<<<<< HEAD
-const TweenOverlayVisualization = ({
-  width,
-  height,
-  rotation,
-  position,
-  matrix,
-  children,
-  overlayOpacity,
-}) => (
-  <Centered>
-    <OverlayParent width={width}>
-      {overlayOpacity !== 1.0 ? (
-        <ThreeJSRenderer
-          camera={(() => {
-            const camera = new PerspectiveCamera(75, width / height, 0.1, 1000);
-            camera.position = position || new Vector3(0, 0, 5);
-          })()}
-          width={width}
-          height={height}
-          canvasStyle={{
-            borderRadius: '1em',
-          }}
-        >
-          <Group
-            {...(rotation ? { rotation } : {})}
-            {...(matrix ? { matrix } : {})}
-          >
-            {children}
-          </Group>
-        </ThreeJSRenderer>
-        {animationIsRunning === false && isAnimated && overlayOpacity === 0.0 && (
-          <div>
-            <Overlay>
-              <Box width={width} height={height}>
-                <VerticallyCentered height={height}>
-                  <Centered>
-                    <SVGPlayButton />
-                  </Centered>
-                </VerticallyCentered>
-              </Box>
-            </Overlay>
-            <Overlay>
-              <HoverIndicator color="#fefefe" opacity={0.3}>
-                <Box width={width} height={height} />
-              </HoverIndicator>
-            </Overlay>
-          </div>
-        )}
-      ) : (
-        <Box
-          width={width}
-          height={height}
-          opacity={1.0}
-          backgroundColor={'#000000'}
-        />
-      )}
-      {overlayOpacity !== 1.0 ? (
-=======
 const PlayButtonOverlay = ({ width, height }) => (
   <div>
     <Overlay>
@@ -392,9 +333,24 @@ BlankBox.propTypes = {
 const PlayableVisualization = ({ width, height, playable, children, ...props }) => (
   <div>
     <OverlayParent width={width}>
-      <AnimatedReact3Visualization width={width} height={height} {...props}>
-        {children}
-      </AnimatedReact3Visualization>
+      <ThreeJSRenderer
+        camera={(() => {
+          const camera = new PerspectiveCamera(75, width / height, 0.1, 1000);
+          camera.position = position || new Vector3(0, 0, 5);
+        })()}
+        width={width}
+        height={height}
+        canvasStyle={{
+          borderRadius: '1em',
+        }}
+      >
+        <Group
+          {...(rotation ? { rotation } : {})}
+          {...(matrix ? { matrix } : {})}
+        >
+          {children}
+        </Group>
+      </ThreeJSRenderer>
       {playable && (
         <PlayButtonOverlay width={width} height={height} />
       )}
@@ -434,7 +390,6 @@ const TweenOverlayVisualization = ({
         </PlayableVisualization>
       ) : <BlankBox width={width} height={height} />}
       {overlayOpacity !== 1.0 && overlayOpacity !== 0.0 ? (
->>>>>>> d85c5c6... Visualization: Split out BlankBox and PlayButtonOverlay
         <Overlay>
           <BlankBox width={width} height={height} opacity={overlayOpacity} />
         </Overlay>
