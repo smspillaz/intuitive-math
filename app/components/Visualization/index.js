@@ -15,6 +15,8 @@ import TrackVisibility from 'react-on-screen';
 
 import memoize from 'memoize-one';
 
+import ClickToAnimate from 'components/ClickToAnimate';
+
 export const SceneContext = React.createContext();
 export const ObjectGroupContext = React.createContext();
 
@@ -153,8 +155,6 @@ export const Group = asSceneElement(
   },
   props => constructConstructorlessThreeObject(THREE.Group, props),
 );
-
-import ClickToAnimate from 'components/ClickToAnimate';
 
 const CenteredParent = styled.div`
   text-align: center;
@@ -535,31 +535,33 @@ const Visualization = ({
   renderExtras,
   ...props
 }) => (
-  <OverlayTweenFromVisibility
-    fadeTime={fadeTime}
-    isVisible={isVisible}
-    render={({ overlayOpacity }) => (
-      <Centered>
-        <TweenOverlayVisualization
-          width={width}
-          height={height}
-          overlayOpacity={overlayOpacity}
-          curvedBottomCorners={!renderExtras}
-        >
-          <PlayableVisualization
+  <ClickToAnimate>
+    <OverlayTweenFromVisibility
+      fadeTime={fadeTime}
+      isVisible={isVisible}
+      render={({ overlayOpacity }) => (
+        <Centered>
+          <TweenOverlayVisualization
             width={width}
             height={height}
-            playable={animationIsRunning === false && isAnimated && overlayOpacity === 0.0}
+            overlayOpacity={overlayOpacity}
             curvedBottomCorners={!renderExtras}
-            {...props}
           >
-            {children}
-          </PlayableVisualization>
-        </TweenOverlayVisualization>
-        {renderExtras && renderExtras({ width, animationIsRunning })}
-      </Centered>
-    )}
-  />
+            <PlayableVisualization
+              width={width}
+              height={height}
+              playable={animationIsRunning === false && isAnimated && overlayOpacity === 0.0}
+              curvedBottomCorners={!renderExtras}
+              {...props}
+            >
+              {children}
+            </PlayableVisualization>
+          </TweenOverlayVisualization>
+          {renderExtras && renderExtras({ width, animationIsRunning })}
+        </Centered>
+      )}
+    />
+  </ClickToAnimate>
 );
 
 Visualization.propTypes = {
@@ -673,14 +675,12 @@ const ExposedMetricsVisualization = exposeMetrics(recordVisibilityMetric(Optiona
 // eslint-disable-next-line react/no-multi-comp
 export class BlankableVisualization extends React.Component {
   renderChild = ({ isVisible }) => (
-    <ClickToAnimate>
-      <ExposedMetricsVisualization
-        {...this.props}
-        animationIsRunning={!!this.props.animationIsRunning}
-        isAnimated={!!this.props.isAnimated}
-        isVisible={isVisible}
-      />
-    </ClickToAnimate>
+    <ExposedMetricsVisualization
+      {...this.props}
+      animationIsRunning={!!this.props.animationIsRunning}
+      isAnimated={!!this.props.isAnimated}
+      isVisible={isVisible}
+    />
   )
 
   render() {
@@ -701,14 +701,12 @@ const BlankableByContextVisualization = (
   props,
   { animationIsRunning = false, withinAnimation = false, isVisible = true },
 ) => (
-  <ClickToAnimate animationIsRunning={animationIsRunning}>
-    <ExposedMetricsVisualization
-      animationIsRunning={animationIsRunning}
-      isAnimated={withinAnimation}
-      isVisible={isVisible}
-      {...props}
-    />
-  </ClickToAnimate>
+  <ExposedMetricsVisualization
+    animationIsRunning={animationIsRunning}
+    isAnimated={withinAnimation}
+    isVisible={isVisible}
+    {...props}
+  />
 );
 
 BlankableByContextVisualization.contextTypes = {
