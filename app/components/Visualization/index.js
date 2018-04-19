@@ -24,11 +24,11 @@ const Box = styled.canvas`
     props.backgroundColor !== undefined ?
     `background-color: ${props.backgroundColor}` : ''
   };
-  border-radius: ${(props) => props.curvedBottomCorners ? '1em' : '1em 1em 0 0'};
+  border-radius: ${(props) => !props.curvedBottomCorners ? '1em 1em 0 0' : '1em'};
 `;
 
 Box.propTypes = {
-  curvedBottomCorners: PropTypes.bool.isRequired,
+  curvedBottomCorners: PropTypes.bool,
   backgroundColor: PropTypes.string,
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
