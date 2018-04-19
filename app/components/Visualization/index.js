@@ -156,7 +156,7 @@ export const Group = asSceneElement(
 
 import ClickToAnimate from 'components/ClickToAnimate';
 
-const Centered = styled.div`
+const CenteredParent = styled.div`
   text-align: center;
 `;
 
@@ -197,6 +197,21 @@ const Centerable = styled.div`
   position: relative;
   float: inherit;
 `;
+
+const Centered = ({ children }) => (
+  <CenteredParent>
+    <Centerable>
+      {children}
+    </Centerable>
+  </CenteredParent>
+);
+
+Centered.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.node,
+    PropTypes.arrayOf(PropTypes.node),
+  ]),
+};
 
 const VerticallyCenteredChild = styled.div`
   display: inline-block;
@@ -378,20 +393,18 @@ const TweenOverlayVisualization = ({
   overlayOpacity,
 }) => (
   <Centered>
-    <Centerable>
-      <OverlayParent width={width}>
-        {overlayOpacity !== 1.0 ? (
-          <div>
-            {children}
-          </div>
-        ) : <BlankBox width={width} height={height} />}
-        {overlayOpacity !== 1.0 && overlayOpacity !== 0.0 ? (
-          <Overlay>
-            <BlankBox width={width} height={height} opacity={overlayOpacity} />
-          </Overlay>
-        ) : <span />}
-      </OverlayParent>
-    </Centerable>
+    <OverlayParent width={width}>
+      {overlayOpacity !== 1.0 ? (
+        <div>
+          {children}
+        </div>
+      ) : <BlankBox width={width} height={height} />}
+      {overlayOpacity !== 1.0 && overlayOpacity !== 0.0 ? (
+        <Overlay>
+          <BlankBox width={width} height={height} opacity={overlayOpacity} />
+        </Overlay>
+      ) : <span />}
+    </OverlayParent>
   </Centered>
 );
 
