@@ -14,8 +14,11 @@ import Visualization, { BlankableVisualization } from 'components/Visualization'
 
 // Need to disable propTypes checking here as this is an HOC
 // eslint-disable-next-line react/prop-types
-const AxisVisualization1D = (VisualizationComponent) => ({ render, title = null }) => (
-  <VisualizationComponent title={title}>
+const AxisVisualization1D = (VisualizationComponent) => ({ render, renderExtras, title = null }) => (
+  <VisualizationComponent
+    title={title}
+    renderExtras={renderExtras}
+  >
     <XAxis />
     {render ? render() : null}
   </VisualizationComponent>
@@ -23,6 +26,7 @@ const AxisVisualization1D = (VisualizationComponent) => ({ render, title = null 
 
 AxisVisualization1D.propTypes = {
   render: PropTypes.func.isRequired,
+  renderExtras: PropTypes.func,
 };
 
 const AnimatedAxisVisualization1D = AxisVisualization1D(Visualization);
