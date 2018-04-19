@@ -346,10 +346,11 @@ TweenOverlayVisualization.propTypes = {
 };
 
 // eslint-disable-next-line react/no-multi-comp
-class Visualization extends React.Component {
+class OverlayTweenFromVisibility extends React.Component {
   static propTypes = {
     fadeTime: PropTypes.number,
     isVisible: PropTypes.bool,
+    render: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -430,14 +431,27 @@ class Visualization extends React.Component {
   }
 
   render() {
-    return (
-      <TweenOverlayVisualization
-        {...this.props}
-        overlayOpacity={this.state.overlayOpacity}
-      />
-    );
+    return this.props.render({ overlayOpacity: this.state.overlayOpacity });
   }
 }
+
+const Visualization = ({ fadeTime, isVisible, ...props }) => (
+  <OverlayTweenFromVisibility
+    fadeTime={fadeTime}
+    isVisible={isVisible}
+    render={({ overlayOpacity }) => (
+      <TweenOverlayVisualization
+        {...props}
+        overlayOpacity={overlayOpacity}
+      />
+    )}
+  />
+);
+
+Visualization.propTypes = {
+  fadeTime: PropTypes.number,
+  isVisible: PropTypes.bool,
+};
 
 // eslint-disable-next-line react/prop-types
 const SizesForMediaQueries = (Component) => ({ queries, ...props }) => (
