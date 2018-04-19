@@ -392,20 +392,18 @@ const TweenOverlayVisualization = ({
   children,
   overlayOpacity,
 }) => (
-  <Centered>
-    <OverlayParent width={width}>
-      {overlayOpacity !== 1.0 ? (
-        <div>
-          {children}
-        </div>
-      ) : <BlankBox width={width} height={height} />}
-      {overlayOpacity !== 1.0 && overlayOpacity !== 0.0 ? (
-        <Overlay>
-          <BlankBox width={width} height={height} opacity={overlayOpacity} />
-        </Overlay>
-      ) : <span />}
-    </OverlayParent>
-  </Centered>
+  <OverlayParent width={width}>
+    {overlayOpacity !== 1.0 ? (
+      <div>
+        {children}
+      </div>
+    ) : <BlankBox width={width} height={height} />}
+    {overlayOpacity !== 1.0 && overlayOpacity !== 0.0 ? (
+      <Overlay>
+        <BlankBox width={width} height={height} opacity={overlayOpacity} />
+      </Overlay>
+    ) : <span />}
+  </OverlayParent>
 );
 
 TweenOverlayVisualization.propTypes = {
@@ -525,20 +523,22 @@ const Visualization = ({
     fadeTime={fadeTime}
     isVisible={isVisible}
     render={({ overlayOpacity }) => (
-      <TweenOverlayVisualization
-        width={width}
-        height={height}
-        overlayOpacity={overlayOpacity}
-      >
-        <PlayableVisualization
+      <Centered>
+        <TweenOverlayVisualization
           width={width}
           height={height}
-          playable={animationIsRunning === false && isAnimated && overlayOpacity === 0.0}
-          {...props}
+          overlayOpacity={overlayOpacity}
         >
-          {children}
-        </PlayableVisualization>
-      </TweenOverlayVisualization>
+          <PlayableVisualization
+            width={width}
+            height={height}
+            playable={animationIsRunning === false && isAnimated && overlayOpacity === 0.0}
+            {...props}
+          >
+            {children}
+          </PlayableVisualization>
+        </TweenOverlayVisualization>
+      </Centered>
     )}
   />
 );
