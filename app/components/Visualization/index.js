@@ -535,18 +535,18 @@ const Visualization = ({
   renderExtras,
   ...props
 }) => (
-  <ClickToAnimate>
-    <OverlayTweenFromVisibility
-      fadeTime={fadeTime}
-      isVisible={isVisible}
-      render={({ overlayOpacity }) => (
-        <Centered>
-          <TweenOverlayVisualization
-            width={width}
-            height={height}
-            overlayOpacity={overlayOpacity}
-            curvedBottomCorners={!renderExtras}
-          >
+  <OverlayTweenFromVisibility
+    fadeTime={fadeTime}
+    isVisible={isVisible}
+    render={({ overlayOpacity }) => (
+      <Centered>
+        <TweenOverlayVisualization
+          width={width}
+          height={height}
+          overlayOpacity={overlayOpacity}
+          curvedBottomCorners={!renderExtras}
+        >
+          <ClickToAnimate>
             <PlayableVisualization
               width={width}
               height={height}
@@ -556,12 +556,12 @@ const Visualization = ({
             >
               {children}
             </PlayableVisualization>
-          </TweenOverlayVisualization>
-          {renderExtras && renderExtras({ width, animationIsRunning })}
-        </Centered>
-      )}
-    />
-  </ClickToAnimate>
+          </ClickToAnimate>
+        </TweenOverlayVisualization>
+        {renderExtras && renderExtras({ width, animationIsRunning })}
+      </Centered>
+    )}
+  />
 );
 
 Visualization.propTypes = {
