@@ -302,26 +302,18 @@ PlayableVisualization.propTypes = {
 };
 
 const TweenOverlayVisualization = ({
-  animationIsRunning,
-  isAnimated,
   width,
   height,
   children,
   overlayOpacity,
-  ...props
 }) => (
   <Centered>
     <Centerable>
       <OverlayParent width={width}>
         {overlayOpacity !== 1.0 ? (
-          <PlayableVisualization
-            width={width}
-            height={height}
-            playable={animationIsRunning === false && isAnimated && overlayOpacity === 0.0}
-            {...props}
-          >
+          <div>
             {children}
-          </PlayableVisualization>
+          </div>
         ) : <BlankBox width={width} height={height} />}
         {overlayOpacity !== 1.0 && overlayOpacity !== 0.0 ? (
           <Overlay>
@@ -334,8 +326,6 @@ const TweenOverlayVisualization = ({
 );
 
 TweenOverlayVisualization.propTypes = {
-  animationIsRunning: PropTypes.bool,
-  isAnimated: PropTypes.bool,
   overlayOpacity: PropTypes.number.isRequired,
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
@@ -435,22 +425,49 @@ class OverlayTweenFromVisibility extends React.Component {
   }
 }
 
-const Visualization = ({ fadeTime, isVisible, ...props }) => (
+const Visualization = ({
+  animationIsRunning,
+  isAnimated,
+  fadeTime,
+  isVisible,
+  width,
+  height,
+  children,
+  ...props
+}) => (
   <OverlayTweenFromVisibility
     fadeTime={fadeTime}
     isVisible={isVisible}
     render={({ overlayOpacity }) => (
       <TweenOverlayVisualization
-        {...props}
+        width={width}
+        height={height}
         overlayOpacity={overlayOpacity}
-      />
+      >
+        <PlayableVisualization
+          width={width}
+          height={height}
+          playable={animationIsRunning === false && isAnimated && overlayOpacity === 0.0}
+          {...props}
+        >
+          {children}
+        </PlayableVisualization>
+      </TweenOverlayVisualization>
     )}
   />
 );
 
 Visualization.propTypes = {
+  animationIsRunning: PropTypes.bool,
+  isAnimated: PropTypes.bool,
   fadeTime: PropTypes.number,
   isVisible: PropTypes.bool,
+  width: PropTypes.number,
+  height: PropTypes.number,
+  children: PropTypes.oneOfType([
+    PropTypes.node,
+    PropTypes.arrayOf(PropTypes.node),
+  ]),
 };
 
 // eslint-disable-next-line react/prop-types
