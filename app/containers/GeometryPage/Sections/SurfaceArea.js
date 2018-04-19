@@ -25,6 +25,7 @@ import SpanningPlane2D from 'components/SpanningPlane2D';
 import SurfaceNormalsIntegral from 'components/SurfaceNormalsIntegral';
 import Tweakable from 'components/Tweakable';
 import Vector from 'components/Vector';
+import { TweakablesBox } from 'components/Visualization';
 
 import {
   cross,
@@ -84,40 +85,44 @@ const VectorNormalVisualization = ({ firstVectorExtents, secondVectorExtents, ar
                 })()}
               </group>
             )}
+            renderExtras={({ width }) => (
+              <TweakablesBox width={width}>
+                <div>
+                  <Tweakable {...firstXScale}>
+                    <MathJax.Node inline>{'x_1 ='}</MathJax.Node>{' '}
+                  </Tweakable>
+                </div>
+                <div>
+                  <Tweakable {...firstYScale}>
+                    <MathJax.Node inline>{'y_1 ='}</MathJax.Node>{' '}
+                  </Tweakable>
+                </div>
+                <div>
+                  <Tweakable {...firstZScale}>
+                    <MathJax.Node inline>{'z_1 ='}</MathJax.Node>{' '}
+                  </Tweakable>
+                </div>
+                <div>
+                  <Tweakable {...secondXScale}>
+                    <MathJax.Node inline>{'x_2 ='}</MathJax.Node>{' '}
+                  </Tweakable>
+                </div>
+                <div>
+                  <Tweakable {...secondYScale}>
+                    <MathJax.Node inline>{'y_2 ='}</MathJax.Node>{' '}
+                  </Tweakable>
+                </div>
+                <div>
+                  <Tweakable {...secondZScale}>
+                    <MathJax.Node inline>{'z_2 ='}</MathJax.Node>{' '}
+                  </Tweakable>
+                </div>
+                <div>
+                  <MathJax.Node inline>{'\\lvert N \\rvert ='}</MathJax.Node>{magnitude(...normal).toFixed(2)}
+                </div>
+              </TweakablesBox>
+            )}
           />
-          <div>
-            <Tweakable {...firstXScale}>
-              <MathJax.Node inline>{'x_1 ='}</MathJax.Node>{' '}
-            </Tweakable>
-          </div>
-          <div>
-            <Tweakable {...firstYScale}>
-              <MathJax.Node inline>{'y_1 ='}</MathJax.Node>{' '}
-            </Tweakable>
-          </div>
-          <div>
-            <Tweakable {...firstZScale}>
-              <MathJax.Node inline>{'z_1 ='}</MathJax.Node>{' '}
-            </Tweakable>
-          </div>
-          <div>
-            <Tweakable {...secondXScale}>
-              <MathJax.Node inline>{'x_2 ='}</MathJax.Node>{' '}
-            </Tweakable>
-          </div>
-          <div>
-            <Tweakable {...secondYScale}>
-              <MathJax.Node inline>{'y_2 ='}</MathJax.Node>{' '}
-            </Tweakable>
-          </div>
-          <div>
-            <Tweakable {...secondZScale}>
-              <MathJax.Node inline>{'z_2 ='}</MathJax.Node>{' '}
-            </Tweakable>
-          </div>
-          <div>
-            <MathJax.Node inline>{'\\lvert N \\rvert ='}</MathJax.Node>{magnitude(...normal).toFixed(2)}
-          </div>
         </div>
       );
     }}
