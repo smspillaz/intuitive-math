@@ -16,7 +16,7 @@ const Centered = styled.div`
   text-align: center;
 `;
 
-const Box = styled.div`
+const Box = styled.canvas`
   width: ${(props) => props.width}px;
   height: ${(props) => props.height}px;
   opacity: ${(props) => props.opacity !== undefined ? props.opacity : 1.0};
