@@ -168,10 +168,11 @@ const Box = styled.div`
     props.backgroundColor !== undefined ?
     `background-color: ${props.backgroundColor}` : ''
   };
-  border-radius: 1em;
+  border-radius: ${(props) => props.curvedBottomCorners ? '1em' : '1em 1em 0 0'};
 `;
 
 Box.propTypes = {
+  curvedBottomCorners: PropTypes.bool.isRequired,
   backgroundColor: PropTypes.string,
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
@@ -348,7 +349,7 @@ BlankBox.propTypes = {
   opacity: PropTypes.number,
 };
 
-const PlayableVisualization = ({ width, height, playable, children, ...props }) => (
+const PlayableVisualization = ({ width, height, playable, curvedBottomCorners, children, ...props }) => (
   <div>
     <OverlayParent width={width}>
       <ThreeJSRenderer
@@ -359,7 +360,7 @@ const PlayableVisualization = ({ width, height, playable, children, ...props }) 
         width={width}
         height={height}
         canvasStyle={{
-          borderRadius: '1em',
+          borderRadius: curvedBottomCorners ? '1em' : '1em 1em 0 0',
         }}
       >
         <Group
@@ -380,6 +381,7 @@ PlayableVisualization.propTypes = {
   playable: PropTypes.bool.isRequired,
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
+  curvedBottomCorners: PropTypes.bool.isRequired,
   children: PropTypes.oneOfType([
     PropTypes.element,
     PropTypes.arrayOf(PropTypes.element),
@@ -390,6 +392,7 @@ const TweenOverlayVisualization = ({
   width,
   height,
   children,
+  curvedBottomCorners,
   overlayOpacity,
 }) => (
   <OverlayParent width={width}>
@@ -397,10 +400,19 @@ const TweenOverlayVisualization = ({
       <div>
         {children}
       </div>
-    ) : <BlankBox width={width} height={height} />}
+    ) : <BlankBox
+      width={width}
+      height={height}
+      curvedBottomCorners={curvedBottomCorners}
+    />}
     {overlayOpacity !== 1.0 && overlayOpacity !== 0.0 ? (
       <Overlay>
-        <BlankBox width={width} height={height} opacity={overlayOpacity} />
+        <BlankBox
+          width={width}
+          height={height}
+          opacity={overlayOpacity}
+          curvedBottomCorners={curvedBottomCorners}
+        />
       </Overlay>
     ) : <span />}
   </OverlayParent>
@@ -413,6 +425,7 @@ TweenOverlayVisualization.propTypes = {
   rotation: PropTypes.object,
   matrix: PropTypes.object,
   position: PropTypes.object,
+  curvedBottomCorners: PropTypes.bool.isRequired,
   children: PropTypes.oneOfType([
     PropTypes.element,
     PropTypes.arrayOf(PropTypes.element),
