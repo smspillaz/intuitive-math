@@ -18,6 +18,7 @@ import Strong from 'components/Strong';
 import SpanningPlane2D from 'components/SpanningPlane2D';
 import Tweakable from 'components/Tweakable';
 import Vector from 'components/Vector';
+import { TweakablesBox } from 'components/Visualization';
 
 const EigenvaluesSection = () => (
   <Section title="Eigenvalues" anchor="eigenvalues">
@@ -64,24 +65,28 @@ const EigenvaluesSection = () => (
                   <Vector position={new Vector3(1, yScale.value, 0)} color={0xffff00} />
                 </group>
               )}
+              renderExtras={({ width }) => (
+                <TweakablesBox width={width}>
+                  <p>
+                    <Tweakable {...xScale}>
+                      <MathJax.Node inline>x_1 = </MathJax.Node>
+                    </Tweakable>{' '}
+                    <MathJax.Node inline>x_2 = 1</MathJax.Node>
+                  </p>
+                  <p>
+                    <MathJax.Node inline>y_1 = 1</MathJax.Node>{' '}
+                    <Tweakable {...yScale}>
+                      <MathJax.Node inline>y_1 = </MathJax.Node>
+                    </Tweakable>
+                  </p>
+                  <p>
+                    <MathJax.Node inline>
+                      {'\\det \\begin{pmatrix} x_1 & x_2 \\\\ y_1 & y_2\\end{pmatrix}'}
+                    </MathJax.Node> = {((xScale.value * yScale.value) - 1).toFixed(2)}
+                  </p>
+                </TweakablesBox>
+              )}
             />
-            <p>
-              <Tweakable {...xScale}>
-                <MathJax.Node inline>x_1 = </MathJax.Node>
-              </Tweakable>{' '}
-              <MathJax.Node inline>x_2 = 1</MathJax.Node>
-            </p>
-            <p>
-              <MathJax.Node inline>y_1 = 1</MathJax.Node>{' '}
-              <Tweakable {...yScale}>
-                <MathJax.Node inline>y_1 = </MathJax.Node>
-              </Tweakable>
-            </p>
-            <p>
-              <MathJax.Node inline>
-                {'\\det \\begin{pmatrix} x_1 & x_2 \\\\ y_1 & y_2\\end{pmatrix}'}
-              </MathJax.Node> = {((xScale.value * yScale.value) - 1).toFixed(2)}
-            </p>
           </div>
         );
       }}
@@ -127,24 +132,29 @@ const EigenvaluesSection = () => (
                   <Vector position={new Vector3(y1, y2, 0)} color={0xffff00} />
                 </group>
               )}
+              renderExtras={({ width }) => (
+                <TweakablesBox width={width}>
+                  <p>
+                    <Tweakable {...lambda}>
+                      <MathJax.Node inline>x_1 = </MathJax.Node>
+                    </Tweakable>{' '}
+                    <MathJax.Node inline>x_2 = 0</MathJax.Node>
+                  </p>
+                  <p>
+                    <MathJax.Node inline>y_1 = 2</MathJax.Node>{' '}
+                    <Tweakable {...lambda}>
+                      <MathJax.Node inline>y_2 = </MathJax.Node>
+                    </Tweakable>
+                  </p>
+                  <p>
+                    <MathJax.Node inline>
+                      {'\\det \\begin{pmatrix} x_1 & x_2 \\\\ y_1 & y_2\\end{pmatrix}'}
+                    </MathJax.Node> = {((x1 * y2) - (y1 * x2)).toFixed(2)}
+                  </p>
+                </TweakablesBox>
+              )}
             />
-            <p>
-              <Tweakable {...lambda}>
-                <MathJax.Node inline>x_1 = </MathJax.Node>
-              </Tweakable>{' '}
-              <MathJax.Node inline>x_2 = 0</MathJax.Node>
-            </p>
-            <p>
-              <MathJax.Node inline>y_1 = 2</MathJax.Node>{' '}
-              <Tweakable {...lambda}>
-                <MathJax.Node inline>y_2 = </MathJax.Node>
-              </Tweakable>
-            </p>
-            <p>
-              <MathJax.Node inline>
-                {'\\det \\begin{pmatrix} x_1 & x_2 \\\\ y_1 & y_2\\end{pmatrix}'}
-              </MathJax.Node> = {((x1 * y2) - (y1 * x2)).toFixed(2)}
-            </p>
+
           </div>
         );
       }}
@@ -182,24 +192,28 @@ const EigenvaluesSection = () => (
                   <Vector position={new Vector3(y1, y2, 0)} color={0xffff00} />
                 </group>
               )}
+              renderExtras={({ width }) => (
+                <TweakablesBox width={width}>
+                  <p>
+                    <Tweakable {...lambda}>
+                      <MathJax.Node inline>x_1 = </MathJax.Node>
+                    </Tweakable>{' '}
+                    <MathJax.Node inline>x_2 = 2</MathJax.Node>
+                  </p>
+                  <p>
+                    <MathJax.Node inline>y_1 = 0</MathJax.Node>{' '}
+                    <Tweakable {...lambda}>
+                      <MathJax.Node inline>y_2 = </MathJax.Node>
+                    </Tweakable>
+                  </p>
+                  <p>
+                    <MathJax.Node inline>
+                      {'\\det \\begin{pmatrix} x_1 & x_2 \\\\ y_1 & y_2\\end{pmatrix}'}
+                    </MathJax.Node> = {((x1 * y2) - (y1 * x2)).toFixed(2)}
+                  </p>
+                </TweakablesBox>
+              )}
             />
-            <p>
-              <Tweakable {...lambda}>
-                <MathJax.Node inline>x_1 = </MathJax.Node>
-              </Tweakable>{' '}
-              <MathJax.Node inline>x_2 = 2</MathJax.Node>
-            </p>
-            <p>
-              <MathJax.Node inline>y_1 = 0</MathJax.Node>{' '}
-              <Tweakable {...lambda}>
-                <MathJax.Node inline>y_2 = </MathJax.Node>
-              </Tweakable>
-            </p>
-            <p>
-              <MathJax.Node inline>
-                {'\\det \\begin{pmatrix} x_1 & x_2 \\\\ y_1 & y_2\\end{pmatrix}'}
-              </MathJax.Node> = {((x1 * y2) - (y1 * x2)).toFixed(2)}
-            </p>
           </div>
         );
       }}
@@ -234,24 +248,28 @@ const EigenvaluesSection = () => (
                   <Vector position={new Vector3(y1, y2, 0)} color={0xffff00} />
                 </group>
               )}
+              renderExtras={({ width }) => (
+                <TweakablesBox width={width}>
+                  <p>
+                    <Tweakable {...lambda}>
+                      <MathJax.Node inline>x_1 = </MathJax.Node>
+                    </Tweakable>{' '}
+                    <MathJax.Node inline>x_2 = 2</MathJax.Node>
+                  </p>
+                  <p>
+                    <MathJax.Node inline>y_1 = 0</MathJax.Node>{' '}
+                    <Tweakable {...lambda}>
+                      <MathJax.Node inline>y_2 = </MathJax.Node>
+                    </Tweakable>
+                  </p>
+                  <p>
+                    <MathJax.Node inline>
+                      {'\\det \\begin{pmatrix} x_1 & x_2 \\\\ y_1 & y_2\\end{pmatrix}'}
+                    </MathJax.Node> = {((x1 * y2) - (y1 * x2)).toFixed(2)}
+                  </p>
+                </TweakablesBox>
+              )}
             />
-            <p>
-              <Tweakable {...lambda}>
-                <MathJax.Node inline>x_1 = </MathJax.Node>
-              </Tweakable>{' '}
-              <MathJax.Node inline>x_2 = 2</MathJax.Node>
-            </p>
-            <p>
-              <MathJax.Node inline>y_1 = 0</MathJax.Node>{' '}
-              <Tweakable {...lambda}>
-                <MathJax.Node inline>y_2 = </MathJax.Node>
-              </Tweakable>
-            </p>
-            <p>
-              <MathJax.Node inline>
-                {'\\det \\begin{pmatrix} x_1 & x_2 \\\\ y_1 & y_2\\end{pmatrix}'}
-              </MathJax.Node> = {((x1 * y2) - (y1 * x2)).toFixed(2)}
-            </p>
           </div>
         );
       }}

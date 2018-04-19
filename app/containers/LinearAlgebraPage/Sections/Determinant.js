@@ -23,7 +23,7 @@ import Strong from 'components/Strong';
 import TriplePlanes from 'components/TriplePlanes';
 import Tweakable from 'components/Tweakable';
 import Vector from 'components/Vector';
-import Visualization from 'components/Visualization';
+import Visualization, { TweakablesBox } from 'components/Visualization';
 
 import { truncate } from 'utils/math';
 
@@ -174,17 +174,21 @@ const DeterminantSection = () => (
                   <Vector position={new Vector3(0, yyInterp.value, 0)} color={0xffff00} />
                 </group>
               )}
+              renderExtras={({ width }) => (
+                <TweakablesBox width={width}>
+                  <p>
+                    <Tweakable {...xxInterp}>
+                      <MathJax.Node inline>x = </MathJax.Node>
+                    </Tweakable>
+                  </p>
+                  <p>
+                    <Tweakable {...yyInterp}>
+                      <MathJax.Node inline>y = </MathJax.Node>
+                    </Tweakable>
+                  </p>
+                </TweakablesBox>
+              )}
             />
-            <p>
-              <Tweakable {...xxInterp}>
-                <MathJax.Node inline>x = </MathJax.Node>
-              </Tweakable>
-            </p>
-            <p>
-              <Tweakable {...yyInterp}>
-                <MathJax.Node inline>y = </MathJax.Node>
-              </Tweakable>
-            </p>
           </div>
         );
       }}
@@ -224,17 +228,21 @@ const DeterminantSection = () => (
                   <Vector position={new Vector3(xShear.value, 1, 0)} color={0xffff00} />
                 </group>
               )}
+              renderExtras={({ width }) => (
+                <TweakablesBox width={width}>
+                  <p>
+                    <MathJax.Node inline>x</MathJax.Node> = {truncate(1, 2).toFixed(2)}{' '}
+                    <Tweakable {...xShear}>
+                      <MathJax.Node inline>y</MathJax.Node><span> = </span>
+                    </Tweakable>
+                  </p>
+                  <p>
+                    <MathJax.Node inline>x</MathJax.Node> = {truncate(0, 2).toFixed(2)}{' '}
+                    <MathJax.Node inline>y</MathJax.Node> = {truncate(1, 2).toFixed(2)}
+                  </p>
+                </TweakablesBox>
+              )}
             />
-            <p>
-              <MathJax.Node inline>x</MathJax.Node> = {truncate(1, 2).toFixed(2)}{' '}
-              <Tweakable {...xShear}>
-                <MathJax.Node inline>y</MathJax.Node><span> = </span>
-              </Tweakable>
-            </p>
-            <p>
-              <MathJax.Node inline>x</MathJax.Node> = {truncate(0, 2).toFixed(2)}{' '}
-              <MathJax.Node inline>y</MathJax.Node> = {truncate(1, 2).toFixed(2)}
-            </p>
           </div>
         );
       }}
@@ -262,7 +270,25 @@ const DeterminantSection = () => (
 
         return (
           <div>
-            <Visualization title="A 2D shear that changes the determinant">
+            <Visualization
+              title="A 2D shear that changes the determinant"
+              renderExtras={({ width }) => (
+                <TweakablesBox width={width}>
+                  <p>
+                    <MathJax.Node inline>x</MathJax.Node> = {truncate(1, 2).toFixed(2)}{' '}
+                    <Tweakable {...xyShear}>
+                      <MathJax.Node inline>y</MathJax.Node><span> = </span>
+                    </Tweakable>
+                  </p>
+                  <p>
+                    <Tweakable {...yxShear}>
+                      <MathJax.Node inline>x</MathJax.Node><span> = </span>
+                    </Tweakable>
+                    <MathJax.Node inline>y</MathJax.Node> = {truncate(1, 2).toFixed(2)}
+                  </p>
+                </TweakablesBox>
+              )}
+            >
               <XAxis />
               <YAxis />
               <group>
@@ -271,18 +297,6 @@ const DeterminantSection = () => (
                 <Vector position={new Vector3(yxShear.value, 1, 0)} color={0xffff00} />
               </group>
             </Visualization>
-            <p>
-              <MathJax.Node inline>x</MathJax.Node> = {truncate(1, 2).toFixed(2)}{' '}
-              <Tweakable {...xyShear}>
-                <MathJax.Node inline>y</MathJax.Node><span> = </span>
-              </Tweakable>
-            </p>
-            <p>
-              <Tweakable {...yxShear}>
-                <MathJax.Node inline>x</MathJax.Node><span> = </span>
-              </Tweakable>
-              <MathJax.Node inline>y</MathJax.Node> = {truncate(1, 2).toFixed(2)}
-            </p>
           </div>
         );
       }}
@@ -309,7 +323,27 @@ const DeterminantSection = () => (
 
         return (
           <div>
-            <Visualization title="A 2D shear that has a non-zero determinant">
+            <Visualization
+              title="A 2D shear that has a non-zero determinant"
+              renderExtras={({ width }) => (
+                <TweakablesBox width={width}>
+                  <p>
+                    <MathJax.Node inline>x</MathJax.Node> = {truncate(1, 2).toFixed(2)}{' '}
+                    <Tweakable {...xyShear}>
+                      <MathJax.Node inline>y</MathJax.Node><span> = </span>
+                    </Tweakable>
+                  </p>
+                  <p>
+                    <Tweakable {...yxShear}>
+                      <MathJax.Node inline>x</MathJax.Node><span> = </span>
+                    </Tweakable>
+                    <Tweakable {...yyScale}>
+                      <MathJax.Node inline>y</MathJax.Node><span> = </span>
+                    </Tweakable>
+                  </p>
+                </TweakablesBox>
+              )}
+            >
               <XAxis />
               <YAxis />
               <group>
@@ -318,20 +352,6 @@ const DeterminantSection = () => (
                 <Vector position={new Vector3(yxShear.value, yyScale.value, 0)} color={0xffff00} />
               </group>
             </Visualization>
-            <p>
-              <MathJax.Node inline>x</MathJax.Node> = {truncate(1, 2).toFixed(2)}{' '}
-              <Tweakable {...xyShear}>
-                <MathJax.Node inline>y</MathJax.Node><span> = </span>
-              </Tweakable>
-            </p>
-            <p>
-              <Tweakable {...yxShear}>
-                <MathJax.Node inline>x</MathJax.Node><span> = </span>
-              </Tweakable>
-              <Tweakable {...yyScale}>
-                <MathJax.Node inline>y</MathJax.Node><span> = </span>
-              </Tweakable>
-            </p>
           </div>
         );
       }}
@@ -416,24 +436,28 @@ const DeterminantSection = () => (
               render={() => (
                 <CubeVectors3D matrix={mat} />
               )}
+              renderExtras={({ width }) => (
+                <TweakablesBox width={width}>
+                  <p>
+                    <Tweakable {...xScale}>
+                      <MathJax.Node inline>x = </MathJax.Node>
+                    </Tweakable>
+                    <MathJax.Node inline>\det yz = 1</MathJax.Node>,{' '}
+                    <MathJax.Node inline>\rightarrow 1</MathJax.Node>
+                  </p>
+                  <p>
+                    <MathJax.Node inline>y = 0</MathJax.Node>,{' '}
+                    <MathJax.Node inline>\det xz = 0</MathJax.Node>,{' '}
+                    <MathJax.Node inline>\rightarrow 0</MathJax.Node>
+                  </p>
+                  <p>
+                    <MathJax.Node inline>z = 0</MathJax.Node>,{' '}
+                    <MathJax.Node inline>\det xy = 0</MathJax.Node>,{' '}
+                    <MathJax.Node inline>\rightarrow 0</MathJax.Node>
+                  </p>
+                </TweakablesBox>
+              )}
             />
-            <p>
-              <Tweakable {...xScale}>
-                <MathJax.Node inline>x = </MathJax.Node>
-              </Tweakable>
-              <MathJax.Node inline>\det yz = 1</MathJax.Node>,{' '}
-              <MathJax.Node inline>\rightarrow 1</MathJax.Node>
-            </p>
-            <p>
-              <MathJax.Node inline>y = 0</MathJax.Node>,{' '}
-              <MathJax.Node inline>\det xz = 0</MathJax.Node>,{' '}
-              <MathJax.Node inline>\rightarrow 0</MathJax.Node>
-            </p>
-            <p>
-              <MathJax.Node inline>z = 0</MathJax.Node>,{' '}
-              <MathJax.Node inline>\det xy = 0</MathJax.Node>,{' '}
-              <MathJax.Node inline>\rightarrow 0</MathJax.Node>
-            </p>
           </div>
         );
       }}
@@ -605,24 +629,28 @@ const DeterminantSection = () => (
                   <CubeVectors3D matrix={mat} wireframe />
                 </group>
               )}
+              renderExtras={({ width }) => (
+                <TweakablesBox width={width}>
+                  <p>
+                    <MathJax.Node inline>x = 1</MathJax.Node>,{' '}
+                    <MathJax.Node inline>\det yz = 1</MathJax.Node>,{' '}
+                    <MathJax.Node inline>\rightarrow 1</MathJax.Node>
+                  </p>
+                  <p>
+                    <Tweakable {...yxShear}>
+                      <MathJax.Node inline>y = </MathJax.Node>
+                    </Tweakable>{', '}
+                    <MathJax.Node inline>\det xz = </MathJax.Node>{xyShear.value.toFixed(2)},{' '}
+                    <MathJax.Node inline>\rightarrow </MathJax.Node>{(xyShear.value * yxShear.value).toFixed(2)}
+                  </p>
+                  <p>
+                    <MathJax.Node inline>z = 0</MathJax.Node>,{' '}
+                    <MathJax.Node inline>\det xy = 0</MathJax.Node>,{' '}
+                    <MathJax.Node inline>\rightarrow 0</MathJax.Node>
+                  </p>
+                </TweakablesBox>
+              )}
             />
-            <p>
-              <MathJax.Node inline>x = 1</MathJax.Node>,{' '}
-              <MathJax.Node inline>\det yz = 1</MathJax.Node>,{' '}
-              <MathJax.Node inline>\rightarrow 1</MathJax.Node>
-            </p>
-            <p>
-              <Tweakable {...yxShear}>
-                <MathJax.Node inline>y = </MathJax.Node>
-              </Tweakable>{', '}
-              <MathJax.Node inline>\det xz = </MathJax.Node>{xyShear.value.toFixed(2)},{' '}
-              <MathJax.Node inline>\rightarrow </MathJax.Node>{(xyShear.value * yxShear.value).toFixed(2)}
-            </p>
-            <p>
-              <MathJax.Node inline>z = 0</MathJax.Node>,{' '}
-              <MathJax.Node inline>\det xy = 0</MathJax.Node>,{' '}
-              <MathJax.Node inline>\rightarrow 0</MathJax.Node>
-            </p>
           </div>
         );
       }}
@@ -653,24 +681,28 @@ const DeterminantSection = () => (
                   <CubeVectors3D matrix={mat} wireframe />
                 </group>
               )}
+              renderExtras={({ width }) => (
+                <TweakablesBox width={width}>
+                  <p>
+                    <MathJax.Node inline>x = 1</MathJax.Node>,{' '}
+                    <MathJax.Node inline>\det yz = 1</MathJax.Node>,{' '}
+                    <MathJax.Node inline>\rightarrow 1</MathJax.Node>
+                  </p>
+                  <p>
+                    <Tweakable {...yxShear}>
+                      <MathJax.Node inline>y = </MathJax.Node>
+                    </Tweakable>{', '}
+                    <MathJax.Node inline>\det xz = </MathJax.Node>{xyShear.value.toFixed(2)},{' '}
+                    <MathJax.Node inline>\rightarrow </MathJax.Node>{(xyShear.value * yxShear.value).toFixed(2)}
+                  </p>
+                  <p>
+                    <MathJax.Node inline>z = 0</MathJax.Node>,{' '}
+                    <MathJax.Node inline>\det xy = </MathJax.Node>{-zxShear.value.toFixed(2)},{' '}
+                    <MathJax.Node inline>\rightarrow 0</MathJax.Node>
+                  </p>
+                </TweakablesBox>
+              )}
             />
-            <p>
-              <MathJax.Node inline>x = 1</MathJax.Node>,{' '}
-              <MathJax.Node inline>\det yz = 1</MathJax.Node>,{' '}
-              <MathJax.Node inline>\rightarrow 1</MathJax.Node>
-            </p>
-            <p>
-              <Tweakable {...yxShear}>
-                <MathJax.Node inline>y = </MathJax.Node>
-              </Tweakable>{', '}
-              <MathJax.Node inline>\det xz = </MathJax.Node>{xyShear.value.toFixed(2)},{' '}
-              <MathJax.Node inline>\rightarrow </MathJax.Node>{(xyShear.value * yxShear.value).toFixed(2)}
-            </p>
-            <p>
-              <MathJax.Node inline>z = 0</MathJax.Node>,{' '}
-              <MathJax.Node inline>\det xy = </MathJax.Node>{-zxShear.value.toFixed(2)},{' '}
-              <MathJax.Node inline>\rightarrow 0</MathJax.Node>
-            </p>
           </div>
         );
       }}
@@ -706,26 +738,30 @@ const DeterminantSection = () => (
                   <CubeVectors3D matrix={mat} wireframe />
                 </group>
               )}
+              renderExtras={({ width }) => (
+                <TweakablesBox width={width}>
+                  <p>
+                    <MathJax.Node inline>x = 1</MathJax.Node>,{' '}
+                    <MathJax.Node inline>\det yz = 1</MathJax.Node>,{' '}
+                    <MathJax.Node inline>\rightarrow 1</MathJax.Node>
+                  </p>
+                  <p>
+                    <Tweakable {...yxShear}>
+                      <MathJax.Node inline>y = </MathJax.Node>
+                    </Tweakable>{', '}
+                    <MathJax.Node inline>\det xz = </MathJax.Node>{xyShear.value.toFixed(2)},{' '}
+                    <MathJax.Node inline>\rightarrow </MathJax.Node>{(xyShear.value * yxShear.value).toFixed(2)}
+                  </p>
+                  <p>
+                    <Tweakable {...xzShear}>
+                      <MathJax.Node inline>z = </MathJax.Node>
+                    </Tweakable>{', '}
+                    <MathJax.Node inline>\det xy = </MathJax.Node>{-zxShear.value.toFixed(2)},{' '}
+                    <MathJax.Node inline>\rightarrow 0</MathJax.Node>
+                  </p>
+                </TweakablesBox>
+              )}
             />
-            <p>
-              <MathJax.Node inline>x = 1</MathJax.Node>,{' '}
-              <MathJax.Node inline>\det yz = 1</MathJax.Node>,{' '}
-              <MathJax.Node inline>\rightarrow 1</MathJax.Node>
-            </p>
-            <p>
-              <Tweakable {...yxShear}>
-                <MathJax.Node inline>y = </MathJax.Node>
-              </Tweakable>{', '}
-              <MathJax.Node inline>\det xz = </MathJax.Node>{xyShear.value.toFixed(2)},{' '}
-              <MathJax.Node inline>\rightarrow </MathJax.Node>{(xyShear.value * yxShear.value).toFixed(2)}
-            </p>
-            <p>
-              <Tweakable {...xzShear}>
-                <MathJax.Node inline>z = </MathJax.Node>
-              </Tweakable>{', '}
-              <MathJax.Node inline>\det xy = </MathJax.Node>{-zxShear.value.toFixed(2)},{' '}
-              <MathJax.Node inline>\rightarrow 0</MathJax.Node>
-            </p>
           </div>
         );
       }}

@@ -18,6 +18,7 @@ import Section from 'components/Section';
 import Strong from 'components/Strong';
 import Tweakable from 'components/Tweakable';
 import Vector from 'components/Vector';
+import { TweakablesBox } from 'components/Visualization';
 
 const SpansSection = () => (
   <Section title="Spans" anchor="spans">
@@ -113,15 +114,17 @@ const SpansSection = () => (
                 />
               </group>
             )}
+            renderExtras={({ width }) => (
+              <TweakablesBox width={width}>
+                <div>
+                  <Tweakable {...xxInterp} /><MathJaxMatrix inline matrix={[[1], [-1]]} />
+                </div>
+                <div>
+                  <Tweakable {...yxInterp} /><MathJaxMatrix inline matrix={[[-1], [-1]]} />
+                </div>
+              </TweakablesBox>
+            )}
           />
-          <div>
-            <div>
-              <Tweakable {...xxInterp} /><MathJaxMatrix inline matrix={[[1], [-1]]} />
-            </div>
-            <div>
-              <Tweakable {...yxInterp} /><MathJaxMatrix inline matrix={[[-1], [-1]]} />
-            </div>
-          </div>
         </div>
       )}
     />
@@ -153,14 +156,19 @@ const SpansSection = () => (
                 <Vector position={new Vector3(4, 1, 0)} color={0x00ffff} />
               </group>
             )}
+            renderExtras={({ width }) => (
+              <TweakablesBox width={width}>
+                <div>
+                  <Tweakable {...xxInterp} /><MathJaxMatrix inline matrix={[[1], [-1]]} />
+                </div>
+                <div>
+                  <Tweakable {...yxInterp} /><MathJaxMatrix inline matrix={[[-1], [-1]]} />
+                </div>
+              </TweakablesBox>
+            )}
           />
           <div>
-            <div>
-              <Tweakable {...xxInterp} /><MathJaxMatrix inline matrix={[[1], [-1]]} />
-            </div>
-            <div>
-              <Tweakable {...yxInterp} /><MathJaxMatrix inline matrix={[[-1], [-1]]} />
-            </div>
+
           </div>
         </div>
       )}
