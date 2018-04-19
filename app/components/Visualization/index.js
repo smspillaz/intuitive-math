@@ -107,7 +107,7 @@ const TweakablesBoxBorder = styled.div`
   border-style: solid;
   display: inline-block;
   padding: 20px;
-  width: ${(props) => props.width}
+  width: ${(props) => props.width}px;
 `;
 
 TweakablesBoxBorder.propTypes = {
