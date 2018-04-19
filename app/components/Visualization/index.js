@@ -168,8 +168,6 @@ const Box = styled.div`
     props.backgroundColor !== undefined ?
     `background-color: ${props.backgroundColor}` : ''
   };
-  text-align: center;
-  display: inline-block;
   border-radius: 1em;
 `;
 
@@ -188,12 +186,17 @@ const Overlay = styled.div`
 const OverlayParent = styled.div`
   position: relative;
   width: ${(props) => props.width};
-  display: inline-block;
 `;
 
 OverlayParent.propTypes = {
   width: PropTypes.number.isRequired,
 };
+
+const Centerable = styled.div`
+  display: inline-block;
+  position: relative;
+  float: inherit;
+`;
 
 const VerticallyCenteredChild = styled.div`
   display: inline-block;
@@ -378,23 +381,25 @@ const TweenOverlayVisualization = ({
   ...props
 }) => (
   <Centered>
-    <OverlayParent width={width}>
-      {overlayOpacity !== 1.0 ? (
-        <PlayableVisualization
-          width={width}
-          height={height}
-          playable={animationIsRunning === false && isAnimated && overlayOpacity === 0.0}
-          {...props}
-        >
-          {children}
-        </PlayableVisualization>
-      ) : <BlankBox width={width} height={height} />}
-      {overlayOpacity !== 1.0 && overlayOpacity !== 0.0 ? (
-        <Overlay>
-          <BlankBox width={width} height={height} opacity={overlayOpacity} />
-        </Overlay>
-      ) : <span />}
-    </OverlayParent>
+    <Centerable>
+      <OverlayParent width={width}>
+        {overlayOpacity !== 1.0 ? (
+          <PlayableVisualization
+            width={width}
+            height={height}
+            playable={animationIsRunning === false && isAnimated && overlayOpacity === 0.0}
+            {...props}
+          >
+            {children}
+          </PlayableVisualization>
+        ) : <BlankBox width={width} height={height} />}
+        {overlayOpacity !== 1.0 && overlayOpacity !== 0.0 ? (
+          <Overlay>
+            <BlankBox width={width} height={height} opacity={overlayOpacity} />
+          </Overlay>
+        ) : <span />}
+      </OverlayParent>
+    </Centerable>
   </Centered>
 );
 
