@@ -275,20 +275,49 @@ BlankBox.propTypes = {
   opacity: PropTypes.number,
 };
 
-const TweenOverlayVisualization = ({ animationIsRunning, isAnimated, width, height, children, overlayOpacity, ...props }) => (
+const PlayableVisualization = ({ width, height, playable, children, ...props }) => (
+  <div>
+    <OverlayParent width={width}>
+      <AnimatedReact3Visualization width={width} height={height} {...props}>
+        {children}
+      </AnimatedReact3Visualization>
+      {playable && (
+        <PlayButtonOverlay width={width} height={height} />
+      )}
+    </OverlayParent>
+  </div>
+);
+
+PlayableVisualization.propTypes = {
+  playable: PropTypes.bool.isRequired,
+  width: PropTypes.number.isRequired,
+  height: PropTypes.number.isRequired,
+  children: PropTypes.oneOfType([
+    PropTypes.element,
+    PropTypes.arrayOf(PropTypes.element),
+  ]),
+};
+
+const TweenOverlayVisualization = ({
+  animationIsRunning,
+  isAnimated,
+  width,
+  height,
+  children,
+  overlayOpacity,
+  ...props
+}) => (
   <Centered>
     <OverlayParent width={width}>
       {overlayOpacity !== 1.0 ? (
-        <div>
-          <OverlayParent width={width}>
-            <AnimatedReact3Visualization width={width} height={height} {...props}>
-              {children}
-            </AnimatedReact3Visualization>
-            {animationIsRunning === false && isAnimated && overlayOpacity === 0.0 && (
-              <PlayButtonOverlay width={width} height={height} />
-            )}
-          </OverlayParent>
-        </div>
+        <PlayableVisualization
+          width={width}
+          height={height}
+          playable={animationIsRunning === false && isAnimated && overlayOpacity === 0.0}
+          {...props}
+        >
+          {children}
+        </PlayableVisualization>
       ) : <BlankBox width={width} height={height} />}
       {overlayOpacity !== 1.0 && overlayOpacity !== 0.0 ? (
         <Overlay>
