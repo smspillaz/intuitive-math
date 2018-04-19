@@ -463,31 +463,33 @@ const Visualization = ({
   renderExtras,
   ...props
 }) => (
-  <OverlayTweenFromVisibility
-    fadeTime={fadeTime}
-    isVisible={isVisible}
-    render={({ overlayOpacity }) => (
-      <Centered>
-        <TweenOverlayVisualization
-          width={width}
-          height={height}
-          overlayOpacity={overlayOpacity}
-          curvedBottomCorners={!renderExtras}
-        >
-          <PlayableVisualization
+  <ClickToAnimate>
+    <OverlayTweenFromVisibility
+      fadeTime={fadeTime}
+      isVisible={isVisible}
+      render={({ overlayOpacity }) => (
+        <Centered>
+          <TweenOverlayVisualization
             width={width}
             height={height}
-            playable={animationIsRunning === false && isAnimated && overlayOpacity === 0.0}
+            overlayOpacity={overlayOpacity}
             curvedBottomCorners={!renderExtras}
-            {...props}
           >
-            {children}
-          </PlayableVisualization>
-        </TweenOverlayVisualization>
-        {renderExtras && renderExtras({ width, animationIsRunning })}
-      </Centered>
-    )}
-  />
+            <PlayableVisualization
+              width={width}
+              height={height}
+              playable={animationIsRunning === false && isAnimated && overlayOpacity === 0.0}
+              curvedBottomCorners={!renderExtras}
+              {...props}
+            >
+              {children}
+            </PlayableVisualization>
+          </TweenOverlayVisualization>
+          {renderExtras && renderExtras({ width, animationIsRunning })}
+        </Centered>
+      )}
+    />
+  </ClickToAnimate>
 );
 
 Visualization.propTypes = {
@@ -601,14 +603,12 @@ const ExposedMetricsVisualization = exposeMetrics(recordVisibilityMetric(Optiona
 // eslint-disable-next-line react/no-multi-comp
 export class BlankableVisualization extends React.Component {
   renderChild = ({ isVisible }) => (
-    <ClickToAnimate>
-      <ExposedMetricsVisualization
-        {...this.props}
-        animationIsRunning={!!this.props.animationIsRunning}
-        isAnimated={!!this.props.isAnimated}
-        isVisible={isVisible}
-      />
-    </ClickToAnimate>
+    <ExposedMetricsVisualization
+      {...this.props}
+      animationIsRunning={!!this.props.animationIsRunning}
+      isAnimated={!!this.props.isAnimated}
+      isVisible={isVisible}
+    />
   )
 
   render() {
@@ -626,14 +626,12 @@ BlankableVisualization.propTypes = {
 };
 
 const BlankableByContextVisualization = (props, { animationIsRunning = false, withinAnimation = false, isVisible = true }) => (
-  <ClickToAnimate>
-    <ExposedMetricsVisualization
-      animationIsRunning={animationIsRunning}
-      isAnimated={withinAnimation}
-      isVisible={isVisible}
-      {...props}
-    />
-  </ClickToAnimate>
+  <ExposedMetricsVisualization
+    animationIsRunning={animationIsRunning}
+    isAnimated={withinAnimation}
+    isVisible={isVisible}
+    {...props}
+  />
 );
 
 BlankableByContextVisualization.contextTypes = {
