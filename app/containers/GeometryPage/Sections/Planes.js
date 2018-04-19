@@ -18,6 +18,7 @@ import Section from 'components/Section';
 import Strong from 'components/Strong';
 import Tweakable from 'components/Tweakable';
 import Vector from 'components/Vector';
+import { TweakablesBox } from 'components/Visualization';
 
 import { dotProduct } from 'utils/math';
 
@@ -310,22 +311,26 @@ const PlanesSection = () => (
                 />
               </group>
             )}
+            renderExtras={({ width }) => (
+              <TweakablesBox width={width}>
+                <div>
+                  <Tweakable {...y}>
+                    <MathJax.Node inline>{'y ='}</MathJax.Node>{' '}
+                  </Tweakable>
+                </div>
+                <div>
+                  <Tweakable {...z}>
+                    <MathJax.Node inline>{'z ='}</MathJax.Node>{' '}
+                  </Tweakable>
+                </div>
+                <div>
+                  <MathJax.Node inline>
+                    {'(x, y, z) \\cdot (0, 0, 1) ='}
+                  </MathJax.Node>{' '}{dotProduct([0, y.value, z.value], [0, 0, -1]).toFixed(2)}
+                </div>
+              </TweakablesBox>
+            )}
           />
-          <div>
-            <Tweakable {...y}>
-              <MathJax.Node inline>{'y ='}</MathJax.Node>{' '}
-            </Tweakable>
-          </div>
-          <div>
-            <Tweakable {...z}>
-              <MathJax.Node inline>{'z ='}</MathJax.Node>{' '}
-            </Tweakable>
-          </div>
-          <div>
-            <MathJax.Node inline>
-              {'(x, y, z) \\cdot (0, 0, 1) ='}
-            </MathJax.Node>{' '}{dotProduct([0, y.value, z.value], [0, 0, -1]).toFixed(2)}
-          </div>
         </div>
       )}
     />
