@@ -21,7 +21,7 @@ import Section from 'components/Section';
 import Strong from 'components/Strong';
 import Tweakable from 'components/Tweakable';
 import Vector from 'components/Vector';
-import Visualization from 'components/Visualization';
+import Visualization, { TweakablesBox } from 'components/Visualization';
 
 const VectorsSection = () => (
   <Section title="Vectors" anchor="vectors">
@@ -77,12 +77,16 @@ const VectorsSection = () => (
             render={() => (
               <Vector position={new Vector3(xPosition.value, 0, 0)} color={0xff8800} />
             )}
+            renderExtras={({ width }) => (
+              <TweakablesBox width={width}>
+                <div>
+                  <Tweakable {...xPosition}>
+                    <MathJax.Node inline>{'x ='}</MathJax.Node>{' '}
+                  </Tweakable>
+                </div>
+              </TweakablesBox>
+            )}
           />
-          <div>
-            <Tweakable {...xPosition}>
-              <MathJax.Node inline>{'x ='}</MathJax.Node>{' '}
-            </Tweakable>
-          </div>
         </div>
       )}
     />
@@ -117,17 +121,21 @@ const VectorsSection = () => (
                 />
               </group>
             )}
+            renderExtras={({ width }) => (
+              <TweakablesBox width={width}>
+                <div>
+                  <Tweakable {...xPosition}>
+                    <MathJax.Node inline>{'x ='}</MathJax.Node>{' '}
+                  </Tweakable>
+                </div>
+                <div>
+                  <Tweakable {...yPosition}>
+                    <MathJax.Node inline>{'y ='}</MathJax.Node>{' '}
+                  </Tweakable>
+                </div>
+              </TweakablesBox>
+            )}
           />
-          <div>
-            <Tweakable {...xPosition}>
-              <MathJax.Node inline>{'x ='}</MathJax.Node>{' '}
-            </Tweakable>
-          </div>
-          <div>
-            <Tweakable {...yPosition}>
-              <MathJax.Node inline>{'y ='}</MathJax.Node>{' '}
-            </Tweakable>
-          </div>
         </div>
       )}
     />
@@ -169,22 +177,26 @@ const VectorsSection = () => (
                 />
               </group>
             )}
+            renderExtras={({ width }) => (
+              <TweakablesBox width={width}>
+                <div>
+                  <Tweakable {...xPosition}>
+                    <MathJax.Node inline>{'x ='}</MathJax.Node>{' '}
+                  </Tweakable>
+                </div>
+                <div>
+                  <Tweakable {...yPosition}>
+                    <MathJax.Node inline>{'y ='}</MathJax.Node>{' '}
+                  </Tweakable>
+                </div>
+                <div>
+                  <Tweakable {...zPosition}>
+                    <MathJax.Node inline>{'z ='}</MathJax.Node>{' '}
+                  </Tweakable>
+                </div>
+              </TweakablesBox>
+            )}
           />
-          <div>
-            <Tweakable {...xPosition}>
-              <MathJax.Node inline>{'x ='}</MathJax.Node>{' '}
-            </Tweakable>
-          </div>
-          <div>
-            <Tweakable {...yPosition}>
-              <MathJax.Node inline>{'y ='}</MathJax.Node>{' '}
-            </Tweakable>
-          </div>
-          <div>
-            <Tweakable {...zPosition}>
-              <MathJax.Node inline>{'z ='}</MathJax.Node>{' '}
-            </Tweakable>
-          </div>
         </div>
       )}
     />
@@ -216,23 +228,29 @@ const VectorsSection = () => (
 
         return (
           <div>
-            <Visualization title="Adding two vectors">
+            <Visualization
+              title="Adding two vectors"
+              renderExtras={({ width }) => (
+                <TweakablesBox width={width}>
+                  <div>
+                    <Tweakable {...xAdd}>
+                      <MathJax.Node inline>{'x ='}</MathJax.Node>{' '}<span>{a.x}{' + '}</span>
+                    </Tweakable>{' = '}{c.x.toFixed(2)}
+                  </div>
+                  <div>
+                    <Tweakable {...yAdd}>
+                      <MathJax.Node inline>{'y ='}</MathJax.Node>{' '}<span>{a.y}{' + '}</span>
+                    </Tweakable>{' = '}{c.y.toFixed(2)}
+                  </div>
+                </TweakablesBox>
+              )}
+            >
               <XAxis />
               <YAxis />
               <Vector position={a} color={0xffff00} />
               <Vector position={c} color={0xff00ff} base={a} />
               <Vector position={c} color={0x00ffff} />
             </Visualization>
-            <div>
-              <Tweakable {...xAdd}>
-                <MathJax.Node inline>{'x ='}</MathJax.Node>{' '}<span>{a.x}{' + '}</span>
-              </Tweakable>{' = '}{c.x.toFixed(2)}
-            </div>
-            <div>
-              <Tweakable {...yAdd}>
-                <MathJax.Node inline>{'y ='}</MathJax.Node>{' '}<span>{a.y}{' + '}</span>
-              </Tweakable>{' = '}{c.y.toFixed(2)}
-            </div>
           </div>
         );
       }}
@@ -260,23 +278,29 @@ const VectorsSection = () => (
 
         return (
           <div>
-            <Visualization title="Component-wise multiplication, scaling information is lost">
+            <Visualization
+              title="Component-wise multiplication, scaling information is lost"
+              renderExtras={({ width }) => (
+                <TweakablesBox width={width}>
+                  <div>
+                    <Tweakable {...xMul}>
+                      <MathJax.Node inline>{'x ='}</MathJax.Node>{' '}<span>{a.x}<MathJax.Node inline>\times</MathJax.Node></span>
+                    </Tweakable>{' = '}{c.x.toFixed(2)}
+                  </div>
+                  <div>
+                    <Tweakable {...yMul}>
+                      <MathJax.Node inline>{'y ='}</MathJax.Node>{' '}<span>{a.y}<MathJax.Node inline>\times</MathJax.Node></span>
+                    </Tweakable>{' = '}{c.y.toFixed(2)}
+                  </div>
+                </TweakablesBox>
+              )}
+            >
               <XAxis />
               <YAxis />
               <Vector position={a} color={0xffff00} />
               <Vector position={b} color={0xff00ff} />
               <Vector position={c} color={0x00ffff} />
             </Visualization>
-            <div>
-              <Tweakable {...xMul}>
-                <MathJax.Node inline>{'x ='}</MathJax.Node>{' '}<span>{a.x}<MathJax.Node inline>\times</MathJax.Node></span>
-              </Tweakable>{' = '}{c.x.toFixed(2)}
-            </div>
-            <div>
-              <Tweakable {...yMul}>
-                <MathJax.Node inline>{'y ='}</MathJax.Node>{' '}<span>{a.y}<MathJax.Node inline>\times</MathJax.Node></span>
-              </Tweakable>{' = '}{c.y.toFixed(2)}
-            </div>
           </div>
         );
       }}
