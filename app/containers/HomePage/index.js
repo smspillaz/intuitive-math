@@ -55,8 +55,9 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
               <p>
                 This is a math primer that is a little different. It is written
                 using technologies such as React and WebGL with animated explanations
-                of fields like Linear Algebra, designed to help you develop a
-                visual intuition for what is going on.
+                of fields like Linear Algebra and Geometry designed to help you develop a
+                visual intuition for what is going on. More fields will be added as time
+                goes on.
               </p>
               <InterpolatedAnimation
                 values={{
