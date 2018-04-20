@@ -126,7 +126,7 @@ const CylindersSection = () => (
       wireframe
     />
     <p>
-      If we want to find the volume of a cylinder, we must use a
+      If we want to find the volume of a cylinder, we must use a{' '}
       <Strong>triple integral</Strong> as the input space has three parameters.
     </p>
     <MathJax.Node>
