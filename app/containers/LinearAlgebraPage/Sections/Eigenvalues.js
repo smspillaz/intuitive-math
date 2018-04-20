@@ -136,19 +136,20 @@ const EigenvaluesSection = () => (
                 <TweakablesBox width={width}>
                   <p>
                     <Tweakable {...lambda}>
-                      <MathJax.Node inline>x_1 = </MathJax.Node>
-                    </Tweakable>{' '}
+                      <MathJax.Node inline>{'\\lambda = '}</MathJax.Node>
+                    </Tweakable>
+                  </p>
+                  <p>
+                    <MathJax.Node inline>{'x_1 - \\lambda = '}</MathJax.Node>{x1.toFixed(2)}{' '}
                     <MathJax.Node inline>x_2 = 0</MathJax.Node>
                   </p>
                   <p>
                     <MathJax.Node inline>y_1 = 2</MathJax.Node>{' '}
-                    <Tweakable {...lambda}>
-                      <MathJax.Node inline>y_2 = </MathJax.Node>
-                    </Tweakable>
+                    <MathJax.Node inline>{'y_2 - \\lambda = '}</MathJax.Node>{y2.toFixed(2)}{' '}
                   </p>
                   <p>
                     <MathJax.Node inline>
-                      {'\\det \\begin{pmatrix} x_1 & x_2 \\\\ y_1 & y_2\\end{pmatrix}'}
+                      {'\\det \\begin{pmatrix} x_1 - \\lambda & x_2 \\\\ y_1 & y_2 - \\lambda \\end{pmatrix}'}
                     </MathJax.Node> = {((x1 * y2) - (y1 * x2)).toFixed(2)}
                   </p>
                 </TweakablesBox>
@@ -196,19 +197,20 @@ const EigenvaluesSection = () => (
                 <TweakablesBox width={width}>
                   <p>
                     <Tweakable {...lambda}>
-                      <MathJax.Node inline>x_1 = </MathJax.Node>
-                    </Tweakable>{' '}
-                    <MathJax.Node inline>x_2 = 2</MathJax.Node>
-                  </p>
-                  <p>
-                    <MathJax.Node inline>y_1 = 0</MathJax.Node>{' '}
-                    <Tweakable {...lambda}>
-                      <MathJax.Node inline>y_2 = </MathJax.Node>
+                      <MathJax.Node inline>{'\\lambda = '}</MathJax.Node>
                     </Tweakable>
                   </p>
                   <p>
+                    <MathJax.Node inline>{'x_1 - \\lambda = '}</MathJax.Node>{x1.toFixed(2)}{' '}
+                    <MathJax.Node inline>x_2 = 0</MathJax.Node>
+                  </p>
+                  <p>
+                    <MathJax.Node inline>y_1 = 2</MathJax.Node>{' '}
+                    <MathJax.Node inline>{'y_2 - \\lambda = '}</MathJax.Node>{y2.toFixed(2)}{' '}
+                  </p>
+                  <p>
                     <MathJax.Node inline>
-                      {'\\det \\begin{pmatrix} x_1 & x_2 \\\\ y_1 & y_2\\end{pmatrix}'}
+                      {'\\det \\begin{pmatrix} x_1 - \\lambda & x_2 \\\\ y_1 & y_2 - \\lambda \\end{pmatrix}'}
                     </MathJax.Node> = {((x1 * y2) - (y1 * x2)).toFixed(2)}
                   </p>
                 </TweakablesBox>
@@ -252,19 +254,20 @@ const EigenvaluesSection = () => (
                 <TweakablesBox width={width}>
                   <p>
                     <Tweakable {...lambda}>
-                      <MathJax.Node inline>x_1 = </MathJax.Node>
-                    </Tweakable>{' '}
-                    <MathJax.Node inline>x_2 = 2</MathJax.Node>
-                  </p>
-                  <p>
-                    <MathJax.Node inline>y_1 = 0</MathJax.Node>{' '}
-                    <Tweakable {...lambda}>
-                      <MathJax.Node inline>y_2 = </MathJax.Node>
+                      <MathJax.Node inline>{'\\lambda = '}</MathJax.Node>
                     </Tweakable>
                   </p>
                   <p>
+                    <MathJax.Node inline>{'x_1 - \\lambda = '}</MathJax.Node>{x1.toFixed(2)}{' '}
+                    <MathJax.Node inline>x_2 = 0</MathJax.Node>
+                  </p>
+                  <p>
+                    <MathJax.Node inline>y_1 = 2</MathJax.Node>{' '}
+                    <MathJax.Node inline>{'y_2 - \\lambda = '}</MathJax.Node>{y2.toFixed(2)}{' '}
+                  </p>
+                  <p>
                     <MathJax.Node inline>
-                      {'\\det \\begin{pmatrix} x_1 & x_2 \\\\ y_1 & y_2\\end{pmatrix}'}
+                      {'\\det \\begin{pmatrix} x_1 - \\lambda & x_2 \\\\ y_1 & y_2 - \\lambda \\end{pmatrix}'}
                     </MathJax.Node> = {((x1 * y2) - (y1 * x2)).toFixed(2)}
                   </p>
                 </TweakablesBox>
