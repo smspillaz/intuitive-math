@@ -61,7 +61,7 @@ const SphereSection = () => (
       wireframe
     />
     <p>
-      If we want to find the volume of a sphere, we must again use a
+      If we want to find the volume of a sphere, we must again use a{' '}
       <Strong>triple integral</Strong> as the input space has three parameters.
     </p>
     <MathJax.Node>
