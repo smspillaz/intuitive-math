@@ -13,7 +13,7 @@ import { Switch, Route } from 'react-router-dom';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 
-import MathJax from 'react-mathjax';
+import CDNMathJaxContext from 'components/CDNMathJaxContext';
 
 import injectReducer from 'utils/injectReducer';
 
@@ -36,7 +36,7 @@ export class GeometryPage extends React.PureComponent { // eslint-disable-line r
           <meta name="description" content="A primer on geometry" />
         </Helmet>
         <div>
-          <MathJax.Context>
+          <CDNMathJaxContext>
             <Switch>
               <Route path={`${this.props.match.path}/planes`} component={PlanesSection} />
               <Route path={`${this.props.match.path}/integrals`} component={IntegralsSection} />
@@ -46,7 +46,7 @@ export class GeometryPage extends React.PureComponent { // eslint-disable-line r
               <Route path={`${this.props.match.path}/cylinders`} component={CylindersSection} />
               <Route path={`${this.props.match.path}/spheres`} component={SpheresSection} />
             </Switch>
-          </MathJax.Context>
+          </CDNMathJaxContext>
         </div>
       </article>
     );
