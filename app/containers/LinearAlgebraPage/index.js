@@ -13,7 +13,7 @@ import { Switch, Route } from 'react-router-dom';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 
-import MathJax from 'react-mathjax';
+import CDNMathJaxContext from 'components/CDNMathJaxContext';
 
 import injectReducer from 'utils/injectReducer';
 
@@ -45,7 +45,7 @@ export class LinearAlgebraPage extends React.PureComponent { // eslint-disable-l
           <meta name="description" content="A primer on linear algebra" />
         </Helmet>
         <div>
-          <MathJax.Context>
+          <CDNMathJaxContext>
             <Switch>
               <Route path={`${this.props.match.path}/spaces`} component={SpacesSection} />
               <Route path={`${this.props.match.path}/vectors`} component={VectorsSection} />
@@ -64,7 +64,7 @@ export class LinearAlgebraPage extends React.PureComponent { // eslint-disable-l
               <Route path={`${this.props.match.path}/eigenvectors`} component={EigenvectorsSection} />
               <Route path={`${this.props.match.path}/eigenbasis`} component={EigenbasisSection} />
             </Switch>
-          </MathJax.Context>
+          </CDNMathJaxContext>
         </div>
       </article>
     );

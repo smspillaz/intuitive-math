@@ -12,6 +12,7 @@ import { createStructuredSelector } from 'reselect';
 
 import styled from 'styled-components';
 
+import CDNMathJaxContext from 'components/CDNMathJaxContext';
 import EditorCloseIcon from '@atlaskit/icon/glyph/editor/close';
 import MathJax from 'react-mathjax';
 import { Vector3 } from 'three';
@@ -44,7 +45,7 @@ export class HomePage extends React.PureComponent {
           <meta name="description" content="Intuitive Math Descriptions" />
         </Helmet>
         <div>
-          <MathJax.Context>
+          <CDNMathJaxContext>
             <Section anchor="intuitive">
               <ImageBanner>
                 <img
@@ -147,7 +148,7 @@ export class HomePage extends React.PureComponent {
                 <a href="https://github.com/smspillaz/intuitive-math">pull request</a>.
               </p>
             </Section>
-          </MathJax.Context>
+          </CDNMathJaxContext>
         </div>
       </article>
     );
