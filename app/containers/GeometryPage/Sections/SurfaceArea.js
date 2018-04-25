@@ -180,7 +180,7 @@ const SurfaceAreaSection = () => (
       vectors making up the lines of each small patch by changing our co-ordinate
       system, in the same way that we define a parametric surface. However, if we
       do that then, it becomes harder to conceptualize what the surface area
-      of the shape will be. The area does not remainin constant, it actually
+      of the shape will be. The area does not remain constant, it actually
       changes as the shape contracts and expands as the orientation of the lines
       change around.
     </p>
