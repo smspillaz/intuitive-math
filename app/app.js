@@ -15,6 +15,8 @@ import { ConnectedRouter } from 'react-router-redux';
 
 import PropTypes from 'prop-types';
 
+import ScrollToTop from 'components/ScrollToTop';
+
 // Import root app
 import App from 'containers/App';
 
@@ -28,7 +30,9 @@ const Root = ({ messages, history, store }) => (
   <Provider store={store}>
     <LanguageProvider messages={messages}>
       <ConnectedRouter history={history}>
-        <App />
+        <ScrollToTop>
+          <App />
+        </ScrollToTop>
       </ConnectedRouter>
     </LanguageProvider>
   </Provider>

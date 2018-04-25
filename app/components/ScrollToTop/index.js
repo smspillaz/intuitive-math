@@ -28,7 +28,7 @@ class ScrollToTop extends React.Component {
 }
 
 ScrollToTop.propTypes = {
-  location: PropTypes.string.isRequired,
+  location: PropTypes.object.isRequired,
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
