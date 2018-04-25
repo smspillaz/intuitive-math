@@ -68,6 +68,12 @@ module.exports = (app, fs, indexHTMLTemplatePath) => {
         // webpack bundle and the non-compiled index.html file when running
         // from babel-node
         fs.readFile(indexHTMLTemplatePath, 'utf8', (err, data) => {
+          if (err) {
+            console.error(err);
+            console.error(err.stack);
+            return;
+          }
+
           // Set a dummy user agent based on the request user agent.
           global.navigator = { userAgent: req.headers['user-agent'] };
           res.send(data.replace(/<\/head>/,
