@@ -93,7 +93,7 @@ const InversesSection = () => (
       adds their powers and the sum of 1 and -1 is zero.
     </p>
     <MathJax.Node>
-      1 \times a^1 \times a^-1 = a^0 = 1
+      {'1 \times a^1 \times a^{-1} = a^0 = 1'}
     </MathJax.Node>
     <p>
       Note that not every number has an inverse. In particular, if what we are multiplying
@@ -114,10 +114,10 @@ const InversesSection = () => (
       <MathJax.Node inline>I</MathJax.Node>
     </p>
     <MathJax.Node>
-      A^-1 \times A = I
+      {'A^{-1} \times A = I'}
     </MathJax.Node>
     <p>
-      So if we can find <MathJax.Node inline>A^-1</MathJax.Node> then by premultiplying a
+      So if we can find <MathJax.Node inline>{'A^{-1}'}</MathJax.Node> then by premultiplying a
       matrix by it, we are effectively dividing by <MathJax.Node inline>A</MathJax.Node>.
     </p>
     <p>
