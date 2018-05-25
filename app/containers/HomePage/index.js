@@ -147,6 +147,13 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                 the code is open source, so you can just submit a{' '}
                 <a href="https://github.com/smspillaz/intuitive-math">pull request</a>.
               </p>
+              <h2>Privacy</h2>
+              <p>
+                I use analytics providers such as Segment, Google Analytics
+                and HotJar to get more information about what content and visualizations
+                users are interacting with. If you are not happy about that, you
+                can <a href="https://www.hotjar.com/legal/compliance/opt-out">opt out</a> of HotJar.
+              </p>
             </Section>
           </CDNMathJaxContext>
         </div>
