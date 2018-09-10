@@ -31,7 +31,8 @@ const EigenbasisSection = () => (
     </p>
     <p>
       As it turns out, converting the transformation to an Eigenbasis,
-      if possible, is an incredibly useful conversion because of what
+      if possible, (a conversion otherwise known as <Strong>Eigendecomposition</Strong>)
+      is an incredibly useful conversion because of what
       happens to the transformation when it is converted in such a way.
     </p>
     <p>
