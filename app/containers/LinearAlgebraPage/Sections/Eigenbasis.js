@@ -78,6 +78,7 @@ const EigenbasisSection = () => (
     <p>
       Consider what happens if we change the basis of our matrix by premultiplying
       by the inverse of the Eigenbasis, then postmultiplying by the Eigenbasis
+      (a transformation also known as an <Strong>Eigendecomposition</Strong>)
     </p>
     <CenteredParagraph>
       <MathJaxMatrix inline matrix={[[0, 0, 1], [1, 0, 0], [0, 1, 1]]} />
