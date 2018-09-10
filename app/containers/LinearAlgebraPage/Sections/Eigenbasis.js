@@ -132,6 +132,65 @@ const EigenbasisSection = () => (
       take just three barrel-shift operations, preceded by and followed by a normal
       matrix multiplication to undo the diagonalization.
     </p>
+    <p>
+      Given a set of eigenvectors and eigenvalues for a matrix, we can
+      re-construct the original matrix. Why is this the case? Notice
+      that when we decomposed the matrix, we did the following:
+    </p>
+    <MathJax.Node>{'AP = PD'}</MathJax.Node>
+    <MathJax.Node>{'P^{-1}AP = D'}</MathJax.Node>
+    <p>
+      Where <MathJax.Node inline>P</MathJax.Node> was our matrix of eigenvectors,
+      <MathJax.Node inline>A</MathJax.Node> was our original matrix that underwent eigendecomposition
+      and <MathJax.Node inline>D</MathJax.Node> is the eigendecomposed matrix.
+    </p>
+    <p>
+      Now, a property of eigenvalues is that multiplying the original matrix
+      <MathJax.Node inline>A</MathJax.Node> by an eigenvector <MathJax.Node inline>V</MathJax.Node>{' '}
+      is the same as multiplying that eigenvector by its eigenvalue{' '}
+      <MathJax.Node inline>{'\\lambda'}</MathJax.Node>. All the multiplication does in both
+      cases is scale the vector.
+    </p>
+    <p>
+      This is the same thing if you multiply by a matrix that only has elements on
+      the diagonal - the effect is scaling, regardless of whether the multiplication
+      was a premultiplication or a postmultiplication. So it stands to reason that if you were
+      to arrange the eigenvalues into a diagonal matrix <MathJax.Node inline>E</MathJax.Node>{' '}
+      with their columns corresponding to each eigenvector in the matrix{' '}
+      <MathJax.Node inline>P</MathJax.Node>, then the following, just like above with{' '}
+      <MathJax.Node inline>{'AP = PD'}</MathJax.Node>, holds true:
+    </p>
+    <MathJax.Node>{'AP = PE'}</MathJax.Node>
+    <p>
+      Lets see if this checks out:
+    </p>
+    <p>
+      <MathJax.Node inline>AP = </MathJax.Node>
+      <MathJaxMatrix inline matrix={[[1, 0, 0], [0, 2, 1], [0, 0, 1]]} />
+      <MathJaxMatrix inline matrix={[[0, 1, 0], [-1, 0, 1], [1, 0, 0]]} />{' = '}
+      <MathJaxMatrix inline matrix={[[0, 1, 0], [-1, 0, 2], [1, 0, 0]]} />
+    </p>
+    <p>
+      <MathJax.Node inline>PE = </MathJax.Node>
+      <MathJaxMatrix inline matrix={[[0, 1, 0], [-1, 0, 1], [1, 0, 0]]} />
+      <MathJaxMatrix inline matrix={[[1, 0, 0], [0, 1, 0], [0, 0, 2]]} />{' = '}
+      <MathJaxMatrix inline matrix={[[0, 1, 0], [-1, 0, 2], [1, 0, 0]]} />
+    </p>
+    <p>
+      Same thing! So now we can do the same thing as before - postmultiply both sides
+      by <MathJax.Node inline>{'P^{-1}'}</MathJax.Node> and it should be the case that
+      we recover <MathJax.Node inline>A</MathJax.Node>, eg:
+    </p>
+    <MathJax.Node>{'APP^{-1} = PEP^{-1}'}</MathJax.Node>
+    <MathJax.Node>{'A = PEP^{-1}'}</MathJax.Node>
+    <p>
+      <MathJax.Node inline>A = </MathJax.Node>
+      <MathJaxMatrix inline matrix={[[0, 1, 0], [-1, 0, 1], [1, 0, 0]]} />
+      <MathJaxMatrix inline matrix={[[1, 0, 0], [0, 1, 0], [0, 0, 2]]} />
+      <MathJaxMatrix inline matrix={[[0, 0, 1], [1, 0, 0], [0, 1, 1]]} />
+      <MathJax.Node inline> = </MathJax.Node>
+      <MathJaxMatrix inline matrix={[[1, 0, 0], [0, 2, 1], [0, 0, 1]]} />
+    </p>
   </Section>
 );
 
