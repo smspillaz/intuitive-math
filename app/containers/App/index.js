@@ -91,6 +91,10 @@ const sections = [
         href: '/linear-algebra/inverses',
       },
       {
+        text: 'Transpose',
+        href: '/linear-algebra/transpose',
+      },
+      {
         text: 'Eigenvalues',
         href: '/linear-algebra/eigenvalues',
       },

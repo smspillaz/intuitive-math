@@ -32,6 +32,7 @@ import RowSpaceSection from './Sections/RowSpace';
 import SpacesSection from './Sections/Spaces';
 import SpansSection from './Sections/Spans';
 import SubspacesSection from './Sections/Subspaces';
+import TransposeSection from './Sections/Transpose';
 import VectorsSection from './Sections/Vectors';
 
 import reducer from './reducer';
@@ -60,6 +61,7 @@ export class LinearAlgebraPage extends React.PureComponent { // eslint-disable-l
               <Route path={`${this.props.match.path}/null-space`} component={NullSpaceSection} />
               <Route path={`${this.props.match.path}/determinant`} component={DeterminantSection} />
               <Route path={`${this.props.match.path}/inverses`} component={InversesSection} />
+              <Route path={`${this.props.match.path}/transpose`} component={TransposeSection} />
               <Route path={`${this.props.match.path}/eigenvalues`} component={EigenvaluesSection} />
               <Route path={`${this.props.match.path}/eigenvectors`} component={EigenvectorsSection} />
               <Route path={`${this.props.match.path}/eigenbasis`} component={EigenbasisSection} />
