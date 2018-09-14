@@ -45,3 +45,6 @@ export const segment1D = (xMin, xMax, segments) => {
     ((i + 1) * segmentXLength) + xMin,
   ]));
 };
+
+export const transpose = (matrix) =>
+  matrix[0].map((_, i) => matrix.map((__, j) => matrix[j][i]));
