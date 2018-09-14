@@ -50,3 +50,59 @@ export const segment1D = (xMin, xMax, segments) => {
 
 export const transpose = (matrix) =>
   matrix[0].map((_, i) => matrix.map((__, j) => matrix[j][i]));
+
+export const matmul = (a, b) => {
+  if (a.length !== b[0].length) {
+    throw new Error(`Cannot multiply matrices of left columns ${a.length} and right rows ${b[0].length}`);
+  }
+
+  const rows = a[0].length;
+  const cols = b.length;
+  const n = a.length;
+
+  const result = new Array(cols).fill(new Array(rows).fill(0));
+
+  // Standard naive matrix multiplication (O(n^3))
+  for (let i = 0; i < rows; ++i) { // eslint-disable-line
+    for (let j = 0; j < cols; ++j) { // eslint-disable-line
+      for (let k = 0; k < n; ++k) { // eslint-disable-line
+        result[j][i] += a[k][j] * b[i][k];
+      }
+    }
+  }
+
+  return result;
+};
+
+export const rotate3D = ([c1, c2, c3], theta) => {
+  const cosTheta = Math.cos(theta);
+  const sinTheta = Math.sin(theta);
+  const oneMinusCosTheta = 1 - cosTheta;
+
+  return [
+    [
+      cosTheta + (c1 * c1 * oneMinusCosTheta),
+      (c1 * c2 * oneMinusCosTheta) + (c3 * sinTheta),
+      (c1 * c3 * oneMinusCosTheta) - (c2 * sinTheta),
+    ],
+    [
+      (c1 * c2 * oneMinusCosTheta) - (c3 * sinTheta),
+      cosTheta + (c2 * c2 * oneMinusCosTheta),
+      (c2 * c3 * oneMinusCosTheta) + (c1 * sinTheta),
+    ],
+    [
+      (c1 * c3 * oneMinusCosTheta) + (c2 * sinTheta),
+      (c2 * c3 * oneMinusCosTheta) - (c1 * sinTheta),
+      cosTheta + (c3 * c3 * oneMinusCosTheta),
+    ],
+  ];
+};
+
+export const scale3D = ([x, y, z], matrix) => {
+  const ret = matrix.map((col) => col.map((elem) => elem));
+  ret[0][0] *= x;
+  ret[1][1] *= y;
+  ret[2][2] *= z;
+
+  return ret;
+};
