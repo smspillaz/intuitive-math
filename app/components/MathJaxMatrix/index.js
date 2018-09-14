@@ -10,8 +10,12 @@ import PropTypes from 'prop-types';
 
 import MathJax from 'react-mathjax';
 
+const renderMatrix = (matrix) => (
+  `\\begin{bmatrix} ${matrix.map((row) => row.join(' & ')).join(' \\\\ ')} \\end{bmatrix}`
+);
+
 const MathJaxMatrix = ({ matrix, ...props }) => (
-  <MathJax.Node {...props}>{`\\begin{bmatrix} ${matrix.map((row) => row.join(' & ')).join(' \\\\ ')} \\end{bmatrix}`}</MathJax.Node>
+  <MathJax.Node {...props}>{renderMatrix(matrix)}</MathJax.Node>
 );
 
 MathJaxMatrix.propTypes = {
@@ -22,3 +26,7 @@ MathJaxMatrix.propTypes = {
 };
 
 export default MathJaxMatrix;
+
+export {
+  renderMatrix,
+};
