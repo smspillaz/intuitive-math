@@ -24,6 +24,7 @@ import EigenbasisSection from './Sections/Eigenbasis';
 import EigenvaluesSection from './Sections/Eigenvalues';
 import EigenvectorsSection from './Sections/Eigenvectors';
 import EROSection from './Sections/ERO';
+import HomogeneousSection from './Sections/Homogeneous';
 import InversesSection from './Sections/Inverses';
 import LinearIndependenceSection from './Sections/LinearIndependence';
 import MatricesSection from './Sections/Matrices';
@@ -65,6 +66,7 @@ export class LinearAlgebraPage extends React.PureComponent { // eslint-disable-l
               <Route path={`${this.props.match.path}/eigenvalues`} component={EigenvaluesSection} />
               <Route path={`${this.props.match.path}/eigenvectors`} component={EigenvectorsSection} />
               <Route path={`${this.props.match.path}/eigenbasis`} component={EigenbasisSection} />
+              <Route path={`${this.props.match.path}/homogeneous`} component={HomogeneousSection} />
             </Switch>
           </CDNMathJaxContext>
         </div>

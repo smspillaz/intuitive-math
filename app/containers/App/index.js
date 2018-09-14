@@ -106,6 +106,10 @@ const sections = [
         text: 'Eigenbasis / Diagonalization',
         href: '/linear-algebra/eigenbasis',
       },
+      {
+        text: 'Homogeneous Co-ordinates',
+        href: '/linear-algebra/homogeneous',
+      },
     ],
   },
   {
