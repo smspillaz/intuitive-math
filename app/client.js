@@ -35,10 +35,10 @@ const initialState = {};
 const store = configureStore(initialState, history);
 const MOUNT_NODE = document.getElementById('app');
 
-const render = (messages) => {
+const render = messages => {
   ReactDOM.render(
     <Root messages={messages} history={history} store={store} />,
-    MOUNT_NODE
+    MOUNT_NODE,
   );
 };
 
