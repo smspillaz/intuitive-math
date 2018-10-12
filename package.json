@@ -123,7 +123,8 @@
     "include": [
       "core-js",
       "lodash",
-      "eventsource-polyfill"
+      "eventsource-polyfill",
+      "babel-polyfill"
     ]
   },
   "jest": {
