@@ -117,7 +117,8 @@
       "webpack-node-externals",
       "webpack",
       "webpack-dev-middleware",
-      "webpack-hot-middleware"
+      "webpack-hot-middleware",
+      "webpack-pwa-manifest"
     ],
     "include": [
       "core-js",
