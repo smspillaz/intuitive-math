@@ -127,11 +127,7 @@ module.exports = options => ({
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
       // Put a define in place if we're server-side rendering
-      ...(options.server ? {
-        __SERVER__: true,
-      } : {
-        __SERVER__: false,
-      }),
+      __SERVER__: !!options.server,
     }),
   ]),
   resolve: {
