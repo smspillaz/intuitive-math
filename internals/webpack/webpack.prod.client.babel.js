@@ -1,5 +1,6 @@
 // Important modules this config uses
 const path = require('path');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const OfflinePlugin = require('offline-plugin');
 const WebpackPwaManifest = require('webpack-pwa-manifest');
@@ -70,6 +71,10 @@ const config = require('./webpack.prod.babel')({
 });
 
 config.plugins.push.apply(config.plugins, [
+  new webpack.ProvidePlugin({
+    // make fetch available
+    fetch: 'exports-loader?self.fetch!whatwg-fetch',
+  }),
   // Minify and optimize the index.html
   new HtmlWebpackPlugin({
     template: 'app/index.html',
