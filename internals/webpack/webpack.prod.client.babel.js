@@ -5,7 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const OfflinePlugin = require('offline-plugin');
 const WebpackPwaManifest = require('webpack-pwa-manifest');
 const { HashedModuleIdsPlugin } = require('webpack');
-const ReactLoadablePlugin = require('react-loadable/webpack').ReactLoadablePlugin;
+const { ReactLoadablePlugin } = require('react-loadable/webpack');
 
 const config = require('./webpack.prod.babel')({
   // In production, we skip all hot-reloading stuff

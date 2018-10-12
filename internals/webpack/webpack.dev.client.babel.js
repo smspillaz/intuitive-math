@@ -9,7 +9,7 @@ const path = require('path');
 const webpack = require('webpack');
 const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ReactLoadablePlugin = require('react-loadable/webpack').ReactLoadablePlugin;
+const { ReactLoadablePlugin } = require('react-loadable/webpack');
 
 // We don't want webpack to try resolving this during builds, use
 // fs.readFileSync instead
