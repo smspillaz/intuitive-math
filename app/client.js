@@ -6,6 +6,7 @@
  */
 
 import FontFaceObserver from 'fontfaceobserver';
+import Loadable from 'react-loadable';
 import history from 'utils/history';
 import 'sanitize.css/sanitize.css';
 
@@ -36,10 +37,12 @@ const store = configureStore(initialState, history);
 const MOUNT_NODE = document.getElementById('app');
 
 const render = messages => {
-  ReactDOM.render(
-    <Root messages={messages} history={history} store={store} />,
-    MOUNT_NODE,
-  );
+  Loadable.preloadReady().then(() => {
+    ReactDOM.render(
+      <Root messages={messages} history={history} store={store} />,
+      MOUNT_NODE,
+    );
+  });
 };
 
 if (module.hot) {
