@@ -74,14 +74,15 @@ module.exports = (app, fs, indexHTMLTemplatePath) => {
           // This should read the compiled index.html file when running from the
           // webpack bundle and the non-compiled index.html file when running
           // from babel-node
-          fs.readFile(indexHTMLTemplatePath, 'utf8', () => {
+          fs.readFile(indexHTMLTemplatePath, 'utf8', (err, data) => {
             // Set a dummy user agent based on the request user agent.
             global.navigator = { userAgent: req.headers['user-agent'] };
-            const postprocessedHTML = `${styleTags}</head>`.replace(
+            const withStyles = data.replace(/<\/head>/, `${styleTags}</head>`);
+            const withBundles = withStyles.replace(
               /<div id="app">\s*<\/div>/,
-              `${bundlesHTML}${stateHydrationHTML}<div id="app">${html}</div>`,
+              `${bundlesHTML}${stateHydrationHTML}`,
             );
-            res.send(postprocessedHTML);
+            res.send(`${withBundles}<div id="app">${html}</div>`);
           });
         },
       );
