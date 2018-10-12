@@ -6,7 +6,7 @@ const path = require('path');
 
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ReactLoadablePlugin = require('react-loadable/webpack').ReactLoadablePlugin;
+const { ReactLoadablePlugin } = require('react-loadable/webpack');
 
 const config = require('./webpack.dev.babel.js')({
   // Add hot reloading in development
