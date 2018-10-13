@@ -33,7 +33,7 @@ module.exports = (app, fs, indexHTMLTemplatePath) => {
     // Should not have gotten here, but if we did, the resource
     // was not found
     if (req.url.startsWith('/static')) {
-      res.status(404);
+      res.status(404).send({ error: 'Not found' });
       return;
     }
 
