@@ -1,4 +1,4 @@
-service: nntree-app
+service: react-boilerplate-app
 provider:
   name: aws
   runtime: nodejs6.10
