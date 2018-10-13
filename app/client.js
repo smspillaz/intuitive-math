@@ -11,8 +11,10 @@ import history from 'utils/history';
 import 'sanitize.css/sanitize.css';
 
 // Load the favicon and the .htaccess file
+/* eslint-disable import/no-webpack-loader-syntax */
 import '!file-loader?name=[name].[ext]!./images/favicon.ico';
 import 'file-loader?name=.htaccess!./.htaccess'; // eslint-disable-line import/extensions
+/* eslint-enable import/no-webpack-loader-syntax */
 
 // Listen for changes to location
 import withLocation from 'components/CaptureLocation';
