@@ -8,7 +8,5 @@ import { fork } from 'redux-saga/effects';
 import githubData from 'containers/HomePage/saga';
 
 export default function* root() {
-  yield [
-    fork(githubData),
-  ];
+  yield [fork(githubData)];
 }
