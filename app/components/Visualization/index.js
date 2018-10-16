@@ -158,14 +158,22 @@ const Centered = styled.div`
 `;
 
 const Box = styled.div`
-  width: ${(props) => props.width}px;
-  height: ${(props) => props.height}px;
+  width: ${props => props.width}px;
+  height: ${props => props.height}px;
   background-color: #000000;
   text-align: center;
   display: inline-block;
 `;
 
-const Visualization = ({ width, height, rotation, position, matrix, children, animationIsRunning = false }) => (
+const Visualization = ({
+  width,
+  height,
+  rotation,
+  position,
+  matrix,
+  children,
+  animationIsRunning = false,
+}) => (
   <Centered>
     {animationIsRunning ? (
       <ThreeJSRenderer
