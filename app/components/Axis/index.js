@@ -4,13 +4,15 @@ import THREE, { Geometry, LineBasicMaterial, Vector3 } from 'three';
 
 import { Group, asSceneElement, constructConstructorlessThreeObject } from 'components/Visualization';
 
-const Line = asSceneElement(
+const ThreeLine = asSceneElement(
   {
     material: PropTypes.object.isRequired,
     geometry: PropTypes.object.isRequired,
   },
   props => constructConstructorlessThreeObject(THREE.Line, props)
 );
+
+import Line from '../Line';
 
 export const Axis = ({ basis, extents, color }) => (
   <Group>
@@ -37,7 +39,7 @@ export const Axis = ({ basis, extents, color }) => (
         const tick = index + Math.trunc(extents[0]);
 
         return (
-          <Line
+          <ThreeLine
             material={new LineBasicMaterial({ color })}
             geometry={(() => {
               const geometry = new Geometry();
