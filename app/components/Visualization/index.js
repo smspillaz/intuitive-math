@@ -150,7 +150,7 @@ export const Group = asSceneElement(
     visible: PropTypes.boolean,
     position: PropTypes.object,
   },
-  props => constructConstructorlessThreeObject(THREE.Group, props)
+  props => constructConstructorlessThreeObject(THREE.Group, props),
 );
 
 const Centered = styled.div`
