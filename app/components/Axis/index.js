@@ -1,41 +1,66 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Vector3 } from 'three';
+import THREE, { Geometry, LineBasicMaterial, Vector3 } from 'three';
+
+import { Group, asSceneElement, constructConstructorlessThreeObject } from 'components/Visualization';
+
+const Line = asSceneElement(
+  {
+    material: PropTypes.object.isRequired,
+    geometry: PropTypes.object.isRequired,
+  },
+  props => constructConstructorlessThreeObject(THREE.Line, props)
+);
 
 export const Axis = ({ basis, extents, color }) => (
-  <group>
-    <line>
-      <geometry
-        vertices={[
-          new Vector3(basis[0] * extents[0],
-                      basis[1] * extents[0],
-                      basis[2] * extents[0]),
-          new Vector3(basis[0] * extents[1],
-                      basis[1] * extents[1],
-                      basis[2] * extents[1]),
-        ]}
-      />
-      <lineBasicMaterial color={color} />
-    </line>
-    {[...Array(Math.trunc(extents[1]) - Math.trunc(extents[0])).keys()].map((index) => {
-      const tick = index + Math.trunc(extents[0]);
-      return (
-        <line>
-          <geometry
-            vertices={[
-              new Vector3((basis[0] * tick) - (0.125 * basis[1]),
-                          (basis[1] * tick) - (0.125 * Math.max(basis[0], basis[2])),
-                          basis[2] * tick),
-              new Vector3((basis[0] * tick) + (0.125 * basis[1]),
-                          (basis[1] * tick) + (0.125 * Math.max(basis[0], basis[2])),
-                          basis[2] * tick),
-            ]}
+  <Group>
+    <Line
+      material={new LineBasicMaterial({ color })}
+      geometry={(() => {
+        const geometry = new Geometry();
+
+        geometry.vertices.push(
+          new Vector3(
+            basis[0] * extents[0],
+            basis[1] * extents[0],
+            basis[2] * extents[0]),
+          new Vector3(
+            basis[0] * extents[1],
+            basis[1] * extents[1],
+            basis[2] * extents[1]
+          ),
+        );
+      })()}
+    />
+    {[...Array(Math.trunc(extents[1]) - Math.trunc(extents[0])).keys()].map(
+      index => {
+        const tick = index + Math.trunc(extents[0]);
+
+        return (
+          <Line
+            material={new LineBasicMaterial({ color })}
+            geometry={(() => {
+              const geometry = new Geometry();
+
+              geometry.vertices.push(
+                new Vector3(
+                  (basis[0] * tick) - (0.125 * basis[1]),
+                  (basis[1] * tick) - (0.125 * Math.max(basis[0], basis[2])),
+                  basis[2] * tick
+                ),
+                new Vector3(
+                  (basis[0] * tick) + (0.125 * basis[1]),
+                  (basis[1] * tick) + (0.125 * Math.max(basis[0], basis[2])),
+                  basis[2] * tick
+                ),
+              );
+              return geometry;
+            })()}
           />
-          <lineBasicMaterial color={color} />
-        </line>
-      );
-    })}
-  </group>
+        );
+      },
+    )}
+  </Group>
 );
 
 Axis.propTypes = {
