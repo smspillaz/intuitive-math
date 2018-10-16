@@ -207,15 +207,18 @@ Visualization.propTypes = {
   children: PropTypes.element,
 };
 
-export const BlankableVisualization = (props) => (
+export const BlankableVisualization = props => (
   <TrackVisibility offset={100}>
-    {({ isVisible }) => <Visualization {...props} animationIsRunning={isVisible} />}
+    {({ isVisible }) => (
+      <Visualization {...props} animationIsRunning={isVisible} />
+    )}
   </TrackVisibility>
 );
 
-const BlankableByContextVisualization = (props, { animationIsRunning = true }) => (
-  <Visualization animationIsRunning={animationIsRunning} {...props} />
-);
+const BlankableByContextVisualization = (
+  props,
+  { animationIsRunning = true },
+) => <Visualization animationIsRunning={animationIsRunning} {...props} />;
 
 BlankableByContextVisualization.contextTypes = {
   animationIsRunning: PropTypes.bool,
