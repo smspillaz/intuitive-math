@@ -191,7 +191,9 @@ const Visualization = ({
           {children}
         </Group>
       </ThreeJSRenderer>
-    ) : (<Box width={width} height={height} />)}
+    ) : (
+      <Box width={width} height={height} />
+    )}
   </Centered>
 );
 
