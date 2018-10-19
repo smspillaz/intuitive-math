@@ -155,8 +155,8 @@
     ]
   },
   "dependencies": {
-    "@atlaskit/page": "^5.0.5",
     "@atlaskit/navigation": "^27.0.4",
+    "@atlaskit/page": "^5.0.5",
     "@atlaskit/theme": "^2.2.9",
     "add-asset-html-webpack-plugin": "2.1.3",
     "add-asset-webpack-plugin": "^0.1.0",
@@ -185,7 +185,7 @@
     "react-hotjar": "^1.0.11",
     "react-intl": "2.4.0",
     "react-loadable": "5.4.0",
-    "react-mathjax": "^0.1.1",
+    "react-mathjax": "^1.0.1",
     "react-media": "^1.6.1",
     "react-metrics": "^2.4.0",
     "react-number-editor": "^4.0.3",
@@ -203,6 +203,7 @@
     "serverless-apigwy-binary": "^0.1.0",
     "serverless-http": "^1.5.2",
     "styled-components": "3.3.2",
+    "three": "^0.97.0",
     "uid": "0.0.2",
     "warning": "4.0.1",
     "webpack": "4.12.0",

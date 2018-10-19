@@ -9209,14 +9209,10 @@ react-loadable@5.4.0:
   dependencies:
     prop-types "^15.5.0"
 
-react-mathjax@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/react-mathjax/-/react-mathjax-0.1.1.tgz#5fc3951773da89d0b5192235b23c06da3ccea152"
+react-mathjax@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/react-mathjax/-/react-mathjax-1.0.1.tgz#a8c282e75d277a201632dfd07edf41edda372b4b"
   dependencies:
-    babel-cli "^6.18.0"
-    babel-core "^6.20.0"
-    babel-preset-es2015 "^6.18.0"
-    babel-preset-react "^6.16.0"
     load-script "^1.0.0"
 
 react-media@^1.6.1:
