@@ -80,9 +80,9 @@ module.exports = (app, fs, indexHTMLTemplatePath) => {
             const withStyles = data.replace(/<\/head>/, `${styleTags}</head>`);
             const withBundles = withStyles.replace(
               /<div id="app">\s*<\/div>/,
-              `${bundlesHTML}${stateHydrationHTML}`,
+              `${bundlesHTML}${stateHydrationHTML}<div id="app">${html}</div>`,
             );
-            res.send(`${withBundles}<div id="app">${html}</div>`);
+            res.send(`${withBundles}`);
           });
         },
       );
