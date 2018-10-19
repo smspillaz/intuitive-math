@@ -1,39 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import THREE, { Geometry, LineBasicMaterial, Vector3 } from 'three';
+import * as THREE from 'three';
+import { Geometry, LineBasicMaterial, Vector3 } from 'three';
 
-import { Group, asSceneElement, constructConstructorlessThreeObject } from 'components/Visualization';
+import { Group, wrapThreeObjectAsComponent } from 'components/Visualization';
+import Line from 'components/Line';
 
-const ThreeLine = asSceneElement(
-  {
+const ThreeLine = wrapThreeObjectAsComponent({
+  propTypes: {
     material: PropTypes.object.isRequired,
     geometry: PropTypes.object.isRequired,
   },
-  props => constructConstructorlessThreeObject(THREE.Line, props)
-);
-
-import Line from '../Line';
+  setters: {},
+  klass: THREE.Line,
+});
 
 export const Axis = ({ basis, extents, color }) => (
   <Group>
-    <Line
-      material={new LineBasicMaterial({ color })}
-      geometry={(() => {
-        const geometry = new Geometry();
-
-        geometry.vertices.push(
-          new Vector3(
-            basis[0] * extents[0],
-            basis[1] * extents[0],
-            basis[2] * extents[0]),
-          new Vector3(
-            basis[0] * extents[1],
-            basis[1] * extents[1],
-            basis[2] * extents[1]
-          ),
-        );
-      })()}
-    />
+    <Line basis={basis} extents={extents} color={color} />
     {[...Array(Math.trunc(extents[1]) - Math.trunc(extents[0])).keys()].map(
       index => {
         const tick = index + Math.trunc(extents[0]);

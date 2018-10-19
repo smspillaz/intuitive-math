@@ -97,17 +97,17 @@ export class HomePage extends React.PureComponent {
                         <TweakablesBox width={width}>
                           <div>
                             <Tweakable {...xPosition}>
-                              <MathJax.Node inline>{'x ='}</MathJax.Node>{' '}
+                              <MathJax.Node inline formula={'x ='} />{' '}
                             </Tweakable>
                           </div>
                           <div>
                             <Tweakable {...yPosition}>
-                              <MathJax.Node inline>{'y ='}</MathJax.Node>{' '}
+                              <MathJax.Node inline formula={'y ='} />{' '}
                             </Tweakable>
                           </div>
                           <div>
                             <Tweakable {...zPosition}>
-                              <MathJax.Node inline>{'z ='}</MathJax.Node>{' '}
+                              <MathJax.Node inline formula={'z ='} />{' '}
                             </Tweakable>
                           </div>
                         </TweakablesBox>

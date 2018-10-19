@@ -19,6 +19,8 @@ class Animation extends React.Component {
 
   static childContextTypes = {
     animationIsRunning: PropTypes.bool,
+    registerOnNewFrameCallback: PropTypes.func,
+    unregisterOnNewFrameCallback: PropTypes.func,
     isVisible: PropTypes.bool,
     stopAnimation: PropTypes.func,
     startAnimation: PropTypes.func,
@@ -33,11 +35,15 @@ class Animation extends React.Component {
     };
     this.frameId = -1;
     this.animationCountdownId = -1;
+    this.frameCallbackRegistrationCounter = 0;
+    this.frameCallbacks = {};
   }
 
   getChildContext() {
     return {
       animationIsRunning: this.state.animating,
+      registerOnNewFrameCallback: this.registerOnNewFrameCallback,
+      unregisterOnNewFrameCallback: this.unregisterOnNewFrameCallback,
       isVisible: this.props.isVisible,
       startAnimation: this.animate,
       stopAnimation: this.stop,
@@ -57,10 +63,23 @@ class Animation extends React.Component {
     this.stop();
   }
 
+  registerOnNewFrameCallback = callback => {
+    this.frameCallbacks[this.frameCallbackRegistrationCounter] = callback;
+    /* eslint-disable-next-line */
+    return this.frameCallbackRegistrationCounter++;
+  };
+
+  unregisterOnNewFrameCallback = location => {
+    delete this.frameCallbacks[location];
+  };
+
   animate = () => {
     if (this.frameId === -1) {
       const updater = () => {
         this.setState(this.props.update(this.state));
+        Object.keys(this.frameCallbacks).forEach(key =>
+          this.frameCallbacks[key](),
+        );
         this.frameId = requestAnimationFrame(updater);
       };
       this.frameId = requestAnimationFrame(updater);
@@ -72,7 +91,7 @@ class Animation extends React.Component {
     if (this.context.startAnimation) {
       this.context.startAnimation();
     }
-  }
+  };
 
   startAnimationCountdown = () => {
     if (this.animationCountdownId === -1) {

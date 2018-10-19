@@ -1,16 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import THREE, { Geometry, LineBasicMaterial, Vector3 } from 'three';
+import * as THREE from 'three';
+import { Geometry, LineBasicMaterial, Vector3 } from 'three';
 
-import { Group, asSceneElement, constructConstructorlessThreeObject } from 'components/Visualization';
+import { Group, wrapThreeObjectAsComponent } from 'components/Visualization';
 
-const ThreeLine = asSceneElement(
-  {
+const ThreeLine = wrapThreeObjectAsComponent({
+  propTypes: {
     material: PropTypes.object.isRequired,
     geometry: PropTypes.object.isRequired,
   },
-  props => constructConstructorlessThreeObject(THREE.Line, props)
-);
+  setters: {},
+  klass: THREE.Line,
+});
 
 const Line = ({ basis, extents, color, offset = [0, 0, 0] }) => (
   <Group>
@@ -30,6 +32,7 @@ const Line = ({ basis, extents, color, offset = [0, 0, 0] }) => (
             basis[2] * extents[1] + offset[2]
           ),
         );
+        return geometry;
       })()}
     />
   </Group>

@@ -9,6 +9,12 @@ import CenteredParagraph from 'components/CenteredParagraph';
 import Spinner from 'components/MonkeyPatchedSpinKit';
 import Section from 'components/Section';
 
+console.log('Entered loadable js');
+
+import('./index').then((imported) => {
+  console.log('Did import of index');
+})
+
 export default Loadable({
   loader: () => import('./index'),
   loading: () => (

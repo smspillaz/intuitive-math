@@ -13,12 +13,12 @@ import MathJax from 'react-mathjax';
 const MATHJAX_SCRIPT = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
 
 const CDNMathJaxContext = ({ children, ...props }) => (
-  <MathJax.Context
+  <MathJax.Provider
     script={MATHJAX_SCRIPT}
     {...props}
   >
     {children}
-  </MathJax.Context>
+  </MathJax.Provider>
 );
 
 CDNMathJaxContext.propTypes = {

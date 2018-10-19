@@ -4,7 +4,8 @@ import { exposeMetrics } from 'react-metrics';
 
 import styled from 'styled-components';
 
-import THREE, {
+import * as THREE from 'three';
+import {
   PerspectiveCamera,
   Scene,
   Vector3,
@@ -25,36 +26,48 @@ export class ThreeJSRenderer extends React.Component {
     width: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired,
     camera: PropTypes.object.isRequired,
-    children: PropTypes.children,
-  };
-
-  static childContextTypes = {
-    renderer: PropTypes.shape({
-      width: PropTypes.number.isRequired,
-      height: PropTypes.number.isRequired,
-      renderer: PropTypes.number.isRequired,
-      scene: PropTypes.object.isRequired,
-      camera: PropTypes.object.isRequired,
-    }).isRequired,
+    registerOnNewFrameCallback: PropTypes.func,
+    unregisterOnNewFrameCallback: PropTypes.func,
+    children: PropTypes.oneOfType([
+      PropTypes.node,
+      PropTypes.arrayOf(PropTypes.node),
+    ]),
   };
 
   constructor(props) {
     super(props);
 
     this.containerRef = null;
-    this.renderer = new WebGLRenderer({ antialias: true });
-    this.renderer.setSize(this.width, this.height);
+    this.renderer = null;
     this.scene = new Scene();
   }
 
   setContainerRef = ref => {
     this.containerRef = ref;
-    this.containerRef.appendChild(this.renderer.domElement);
+
+    if (this.containerRef) {
+      this.renderer = new WebGLRenderer({
+        antialias: true,
+        canvas: this.containerRef,
+      });
+      this.renderer.setSize(this.props.width, this.props.height);
+      this.frameCallbackRegistration = this.props.registerOnNewFrameCallback(
+        this.repaint,
+      );
+    } else {
+      this.renderer = null;
+      this.containerRef = null;
+      this.props.unregisterOnNewFrameCallback(this.frameCallbackRegistration);
+    }
   };
 
-  updateRendererSize = memoize((width, height) =>
-    this.renderer.setSize(width, height),
-  );
+  repaint = () => this.renderer.render(this.scene, this.props.camera);
+
+  updateRendererSize = memoize((width, height) => {
+    if (this.renderer !== null) {
+      this.renderer.setSize(width, height);
+    }
+  });
 
   render() {
     this.updateRendererSize(this.props.width, this.props.height);
@@ -67,48 +80,73 @@ export class ThreeJSRenderer extends React.Component {
         }}
       >
         <ObjectGroupContext.Provider value={this.scene}>
-          {this.props.children}
+          <canvas ref={this.setContainerRef}>{this.props.children}</canvas>
         </ObjectGroupContext.Provider>
       </SceneContext.Provider>
     );
   }
 }
 
-export const asSceneElement = (propTypeSpecs, constructWithProps) => {
+const THREE_IRRELEVANT_PROPS = new Set(['children']);
+
+const asSceneElement = (propTypeSpecs, constructWithProps, setters) => {
   /* eslint-disable-next-line */
   class SceneElement extends React.Component {
     static propTypes = {
       parent: PropTypes.object.isRequired,
-      children: PropTypes.children,
+      children: PropTypes.oneOfType([
+        PropTypes.node,
+        PropTypes.arrayOf(PropTypes.node),
+      ]),
       ...propTypeSpecs,
     };
+
+    constructor(props) {
+      super(props);
+
+      this.propSetters = Object.keys(propTypeSpecs)
+        .filter(k => !THREE_IRRELEVANT_PROPS.has(k))
+        .reduce(
+          (obj, k) => ({
+            [k]: memoize(value => {
+              console.log(`Seting ${k}:${value}`);
+              if (Object.keys(setters).indexOf(k) !== -1) {
+                setters[k](this.object[k], value);
+              } else {
+                this.object[k] = value;
+              }
+
+              return value;
+            }),
+            ...obj,
+          }),
+          {},
+        );
+      this.object = null;
+    }
+
     componentDidMount() {
       /* On mount, we add ourselves to the scene */
       this.object = constructWithProps(this.props);
-      this.propSetters = Object.keys(propTypeSpecs).reduce(
-        (k, obj) => ({
-          k: memoize(value => {
-            this.object[k] = value;
-          }),
-          ...obj,
-        }),
-        {},
-      );
-      this.props.scene.add(this.object);
+      this.props.parent.add(this.object);
     }
 
     componentWillUnmount() {
       /* On unmount, remove ourselves from the scene */
-      this.props.scene.remove(this.object);
+      this.props.parent.remove(this.object);
     }
 
     render() {
       /* Update all the properties */
       Object.keys(this.props).forEach(key => {
-        if (Object.keys(this.propTypeSpecs).indexOf(key) !== -1) {
+        if (
+          Object.keys(propTypeSpecs).indexOf(key) !== -1 &&
+          this.object !== null
+        ) {
           /* Set properties on the underlying
-           * Three object if required */
-          this.propSetters(key, this.props[key]);
+           * Three object if required and the Three
+           * object has already been constructed */
+          this.propSetters[key](this.props[key]);
         }
       });
 
@@ -128,33 +166,63 @@ export const asSceneElement = (propTypeSpecs, constructWithProps) => {
   );
 
   Component.propTypes = {
-    children: PropTypes.any,
+    children: PropTypes.oneOfType([
+      PropTypes.node,
+      PropTypes.arrayOf(PropTypes.node),
+    ]),
     ...propTypeSpecs,
   };
 
   return Component;
 };
 
-export const constructConstructorlessThreeObject = (ThreeClass, props) => {
+export const constructConstructorlessThreeObject = (ThreeClass, props, setters) => {
   const object = new ThreeClass();
 
-  Object.keys.filter(k => props[k] !== undefined).forEach(k => {
-    object[k] = props[k];
-  });
+  Object.keys(props)
+    .filter(k => props[k] !== undefined && !THREE_IRRELEVANT_PROPS.has(k))
+    .forEach(k => {
+      if (Object.keys(setters).indexOf(k) !== -1) {
+        setters[k](object[k], props[k]);
+      } else {
+        object[k] = props[k];
+      }
+    });
 
   return object;
 };
 
-export const Group = asSceneElement(
-  {
+export const wrapThreeObjectAsComponent = ({ propTypes, setters, klass }) =>
+  asSceneElement(
+    propTypes,
+    props => constructConstructorlessThreeObject(klass, props, setters),
+    setters,
+  );
+
+export const Group = wrapThreeObjectAsComponent({
+  propTypes: {
     matrix: PropTypes.object,
     rotation: PropTypes.object,
     scale: PropTypes.object,
-    visible: PropTypes.boolean,
+    visible: PropTypes.bool,
     position: PropTypes.object,
   },
-  props => constructConstructorlessThreeObject(THREE.Group, props),
-);
+  setters: {
+    rotation: (rotation, value) => {
+      rotation.set(value.x, value.y, value.x);
+    },
+    scale: (scale, value) => {
+      scale.set(value.x, value.y, value.z);
+    },
+    matrix: (matrix, value) => {
+      matrix.copy(value);
+    },
+    position: (position, value) => {
+      position.set(value.x, value.y, value.z);
+    },
+  },
+  klass: THREE.Group,
+});
 
 const CenteredParent = styled.div`
   text-align: center;
@@ -351,19 +419,32 @@ BlankBox.propTypes = {
   opacity: PropTypes.number,
 };
 
-const PlayableVisualization = ({ width, height, playable, curvedBottomCorners, children, ...props }) => (
+const PlayableVisualization = ({
+  width,
+  height,
+  playable,
+  curvedBottomCorners,
+  position,
+  rotation,
+  matrix,
+  children,
+  ...props
+}) => (
   <div>
     <OverlayParent width={width}>
       <ThreeJSRenderer
         camera={(() => {
           const camera = new PerspectiveCamera(75, width / height, 0.1, 1000);
-          camera.position = position || new Vector3(0, 0, 5);
+          const newPosition = position || new Vector3(0, 0, 5);
+          camera.position.set(newPosition.x, newPosition.y, newPosition.z);
+          return camera;
         })()}
         width={width}
         height={height}
         canvasStyle={{
           borderRadius: curvedBottomCorners ? '1em' : '1em 1em 0 0',
         }}
+        {...props}
       >
         <Group
           {...(rotation ? { rotation } : {})}
@@ -384,6 +465,9 @@ PlayableVisualization.propTypes = {
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
   curvedBottomCorners: PropTypes.bool.isRequired,
+  position: PropTypes.object,
+  rotation: PropTypes.object,
+  matrix: PropTypes.object,
   children: PropTypes.oneOfType([
     PropTypes.element,
     PropTypes.arrayOf(PropTypes.element),
@@ -699,10 +783,18 @@ BlankableVisualization.propTypes = {
 
 const BlankableByContextVisualization = (
   props,
-  { animationIsRunning = false, withinAnimation = false, isVisible = true },
+  {
+    animationIsRunning = false,
+    registerOnNewFrameCallback = null,
+    unregisterOnNewFrameCallback = null,
+    withinAnimation = false,
+    isVisible = true,
+  },
 ) => (
   <ExposedMetricsVisualization
     animationIsRunning={animationIsRunning}
+    registerOnNewFrameCallback={registerOnNewFrameCallback}
+    unregisterOnNewFrameCallback={unregisterOnNewFrameCallback}
     isAnimated={withinAnimation}
     isVisible={isVisible}
     {...props}
@@ -711,6 +803,8 @@ const BlankableByContextVisualization = (
 
 BlankableByContextVisualization.contextTypes = {
   animationIsRunning: PropTypes.bool,
+  registerOnNewFrameCallback: PropTypes.func,
+  unregisterOnNewFrameCallback: PropTypes.func,
   isVisible: PropTypes.bool,
   withinAnimation: PropTypes.bool,
 };
