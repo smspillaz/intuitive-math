@@ -5,6 +5,9 @@
  * code.
  */
 
+import React from 'react';
+import ReactDOM from 'react-dom';
+
 import FontFaceObserver from 'fontfaceobserver';
 import Loadable from 'react-loadable';
 import history from 'utils/history';
@@ -19,8 +22,7 @@ import 'file-loader?name=.htaccess!./.htaccess'; // eslint-disable-line import/e
 // Listen for changes to location
 import withLocation from 'components/CaptureLocation';
 
-// Import history creator and store configure func
-import createHistory from 'history/createBrowserHistory';
+// Import store configure func
 import configureStore from './configureStore';
 
 // Import root containers
@@ -44,7 +46,6 @@ openSansObserver.load().then(() => {
 // Create redux store with history and hydrate state from server, if available
 // eslint-disable-next-line no-underscore-dangle
 const initialState = window.__SERVER_STATE || {};
-const history = createHistory();
 const store = configureStore(initialState, history);
 const MOUNT_NODE = document.getElementById('app');
 
