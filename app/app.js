@@ -24,11 +24,15 @@ import LanguageProvider from 'containers/LanguageProvider';
 // Import CSS reset and Global Styles
 import './global-styles';
 
+import { HistoryContext } from './utils/history';
+
 const Root = ({ messages, history, store }) => (
   <Provider store={store}>
     <LanguageProvider messages={messages}>
       <ConnectedRouter history={history}>
-        <App />
+        <HistoryContext.Provider value={history}>
+          <App />
+        </HistoryContext.Provider>
       </ConnectedRouter>
     </LanguageProvider>
   </Provider>
