@@ -4,6 +4,7 @@
 
 import { memoryHistory } from 'react-router-dom';
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
 import renderer from 'react-test-renderer';
 import { render } from '@testing-library/react';
@@ -12,10 +13,24 @@ import configureStore from '../../configureStore';
 import injectReducer, { useInjectReducer } from '../injectReducer';
 import * as reducerInjectors from '../reducerInjectors';
 
+import { HistoryContext } from '../history';
+
 // Fixtures
 const Component = () => null;
 
 const reducer = s => s;
+
+const ProvideHistoryAndStore = ({ history, store, children }) => (
+  <HistoryContext.Provider value={history}>
+    <Provider store={store}>{children}</Provider>
+  </HistoryContext.Provider>
+);
+
+ProvideHistoryAndStore.propTypes = {
+  history: PropTypes.object,
+  store: PropTypes.object,
+  children: PropTypes.node,
+};
 
 describe('injectReducer decorator', () => {
   let store;
@@ -37,9 +52,9 @@ describe('injectReducer decorator', () => {
 
   it('should inject a given reducer', () => {
     renderer.create(
-      <Provider store={store}>
+      <ProvideHistoryAndStore history={memoryHistory} store={store}>
         <ComponentWithReducer />
-      </Provider>,
+      </ProvideHistoryAndStore>,
     );
 
     expect(injectors.injectReducer).toHaveBeenCalledTimes(1);
@@ -56,13 +71,13 @@ describe('injectReducer decorator', () => {
   it('should propagate props', () => {
     const props = { testProp: 'test' };
     const renderedComponent = renderer.create(
-      <Provider store={store}>
+      <ProvideHistoryAndStore history={memoryHistory} store={store}>
         <ComponentWithReducer {...props} />
-      </Provider>,
+      </ProvideHistoryAndStore>,
     );
     const {
       props: { children },
-    } = renderedComponent.getInstance();
+    } = renderedComponent.root;
 
     expect(children.props).toEqual(props);
   });
@@ -87,9 +102,9 @@ describe('useInjectReducer hook', () => {
 
   it('should inject a given reducer', () => {
     render(
-      <Provider store={store}>
+      <ProvideHistoryAndStore history={memoryHistory} store={store}>
         <ComponentWithReducer />
-      </Provider>,
+      </ProvideHistoryAndStore>,
     );
 
     expect(injectors.injectReducer).toHaveBeenCalledTimes(1);

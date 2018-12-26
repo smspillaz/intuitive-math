@@ -31,7 +31,7 @@ describe('reducer injectors', () => {
     });
 
     it('should return injectors', () => {
-      expect(getInjectors(store)).toEqual(
+      expect(getInjectors(store, memoryHistory)).toEqual(
         expect.objectContaining({
           injectReducer: expect.any(Function),
         }),
@@ -41,18 +41,18 @@ describe('reducer injectors', () => {
     it('should throw if passed invalid store shape', () => {
       Reflect.deleteProperty(store, 'dispatch');
 
-      expect(() => getInjectors(store)).toThrow();
+      expect(() => getInjectors(store, memoryHistory)).toThrow();
     });
   });
 
   describe('injectReducer helper', () => {
     beforeEach(() => {
       store = configureStore({}, memoryHistory);
-      injectReducer = injectReducerFactory(store, true);
+      injectReducer = injectReducerFactory(store, memoryHistory, true);
     });
 
     it('should check a store if the second argument is falsy', () => {
-      const inject = injectReducerFactory({});
+      const inject = injectReducerFactory({}, memoryHistory);
 
       expect(() => inject('test', reducer)).toThrow();
     });

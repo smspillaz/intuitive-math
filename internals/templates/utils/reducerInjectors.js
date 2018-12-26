@@ -4,7 +4,7 @@ import { isEmpty, isFunction, isString } from 'lodash';
 import checkStore from './checkStore';
 import createReducer from '../reducers';
 
-export function injectReducerFactory(store, isValid) {
+export function injectReducerFactory(store, history, isValid) {
   return function injectReducer(key, reducer) {
     if (!isValid) checkStore(store);
 
@@ -21,14 +21,14 @@ export function injectReducerFactory(store, isValid) {
       return;
 
     store.injectedReducers[key] = reducer; // eslint-disable-line no-param-reassign
-    store.replaceReducer(createReducer(store.injectedReducers));
+    store.replaceReducer(createReducer(store.injectedReducers, history));
   };
 }
 
-export default function getInjectors(store) {
+export default function getInjectors(store, history) {
   checkStore(store);
 
   return {
-    injectReducer: injectReducerFactory(store, true),
+    injectReducer: injectReducerFactory(store, history, true),
   };
 }

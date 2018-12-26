@@ -1,8 +1,8 @@
 import React from 'react';
-import hoistNonReactStatics from 'hoist-non-react-statics';
 import { useStore, ReactReduxContext } from 'react-redux';
 
 import getInjectors from './reducerInjectors';
+import { HistoryContext } from './history';
 
 /**
  * Dynamically injects a reducer
@@ -12,34 +12,32 @@ import getInjectors from './reducerInjectors';
  *
  */
 export default ({ key, reducer }) => WrappedComponent => {
-  class ReducerInjector extends React.Component {
-    static WrappedComponent = WrappedComponent;
+  const ReducerInjector = props => {
+    const store = React.useContext(ReactReduxContext);
+    const history = React.useContext(HistoryContext);
+    const [injectedReducer, setInjectedReducer] = React.useState(false);
 
-    static contextType = ReactReduxContext;
-
-    static displayName = `withReducer(${WrappedComponent.displayName ||
-      WrappedComponent.name ||
-      'Component'})`;
-
-    constructor(props, context) {
-      super(props, context);
-
-      getInjectors(context.store).injectReducer(key, reducer);
+    if (!injectedReducer) {
+      getInjectors(store, history).injectReducer(key, reducer);
+      setInjectedReducer(true);
     }
 
-    render() {
-      return <WrappedComponent {...this.props} />;
-    }
-  }
+    return <WrappedComponent {...props} />;
+  };
 
-  return hoistNonReactStatics(ReducerInjector, WrappedComponent);
+  ReducerInjector.displayName = `withReducer(${WrappedComponent.displayName ||
+    WrappedComponent.name ||
+    'Component'})`;
+
+  return ReducerInjector;
 };
 
 const useInjectReducer = ({ key, reducer }) => {
   const store = useStore();
+  const history = React.useContext(HistoryContext);
 
   React.useEffect(() => {
-    getInjectors(store).injectReducer(key, reducer);
+    getInjectors(store, history).injectReducer(key, reducer);
   }, []);
 };
 
