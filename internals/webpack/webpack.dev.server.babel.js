@@ -5,7 +5,7 @@
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
 
-module.exports = require('./webpack.dev.babel.js')({
+module.exports = require('./webpack.dev.babel')({
   entry: [path.join(process.cwd(), 'server/index.js')],
 
   externals: [nodeExternals()],
