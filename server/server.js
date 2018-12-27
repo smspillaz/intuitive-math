@@ -2,8 +2,8 @@
 
 const express = require('express');
 
-const setup = require('./middlewares/frontendMiddleware');
 const { resolve } = require('path');
+const setup = require('./middlewares/frontendMiddleware');
 const app = express();
 
 // If you need a backend, e.g. an API, add your custom backend-specific middleware here
