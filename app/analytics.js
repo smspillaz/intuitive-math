@@ -12,9 +12,11 @@ class SegmentAnalyticsApi {
   constructor() {
     window.analytics.load(SEGMENT_CLIENT_ID);
   }
+
   pageView(category, name, props, options) {
     window.analytics.page(category, name, props, options);
   }
+
   track(event, props) {
     window.analytics.track(event, props);
   }
