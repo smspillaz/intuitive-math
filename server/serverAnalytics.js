@@ -14,9 +14,11 @@ class SegmentAnalyticsApi {
   constructor() {
     this.analytics = new Analytics(SEGMENT_CLIENT_ID);
   }
+
   pageView(category, name, props, options) {
     this.analytics.page(category, name, props, options);
   }
+
   track(event, props) {
     this.analytics.track(event, props);
   }
