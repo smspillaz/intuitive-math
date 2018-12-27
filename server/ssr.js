@@ -9,8 +9,12 @@ const physicalFS = require('fs');
 // Memory history
 const createMemoryHistory = require('history/createMemoryHistory').default;
 
-// Server-side metrics
-const analytics = require('./serverAnalytics').default;
+// Server rendering for styled-components
+const { ServerStyleSheet } = require('styled-components');
+
+// Server rendering for react-loadable
+const Loadable = require('react-loadable');
+const { getBundles } = require('react-loadable/webpack');
 
 // Import root containers
 const Root = require('../app/app').default;
@@ -18,12 +22,8 @@ const messages = require('../app/i18n').translationMessages;
 const configureStore = require('../app/configureStore').default;
 const sagas = require('../app/sagas').default;
 
-// Server rendering for styled-components
-const { ServerStyleSheet } = require('styled-components');
-
-// Server rendering for react-loadable
-const Loadable = require('react-loadable');
-const { getBundles } = require('react-loadable/webpack');
+// Server-side metrics
+const analytics = require('./serverAnalytics').default;
 
 // Wrap root container to get some analytics
 const AnalyticsRoot = analytics(Root);
