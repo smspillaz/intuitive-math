@@ -24,8 +24,8 @@ const EigenbasisSection = () => (
   <Section title="Eigenbasis and Diagonalization" anchor="eigenbasis">
     <p>
       Given that we know that a transformation can have up to
-      <MathJax.Node inline>n</MathJax.Node> Eigenvectors, where
-      <MathJax.Node inline>n</MathJax.Node> is the number of rows, what
+      {' '}<MathJax.Node inline>n</MathJax.Node> Eigenvectors, where
+      {' '}<MathJax.Node inline>n</MathJax.Node> is the number of rows, what
       happens if we use the Eigenvectors as a <Strong>change of basis</Strong>,
       by multiplying the transformation by the matrix of the Eigenvectors?
     </p>
@@ -38,7 +38,7 @@ const EigenbasisSection = () => (
     <p>
       Take for example, the matrix <MathJaxMatrix inline matrix={[[1, 0, 0], [0, 2, 1], [0, 0, 1]]} />. This
       matrix scales by a factor of 2 along the y-axis, shears along the
-      <MathJax.Node inline>xz</MathJax.Node> axis by a factor of 1.
+      {' '}<MathJax.Node inline>xz</MathJax.Node> axis by a factor of 1.
     </p>
     <TweenedAffineTransformCube
       start={[[1, 0, 0], [0, 1, 0], [0, 0, 1]]}
@@ -46,7 +46,7 @@ const EigenbasisSection = () => (
       title="Matrix scaling on y axis and shearing on xz axis"
     />
     <p>
-      This transformation has Eigenvalues <MathJax.Node inline>\lambda = 2</MathJax.Node>
+      This transformation has Eigenvalues <MathJax.Node inline>\lambda = 2</MathJax.Node>{' '}
       and <MathJax.Node inline>\lambda = 1</MathJax.Node> with algebraic multiplicity
       2.
     </p>
@@ -120,7 +120,7 @@ const EigenbasisSection = () => (
       to the matrix in its diagonalized form, it is the same as applying
       a matrix-vector optimization. Computer Scientists will recognize
       this as a huge performance win, since an <MathJax.Node inline>O(N^2)</MathJax.Node>
-      operation just became <MathJax.Node inline>O(N)</MathJax.Node>. Say
+      {' '}operation just became <MathJax.Node inline>O(N)</MathJax.Node>. Say
       for example we wanted to calcalculate the 16th power of
       the matrix:
     </p>
@@ -140,13 +140,13 @@ const EigenbasisSection = () => (
     <MathJax.Node>{'AP = PD'}</MathJax.Node>
     <MathJax.Node>{'P^{-1}AP = D'}</MathJax.Node>
     <p>
-      Where <MathJax.Node inline>P</MathJax.Node> was our matrix of eigenvectors,
+      Where <MathJax.Node inline>P</MathJax.Node> was our matrix of eigenvectors,{' '}
       <MathJax.Node inline>A</MathJax.Node> was our original matrix that underwent eigendecomposition
       and <MathJax.Node inline>D</MathJax.Node> is the eigendecomposed matrix.
     </p>
     <p>
       Now, a property of eigenvalues is that multiplying the original matrix
-      <MathJax.Node inline>A</MathJax.Node> by an eigenvector <MathJax.Node inline>V</MathJax.Node>{' '}
+      {' '}<MathJax.Node inline>A</MathJax.Node> by an eigenvector <MathJax.Node inline>V</MathJax.Node>{' '}
       is the same as multiplying that eigenvector by its eigenvalue{' '}
       <MathJax.Node inline>{'\\lambda'}</MathJax.Node>. All the multiplication does in both
       cases is scale the vector.
