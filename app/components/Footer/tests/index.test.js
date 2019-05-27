@@ -2,25 +2,30 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { IntlProvider } from 'react-intl';
 import { Provider } from 'react-redux';
-import { browserHistory } from 'react-router-dom';
+import { createMemoryHistory } from 'history';
 
 import Footer from '../index';
 import configureStore from '../../../configureStore';
+import { HistoryContext } from '../../../utils/history';
 
 describe('<Footer />', () => {
   let store;
+  let memoryHistory;
 
   beforeAll(() => {
-    store = configureStore({}, browserHistory);
+    memoryHistory = createMemoryHistory();
+    store = configureStore({}, memoryHistory);
   });
 
   it('should render and match the snapshot', () => {
     const renderedComponent = renderer
       .create(
         <Provider store={store}>
-          <IntlProvider locale="en">
-            <Footer />
-          </IntlProvider>
+          <HistoryContext.Provider>
+            <IntlProvider locale="en">
+              <Footer />
+            </IntlProvider>
+          </HistoryContext.Provider>
         </Provider>,
       )
       .toJSON();

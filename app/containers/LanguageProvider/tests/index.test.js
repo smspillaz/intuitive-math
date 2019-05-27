@@ -2,8 +2,9 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 import { Provider } from 'react-redux';
-import { browserHistory } from 'react-router-dom';
+import { createMemoryHistory } from 'history';
 
+import { HistoryContext } from '../../../utils/history';
 import LanguageProvider from '../index';
 import configureStore from '../../../configureStore';
 
@@ -18,32 +19,38 @@ const messages = defineMessages({
 });
 
 describe('<LanguageProvider />', () => {
+  let memoryHistory;
   let store;
 
   beforeEach(() => {
-    store = configureStore({}, browserHistory);
+    memoryHistory = createMemoryHistory();
+    store = configureStore({}, memoryHistory);
   });
 
   it('should render its children', () => {
     const text = 'Test';
     const children = <h1>{text}</h1>;
     const { queryByText } = render(
-      <Provider store={store}>
-        <LanguageProvider messages={messages} locale="en">
-          {children}
-        </LanguageProvider>
-      </Provider>,
+      <HistoryContext.Provider value={memoryHistory}>
+        <Provider store={store}>
+          <LanguageProvider messages={messages} locale="en">
+            {children}
+          </LanguageProvider>
+        </Provider>
+      </HistoryContext.Provider>,
     );
     expect(queryByText(text)).toBeInTheDocument();
   });
 
   it('should render the default language messages', () => {
     const { queryByText } = render(
-      <Provider store={store}>
-        <LanguageProvider messages={translationMessages}>
-          <FormattedMessage {...messages.someMessage} />
-        </LanguageProvider>
-      </Provider>,
+      <HistoryContext.Provider>
+        <Provider store={store}>
+          <LanguageProvider messages={translationMessages}>
+            <FormattedMessage {...messages.someMessage} />
+          </LanguageProvider>
+        </Provider>
+      </HistoryContext.Provider>,
     );
     expect(
       queryByText(messages.someMessage.defaultMessage),

@@ -3,7 +3,7 @@
  */
 
 import produce from 'immer';
-import { memoryHistory } from 'react-router-dom';
+import { createMemoryHistory } from 'history';
 import identity from 'lodash/identity';
 
 import configureStore from '../../configureStore';
@@ -22,11 +22,13 @@ const reducer = produce((draft, action) => {
 }, initialState);
 
 describe('reducer injectors', () => {
+  let memoryHistory;
   let store;
   let injectReducer;
 
   describe('getInjectors', () => {
     beforeEach(() => {
+      memoryHistory = createMemoryHistory();
       store = configureStore({}, memoryHistory);
     });
 
@@ -47,6 +49,7 @@ describe('reducer injectors', () => {
 
   describe('injectReducer helper', () => {
     beforeEach(() => {
+      memoryHistory = createMemoryHistory();
       store = configureStore({}, memoryHistory);
       injectReducer = injectReducerFactory(store, memoryHistory, true);
     });

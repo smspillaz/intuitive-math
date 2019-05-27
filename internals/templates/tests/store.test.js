@@ -2,14 +2,16 @@
  * Test store addons
  */
 
-import { browserHistory } from 'react-router';
+import { createMemoryHistory } from 'history';
 import configureStore from '../configureStore';
 
 describe('configureStore', () => {
+  let memoryHistory;
   let store;
 
   beforeAll(() => {
-    store = configureStore({}, browserHistory);
+    memoryHistory = createMemoryHistory();
+    store = configureStore({}, memoryHistory);
   });
 
   describe('injectedReducers', () => {

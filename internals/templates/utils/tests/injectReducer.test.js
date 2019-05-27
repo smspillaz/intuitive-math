@@ -2,7 +2,7 @@
  * Test injectors
  */
 
-import { memoryHistory } from 'react-router-dom';
+import { createMemoryHistory } from 'history';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
@@ -33,6 +33,7 @@ ProvideHistoryAndStore.propTypes = {
 };
 
 describe('injectReducer decorator', () => {
+  let memoryHistory;
   let store;
   let injectors;
   let ComponentWithReducer;
@@ -42,6 +43,7 @@ describe('injectReducer decorator', () => {
   });
 
   beforeEach(() => {
+    memoryHistory = createMemoryHistory();
     store = configureStore({}, memoryHistory);
     injectors = {
       injectReducer: jest.fn(),
@@ -85,6 +87,7 @@ describe('injectReducer decorator', () => {
 
 describe('useInjectReducer hook', () => {
   let store;
+  let memoryHistory;
   let injectors;
   let ComponentWithReducer;
 
@@ -93,6 +96,7 @@ describe('useInjectReducer hook', () => {
       injectReducer: jest.fn(),
     };
     reducerInjectors.default = jest.fn().mockImplementation(() => injectors);
+    memoryHistory = createMemoryHistory();
     store = configureStore({}, memoryHistory);
     ComponentWithReducer = () => {
       useInjectReducer({ key: 'test', reducer });

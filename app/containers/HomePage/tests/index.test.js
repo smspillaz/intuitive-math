@@ -6,25 +6,29 @@ import React from 'react';
 import { render, cleanup, fireEvent } from '@testing-library/react';
 import { IntlProvider } from 'react-intl';
 import { Provider } from 'react-redux';
-import { browserHistory } from 'react-router-dom';
+import { createMemoryHistory } from 'history';
 
 import * as appActions from 'containers/App/actions';
+import { HistoryContext } from '../../../utils/history';
 import configureStore from '../../../configureStore';
 import HomePage from '../index';
 import { initialState } from '../reducer';
 import { changeUsername } from '../actions';
 
-const renderHomePage = store =>
+const renderHomePage = (store, memoryHistory) =>
   render(
-    <Provider store={store}>
-      <IntlProvider locale="en">
-        <HomePage />
-      </IntlProvider>
-    </Provider>,
+    <HistoryContext.Provider value={memoryHistory}>
+      <Provider store={store}>
+        <IntlProvider locale="en">
+          <HomePage />
+        </IntlProvider>
+      </Provider>
+    </HistoryContext.Provider>,
   );
 
 describe('<HomePage />', () => {
   let store;
+  let memoryHistory;
 
   beforeAll(() => {
     // loadRepos is mocked so that we can spy on it but also so that it doesn't trigger a network request
@@ -32,7 +36,8 @@ describe('<HomePage />', () => {
   });
 
   beforeEach(() => {
-    store = configureStore({}, browserHistory);
+    memoryHistory = createMemoryHistory();
+    store = configureStore({}, memoryHistory);
     appActions.loadRepos.mockClear();
   });
 
@@ -41,18 +46,18 @@ describe('<HomePage />', () => {
   it('should render and match the snapshot', () => {
     const {
       container: { firstChild },
-    } = renderHomePage(store);
+    } = renderHomePage(store, memoryHistory);
     expect(firstChild).toMatchSnapshot();
   });
 
   it("shouldn't fetch repos on mount (if username is empty)", () => {
-    renderHomePage(store);
+    renderHomePage(store, memoryHistory);
     expect(initialState.username).toBe('');
     expect(appActions.loadRepos).not.toHaveBeenCalled();
   });
 
   it("shouldn't fetch repos if the form is submitted when the username is empty", () => {
-    const { container } = renderHomePage(store);
+    const { container } = renderHomePage(store, memoryHistory);
 
     const form = container.querySelector('form');
     fireEvent.submit(form);
@@ -61,7 +66,7 @@ describe('<HomePage />', () => {
   });
 
   it("should fetch repos if the form is submitted when the username isn't empty", () => {
-    const { container } = renderHomePage(store);
+    const { container } = renderHomePage(store, memoryHistory);
 
     store.dispatch(changeUsername('julienben'));
 

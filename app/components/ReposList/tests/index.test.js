@@ -1,7 +1,7 @@
 import React from 'react';
 import { IntlProvider } from 'react-intl';
 import { Provider } from 'react-redux';
-import { browserHistory } from 'react-router-dom';
+import { createMemoryHistory } from 'history';
 import { render } from '@testing-library/react';
 
 import ReposList from '../index';
@@ -23,9 +23,10 @@ describe('<ReposList />', () => {
   });
 
   it('should render the repositories if loading was successful', () => {
+    const memoryHistory = createMemoryHistory();
     const store = configureStore(
       { global: { currentUser: 'mxstbr' } },
-      browserHistory,
+      memoryHistory,
     );
     const repos = [
       {

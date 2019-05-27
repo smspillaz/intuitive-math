@@ -1,7 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { browserHistory } from 'react-router-dom';
 import { render, fireEvent } from '@testing-library/react';
+import { createMemoryHistory } from 'history';
 
 import LocaleToggle from '../index';
 import * as actions from '../../LanguageProvider/actions';
@@ -11,11 +11,13 @@ import configureStore from '../../../configureStore';
 import { translationMessages } from '../../../i18n';
 
 describe('<LocaleToggle />', () => {
+  let memoryHistory;
   let store;
 
   beforeAll(() => {
+    memoryHistory = createMemoryHistory();
     actions.changeLocale = jest.fn(() => ({ type: 'test' }));
-    store = configureStore({}, browserHistory);
+    store = configureStore({}, memoryHistory);
   });
 
   it('should match the snapshot', () => {
