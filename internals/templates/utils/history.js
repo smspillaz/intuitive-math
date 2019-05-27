@@ -1,6 +1,7 @@
 import React from 'react';
-import { createBrowserHistory } from 'history';
-const history = createBrowserHistory();
+import { createBrowserHistory, createMemoryHistory } from 'history';
+
+const history = __SERVER__ ? createMemoryHistory() : createBrowserHistory();
 export default history;
 
 const HistoryContext = React.createContext({
