@@ -15,6 +15,9 @@ module.exports = {
       lines: 98,
     },
   },
+  globals: {
+    __SERVER__: false,
+  },
   moduleDirectories: ['node_modules', 'app'],
   moduleNameMapper: {
     '.*\\.(css|less|styl|scss|sass)$': '<rootDir>/internals/mocks/cssModule.js',
