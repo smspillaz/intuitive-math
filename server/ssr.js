@@ -7,7 +7,7 @@ const { END } = require('redux-saga');
 const physicalFS = require('fs');
 
 // Memory history
-const createMemoryHistory = require('history/createMemoryHistory').default;
+const { createMemoryHistory } = require('history');
 
 // Server rendering for styled-components
 const { ServerStyleSheet } = require('styled-components');
