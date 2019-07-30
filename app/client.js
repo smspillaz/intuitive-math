@@ -7,6 +7,7 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { render } from 'react-snapshot';
 
 import FontFaceObserver from 'fontfaceobserver';
 import Loadable from 'react-loadable';
@@ -50,13 +51,22 @@ const store = configureStore(initialState, history);
 const MOUNT_NODE = document.getElementById('app');
 
 const AnalyticsRoot = withLocation(analytics(Root));
-const render = messages => {
-  Loadable.preloadReady().then(() => {
-    ReactDOM.render(
-      <AnalyticsRoot messages={messages} history={history} store={store} />,
-      MOUNT_NODE,
-    );
-  });
+const renderFunc = messages =>
+  render(
+    <AnalyticsRoot messages={messages} history={history} store={store} />,
+    MOUNT_NODE,
+  );
+
+const renderOnPreload = messages => {
+  if (
+    !__SERVER__ &&
+    (navigator.userAgent.includes('Node.js') ||
+      navigator.userAgent.includes('jsdom'))
+  ) {
+    renderFunc(messages);
+  } else {
+    Loadable.preloadReady().then(() => renderFunc(messages));
+  }
 };
 
 if (module.hot) {
@@ -80,12 +90,12 @@ if (!window.Intl) {
         import('intl/locale-data/jsonp/de.js'),
       ]),
     ) // eslint-disable-line prettier/prettier
-    .then(() => render(translationMessages))
+    .then(() => renderOnPreload(translationMessages))
     .catch(err => {
       throw err;
     });
 } else {
-  render(translationMessages);
+  renderOnPreload(translationMessages);
 }
 
 // Install ServiceWorker and AppCache in the end since

@@ -5,7 +5,11 @@ const loadable = (importFunc, { fallback = null } = { fallback: null }) => {
 
   // Suspense is not supported with server-side rendering yet. We will
   // just need to wait until the client takes over
-  if (__SERVER__) {
+  if (
+    __SERVER__ ||
+    navigator.userAgent.includes('Node.js') ||
+    navigator.userAgent.includes('jsdom')
+  ) {
     return () => <div />;
   }
 
