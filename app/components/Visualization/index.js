@@ -509,7 +509,7 @@ Visualization.propTypes = {
 // eslint-disable-next-line react/prop-types
 const SizesForMediaQueries = (Component) => ({ queries, ...props }) => (
   <div>
-    {__SERVER__ ? <div /> : queries.map(({ query, width, height }) => (
+    {(__SERVER__ || !window || Object.keys(window).indexOf('matchMedia') === -1) ? <div /> : queries.map(({ query, width, height }) => (
       <Media query={query} key={query}>
         {(matches) => matches ? <Component width={width} height={height} {...props} /> : <span />}
       </Media>
