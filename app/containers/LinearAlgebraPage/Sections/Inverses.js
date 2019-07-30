@@ -84,26 +84,20 @@ const InversesSection = () => (
       that if we multiply 1 by the denominator, multiplying by the fraction will undo
       the multiplication and yield 1 again.
     </p>
-    <MathJax.Node>
-      {'1 \\times a \\times \\frac{1}{a} = 1'}
-    </MathJax.Node>
+    <MathJax.Node>{'1 \\times a \\times \\frac{1}{a} = 1'}</MathJax.Node>
     <p>
       For the sake of notational convenience, we usually refer to such fractions as negative
       exponents, since we can exploit the fact that multiplying two numbers together
       adds their powers and the sum of 1 and -1 is zero.
     </p>
-    <MathJax.Node>
-      {'1 \times a^1 \times a^{-1} = a^0 = 1'}
-    </MathJax.Node>
+    <MathJax.Node>{'1 \\times a^1 \\times a^{-1} = a^0 = 1'}</MathJax.Node>
     <p>
       Note that not every number has an inverse. In particular, if what we are multiplying
       by is zero then there is no way that you can use a function to get the number back, since
       zero times anything is zero. Expressed as fractional notation, it would not make much sense
       either:
     </p>
-    <MathJax.Node>
-      {'1 \\times 0 \\times \\frac{1}{0} = ?'}
-    </MathJax.Node>
+    <MathJax.Node>{'1 \\times 0 \\times \\frac{1}{0} = ?'}</MathJax.Node>
     <p>
       In those cases, we say that the number has no inverse, since it would be the same thing
       as dividing by zero.
@@ -111,11 +105,9 @@ const InversesSection = () => (
     <p>
       We can express the same thing for matrices as well - the product of any matrix
       and its inverse (if the inverse exists) will always be the indentity matrix,
-      <MathJax.Node inline>I</MathJax.Node>
+      {' '}<MathJax.Node inline>I</MathJax.Node>
     </p>
-    <MathJax.Node>
-      {'A^{-1} \times A = I'}
-    </MathJax.Node>
+    <MathJax.Node>{'A^{-1} \\times A = I'}</MathJax.Node>
     <p>
       So if we can find <MathJax.Node inline>{'A^{-1}'}</MathJax.Node> then by premultiplying a
       matrix by it, we are effectively dividing by <MathJax.Node inline>A</MathJax.Node>.
