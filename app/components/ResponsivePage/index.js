@@ -14,9 +14,13 @@ import DesktopPage from 'components/DesktopPage';
 import MobilePage from 'components/MobilePage';
 
 const ResponsivePage = (props) => (
-  <Media query="(min-width: 800px)">
-    {(matches) => matches ? <DesktopPage {...props} /> : <MobilePage {...props} />}
-  </Media>
+  (window && Object.keys(window).indexOf('matchMedia') !== -1) ? (
+    <Media query="(min-width: 800px)">
+      {(matches) => matches ? <DesktopPage {...props} /> : <MobilePage {...props} />}
+    </Media>
+  ) : (
+    <DesktopPage {...props} />
+  )
 );
 
 export default ResponsivePage;
