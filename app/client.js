@@ -9,6 +9,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Loadable from 'react-loadable';
+import { render } from 'react-snapshot';
 import 'sanitize.css/sanitize.css';
 
 import FontFaceObserver from 'fontfaceobserver';
@@ -80,17 +81,25 @@ const MOUNT_NODE = document.getElementById('app');
 
 const AnalyticsRoot = withLocation(analytics(Root));
 
-const render = (messages) => {
-  Loadable.preloadReady().then(() => {
-    ReactDOM.render(
-      <AnalyticsRoot
-        messages={messages}
-        history={history}
-        store={store}
-      />,
-      MOUNT_NODE
-    );
-  });
+const renderFunc = (messages) =>
+  render(
+    <AnalyticsRoot
+      messages={messages}
+      history={history}
+      store={store}
+    />,
+    MOUNT_NODE
+  );
+
+// Need to have this in order to keep react-snapshot happy
+const renderOnPreload = (messages) => {
+  if (!__SERVER__ && (
+    navigator.userAgent.includes('Node.js') || navigator.userAgent.includes('jsdom')
+  )) {
+    Loadable.preloadReady().then(() => renderFunc(messages));
+  } else {
+    renderFunc(messages);
+  }
 };
 
 if (module.hot) {
@@ -99,7 +108,7 @@ if (module.hot) {
   // have to be constants at compile-time
   module.hot.accept(['./i18n', 'containers/App'], () => {
     ReactDOM.unmountComponentAtNode(MOUNT_NODE);
-    render(translationMessages);
+    renderOnPreload(translationMessages);
   });
 }
 
@@ -112,12 +121,12 @@ if (!window.Intl) {
       import('intl/locale-data/jsonp/en.js'),
       import('intl/locale-data/jsonp/de.js'),
     ]))
-    .then(() => render(translationMessages))
+    .then(() => renderOnPreload(translationMessages))
     .catch((err) => {
       throw err;
     });
 } else {
-  render(translationMessages);
+  renderOnPreload(translationMessages);
 }
 
 // Install ServiceWorker and AppCache in the end since
