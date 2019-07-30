@@ -8,9 +8,15 @@ import { metrics } from 'react-metrics';
 
 const SEGMENT_CLIENT_ID = '6xgb9xkJ3HOKzat6CmrUHNA70vX1GLLd';
 
+const hasKey = (obj, key, then) => {
+  if (Object.keys(obj).indexOf(key) !== -1) {
+    then();
+  }
+};
+
 class SegmentAnalyticsApi {
   constructor() {
-    window.analytics.load(SEGMENT_CLIENT_ID);
+    hasKey(window.analytics, 'load', () => window.analytics.load(SEGMENT_CLIENT_ID));
   }
   pageView(category, name, props, options) {
     window.analytics.page(category, name, props, options);
