@@ -42,51 +42,57 @@ module.exports = (app, fs, indexHTMLTemplatePath) => {
     const store = configureStore({}, memoryHistory);
 
     // Once the sagas have run, render again
-    store.runSaga(sagas).done.then(() => {
-      // Render again, but this time the render should not have any side effects
-      // - instead we will collect the markup and send it to the client.
-      const stylesheet = new ServerStyleSheet();
-      const modules = [];
-      const html = ReactDOMServer.renderToString(
-        stylesheet.collectStyles(
-          <Loadable.Capture report={moduleName => modules.push(moduleName)}>
-            <AnalyticsRoot
-              messages={messages}
-              history={memoryHistory}
-              store={store}
-            />
-          </Loadable.Capture>,
-        ),
-      );
-      const styleTags = stylesheet.getStyleTags();
-      physicalFS.readFile(
-        './build/react-loadable.json',
-        'utf-8',
-        (statsErr, statsData) => {
-          const bundles = getBundles(JSON.parse(statsData), modules);
-          const bundlesHTML = bundles
-            .map(bundle => `<script src="/static/${bundle.file}"></script>`)
-            .join('\n');
-          const stateHydrationHTML = `<script>window.__SERVER_STATE = ${JSON.stringify(
-            store.getState(),
-          )}</script>`;
+    store
+      .runSaga(sagas)
+      .toPromise()
+      .then(() => {
+        // Render again, but this time the render should not have any side effects
+        // - instead we will collect the markup and send it to the client.
+        const stylesheet = new ServerStyleSheet();
+        const modules = [];
+        const html = ReactDOMServer.renderToString(
+          stylesheet.collectStyles(
+            <Loadable.Capture report={moduleName => modules.push(moduleName)}>
+              <AnalyticsRoot
+                messages={messages}
+                history={memoryHistory}
+                store={store}
+              />
+            </Loadable.Capture>,
+          ),
+        );
+        const styleTags = stylesheet.getStyleTags();
+        physicalFS.readFile(
+          './build/react-loadable.json',
+          'utf-8',
+          (statsErr, statsData) => {
+            const bundles = getBundles(JSON.parse(statsData), modules);
+            const bundlesHTML = bundles
+              .map(bundle => `<script src="/static/${bundle.file}"></script>`)
+              .join('\n');
+            const stateHydrationHTML = `<script>window.__SERVER_STATE = ${JSON.stringify(
+              store.getState(),
+            )}</script>`;
 
-          // This should read the compiled index.html file when running from the
-          // webpack bundle and the non-compiled index.html file when running
-          // from babel-node
-          fs.readFile(indexHTMLTemplatePath, 'utf8', (err, data) => {
-            // Set a dummy user agent based on the request user agent.
-            global.navigator = { userAgent: req.headers['user-agent'] };
-            const withStyles = data.replace(/<\/head>/, `${styleTags}</head>`);
-            const withBundles = withStyles.replace(
-              /<div id="app">\s*<\/div>/,
-              `${bundlesHTML}${stateHydrationHTML}<div id="app">${html}</div>`,
-            );
-            res.send(`${withBundles}`);
-          });
-        },
-      );
-    });
+            // This should read the compiled index.html file when running from the
+            // webpack bundle and the non-compiled index.html file when running
+            // from babel-node
+            fs.readFile(indexHTMLTemplatePath, 'utf8', (err, data) => {
+              // Set a dummy user agent based on the request user agent.
+              global.navigator = { userAgent: req.headers['user-agent'] };
+              const withStyles = data.replace(
+                /<\/head>/,
+                `${styleTags}</head>`,
+              );
+              const withBundles = withStyles.replace(
+                /<div id="app">\s*<\/div>/,
+                `${bundlesHTML}${stateHydrationHTML}<div id="app">${html}</div>`,
+              );
+              res.send(`${withBundles}`);
+            });
+          },
+        );
+      });
 
     // Render for the first time, which calls componentWillMount on
     // everything. Then dispatch END. This is a special action
