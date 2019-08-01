@@ -104,6 +104,7 @@
     "redux": "4.0.4",
     "redux-saga": "1.0.5",
     "reselect": "4.0.0",
+    "s3-easy-deploy": "^1.1.0",
     "sanitize.css": "10.0.0",
     "serverless-http": "^1.5.2",
     "styled-components": "4.3.2",
