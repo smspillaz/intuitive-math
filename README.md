@@ -108,6 +108,15 @@ There’s also a <a href="https://vimeo.com/168648012">fantastic video</a> on ho
 
 This fork contains support for serverless deployments using serverless on services like AWS lambda. To make use of a serverless deployment, specify `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` and use `npm run serverless-deploy -- --stage stagename`. An S3 bucket and cloudformation infrastructure will be created for you automatically. Note that you will need to manually add binary content-types to the created API Gateway and compression is disabled.
 
+## Static site deployment
+
+This fork also contains support for static site deployment to S3.
+
+First, pre-render the site using `npm run snapshot`. Then, edit `s3.config.json` with
+your bucket name, AWS Access Key ID, Region and Secret Access Key and run
+`npm run s3:deploy` to deploy the rendered site to an S3 bucket. Accessing it directly
+should work.
+
 ## Quick start
 
 1.  Make sure that you have Node.js v8.15.1 and npm v5 or above installed.
