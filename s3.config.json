@@ -1,0 +1,7 @@
+{
+  "bucket": "BUCKET_NAME",
+  "source": "rendered/",
+  "region": "REGION",
+  "accessKeyId": "AWS_ACCESS_KEY_ID",
+  "secretAccessKey": "AWS_SECRET_ACCESS_KEY"
+}
