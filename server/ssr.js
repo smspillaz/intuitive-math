@@ -70,9 +70,11 @@ module.exports = (app, fs, indexHTMLTemplatePath) => {
             const bundlesHTML = bundles
               .map(bundle => `<script src="/static/${bundle.file}"></script>`)
               .join('\n');
-            const stateHydrationHTML = `<script>window.__SERVER_STATE = ${JSON.stringify(
-              store.getState(),
-            )}</script>`;
+            const stateHydrationHTML = process.env.DISABLE_SSR_STATE
+              ? ''
+              : `<script>window.__SERVER_STATE = ${JSON.stringify(
+                store.getState(),  // eslint-disable-line prettier/prettier
+              )}</script>`;  // eslint-disable-line prettier/prettier
 
             // This should read the compiled index.html file when running from the
             // webpack bundle and the non-compiled index.html file when running
