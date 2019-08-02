@@ -6,20 +6,24 @@ import React from 'react';
 import { getByText, render } from '@testing-library/react';
 import { IntlProvider } from 'react-intl';
 import { Provider } from 'react-redux';
-import { browserHistory } from 'react-router-dom';
+import { createMemoryHistory } from 'history';
 
 import RepoListItem from '../index';
 import configureStore from '../../../configureStore';
+import { HistoryContext } from '../../../../internals/templates/utils/history';
 
 const renderComponent = (item, currentUser) => {
-  const store = configureStore({ global: { currentUser } }, browserHistory);
+  const history = createMemoryHistory();
+  const store = configureStore({ global: { currentUser } }, history);
 
   return render(
-    <Provider store={store}>
-      <IntlProvider locale="en">
-        <RepoListItem item={item} />
-      </IntlProvider>
-    </Provider>,
+    <HistoryContext.Provider value={history}>
+      <Provider store={store}>
+        <IntlProvider locale="en">
+          <RepoListItem item={item} />
+        </IntlProvider>
+      </Provider>
+    </HistoryContext.Provider>,
   );
 };
 
