@@ -1,4 +1,5 @@
 /* eslint consistent-return:0 */
+require('@babel/polyfill');
 
 const express = require('express');
 
