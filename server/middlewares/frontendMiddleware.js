@@ -23,13 +23,17 @@ module.exports = (app, options) => {
     }
   });
 
+  // This part is asynchronous, so probably not safe to immediately call
+  // SSR methods as soon as the app launches.
   if (isProd) {
-    const addProdMiddlewares = require('./addProdMiddlewares');
-    addProdMiddlewares(app, options);
+    import('./addProdMiddlewares').then(addProdMiddlewares => addProdMiddlewares(app, options));
+
   } else {
-    const webpackConfig = require('../../internals/webpack/webpack.dev.client.babel');
-    const addDevMiddlewares = require('./addDevMiddlewares');
-    addDevMiddlewares(app, webpackConfig, options);
+    import('./addDevMiddlewares').then(addDevMiddlewares => {
+      import('../../internals/webpack/webpack.dev.client.babel').then(webpackConfig =>
+        addDevMiddlewares.default(app, webpackConfig.default, options)
+      );
+    });
   }
 
   return app;
