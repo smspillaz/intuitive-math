@@ -20,5 +20,13 @@ s3EasyDeploy.deploy({
   publicRoot: s3UploadConfig.source,
   bucket: s3UploadConfig.bucket,
   region: s3UploadConfig.region,
-  acl: 'public-read'
+  acl: 'public-read',
+  metadata: [
+    {
+      match: /^.*$/,
+      tags: {
+        'Cache-Control': 'max-age=60'
+      }
+    }
+  ]
 }).then(() => console.log('Deployent to S3 bucket done')).catch(e => console.error(e));
