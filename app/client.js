@@ -7,7 +7,6 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { render } from 'react-snapshot';
 
 import FontFaceObserver from 'fontfaceobserver';
 import Loadable from 'react-loadable';
@@ -51,22 +50,21 @@ const store = configureStore(initialState, history);
 const MOUNT_NODE = document.getElementById('app');
 
 const AnalyticsRoot = withLocation(analytics(Root));
+const renderOrHydrate = (component) => {
+  if (MOUNT_NODE.hasChildNodes()) {
+    ReactDOM.hydrate(component, MOUNT_NODE);
+  } else {
+    ReactDOM.render(component, MOUNT_NODE);
+  }
+};
 const renderFunc = messages =>
-  render(
+  renderOrHydrate(
     <AnalyticsRoot messages={messages} history={history} store={store} />,
     MOUNT_NODE,
   );
 
 const renderOnPreload = messages => {
-  if (
-    !__SERVER__ &&
-    (navigator.userAgent.includes('Node.js') ||
-      navigator.userAgent.includes('jsdom'))
-  ) {
-    renderFunc(messages);
-  } else {
-    Loadable.preloadReady().then(() => renderFunc(messages));
-  }
+  Loadable.preloadReady().then(() => renderFunc(messages));
 };
 
 if (module.hot) {
