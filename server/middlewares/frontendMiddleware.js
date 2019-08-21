@@ -22,8 +22,11 @@ module.exports = (app, options) => {
 
   // This part is asynchronous, so probably not safe to immediately call
   // SSR methods as soon as the app launches.
+  //
+  // Note: Since we use "import" here, this will import the module in ES5 style,
+  // meaning that we need to use .default in order to get the default export.
   if (isProd) {
-    import('./addProdMiddlewares').then(addProdMiddlewares => addProdMiddlewares(app, options));
+    import('./addProdMiddlewares').then(addProdMiddlewares => addProdMiddlewares.default(app, options));
 
   } else {
     import('./addDevMiddlewares').then(addDevMiddlewares => {
