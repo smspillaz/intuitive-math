@@ -75,7 +75,7 @@ if (module.hot) {
   // have to be constants at compile-time
   module.hot.accept(['./i18n', 'containers/App'], () => {
     ReactDOM.unmountComponentAtNode(MOUNT_NODE);
-    render(translationMessages);
+    renderFunc(translationMessages);
   });
 }
 
