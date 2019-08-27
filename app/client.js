@@ -82,7 +82,7 @@ const AnalyticsRoot = withLocation(analytics(Root));
 
 const renderOrHydrate = (component) => {
   if (MOUNT_NODE.hasChildNodes()) {
-    ReactDOM.hydrate(component, MOUNT_NODE);
+    ReactDOM.render(component, MOUNT_NODE);
   } else {
     ReactDOM.render(component, MOUNT_NODE);
   }
