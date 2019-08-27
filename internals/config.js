@@ -31,6 +31,7 @@ const ReactBoilerplate = {
         'ip',
         'html-webpack-plugin',
         'minimist',
+        'react-snap',
         'sanitize.css',
         'webpack-node-externals',
         'webpack',

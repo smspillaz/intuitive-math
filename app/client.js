@@ -9,7 +9,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Loadable from 'react-loadable';
-import { render } from 'react-snapshot';
 import 'sanitize.css/sanitize.css';
 
 import FontFaceObserver from 'fontfaceobserver';
@@ -81,25 +80,26 @@ const MOUNT_NODE = document.getElementById('app');
 
 const AnalyticsRoot = withLocation(analytics(Root));
 
+const renderOrHydrate = (component) => {
+  if (MOUNT_NODE.hasChildNodes()) {
+    ReactDOM.hydrate(component, MOUNT_NODE);
+  } else {
+    ReactDOM.render(component, MOUNT_NODE);
+  }
+};
 const renderFunc = (messages) =>
-  render(
+  renderOrHydrate(
     <AnalyticsRoot
       messages={messages}
       history={history}
       store={store}
     />,
-    MOUNT_NODE
+    MOUNT_NODE,
   );
 
 // Need to have this in order to keep react-snapshot happy
 const renderOnPreload = (messages) => {
-  if (!__SERVER__ && (
-    navigator.userAgent.includes('Node.js') || navigator.userAgent.includes('jsdom')
-  )) {
-    Loadable.preloadReady().then(() => renderFunc(messages));
-  } else {
-    renderFunc(messages);
-  }
+  Loadable.preloadReady().then(() => renderFunc(messages));
 };
 
 if (module.hot) {
