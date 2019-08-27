@@ -29,12 +29,11 @@ module.exports = (app, options) => {
   // Note: Since we use "import" here, this will import the module in ES5 style,
   // meaning that we need to use .default in order to get the default export.
   if (isProd) {
-    import('./addProdMiddlewares').then(addProdMiddlewares => addProdMiddlewares.default(app, options));
-
+    import('./addProdMiddlewares').then((addProdMiddlewares) => addProdMiddlewares(app, options));
   } else {
-    import('./addDevMiddlewares').then(addDevMiddlewares => {
-      import('../../internals/webpack/webpack.dev.client.babel').then(webpackConfig =>
-        addDevMiddlewares.default(app, webpackConfig.default, options)
+    import('./addDevMiddlewares').then((addDevMiddlewares) => {
+      import('../../internals/webpack/webpack.dev.client.babel').then((webpackConfig) =>
+        addDevMiddlewares(app, webpackConfig, options)
       );
     });
   }
