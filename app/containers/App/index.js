@@ -10,6 +10,8 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import { Route, Switch, withRouter } from 'react-router-dom';
 
+import { ThemeProvider } from 'styled-components';
+
 import PropTypes from 'prop-types';
 
 import HomePage from 'containers/HomePage/Loadable';
@@ -176,7 +178,7 @@ const RoutableRouteDescriptions = withRouter(RouteDescriptions);
 const NavigationFooterWithRouteDescriptions = withRouteDescriptions(NavigationFooterFromRouteDescriptions);
 
 const MaybeAtlaskitThemeProvider = ({ children }) => (
-  __SERVER__ ? <div>{children}</div> : <AtlaskitThemeProvider>{children}</AtlaskitThemeProvider>
+  __SERVER__ ? <ThemeProvider theme={{}}>{children}</ThemeProvider> : <AtlaskitThemeProvider>{children}</AtlaskitThemeProvider>
 );
 
 MaybeAtlaskitThemeProvider.propTypes = {
