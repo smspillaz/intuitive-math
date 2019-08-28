@@ -8,19 +8,24 @@
 
 import React from 'react';
 
-import Media from 'react-media';
+import PropTypes from 'prop-types';
 
-import DesktopPage from 'components/DesktopPage';
-import MobilePage from 'components/MobilePage';
+import { DesktopNavigator } from 'components/DesktopPage';
+import { MobileNavigator } from 'components/MobilePage';
 
-const ResponsivePage = (props) => (
-  (window && Object.keys(window).indexOf('matchMedia') !== -1) ? (
-    <Media query="(min-width: 800px)">
-      {(matches) => matches ? <DesktopPage {...props} /> : <MobilePage {...props} />}
-    </Media>
-  ) : (
-    <DesktopPage {...props} />
-  )
+const ResponsivePage = ({ children, ...props }) => (
+  <div>
+    <DesktopNavigator {...props} />
+    <MobileNavigator {...props} />
+    {children}
+  </div>
 );
+
+ResponsivePage.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.node,
+    PropTypes.arrayOf(PropTypes.node),
+  ]),
+};
 
 export default ResponsivePage;

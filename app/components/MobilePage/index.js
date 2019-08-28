@@ -71,24 +71,32 @@ const RightJustifiedButton = styled.div`
   padding-right: 10px;
 `;
 
-const MobileNavigator = ({ title, sections }) => (
-  <MobileNavigationItemsDrawerState
-    render={({ open, toggleOpen }) => (
-      <div>
-        <FlexboxRow>
-          <FlexboxFill>
-            <AkContainerTitle text={title} href="/" icon={<GraphLineIcon />} />
-          </FlexboxFill>
-          <RightJustifiedButton>
-            <MenuIcon onClick={toggleOpen} />
-          </RightJustifiedButton>
-        </FlexboxRow>
-        <MobileNavigationItemsDrawer visible={open}>
-          <NavigationItems sections={sections} />
-        </MobileNavigationItemsDrawer>
-      </div>
-    )}
-  />
+const HiddenOnDesktop = styled.div`
+  @media(min-width: 1500px) {
+    visibility: hidden;
+  }
+`;
+
+export const MobileNavigator = ({ title, sections }) => (
+  <HiddenOnDesktop>
+    <MobileNavigationItemsDrawerState
+      render={({ open, toggleOpen }) => (
+        <div>
+          <FlexboxRow>
+            <FlexboxFill>
+              <AkContainerTitle text={title} href="/" icon={<GraphLineIcon />} />
+            </FlexboxFill>
+            <RightJustifiedButton>
+              <MenuIcon onClick={toggleOpen} />
+            </RightJustifiedButton>
+          </FlexboxRow>
+          <MobileNavigationItemsDrawer visible={open}>
+            <NavigationItems sections={sections} />
+          </MobileNavigationItemsDrawer>
+        </div>
+      )}
+    />
+  </HiddenOnDesktop>
 );
 
 MobileNavigator.propTypes = {

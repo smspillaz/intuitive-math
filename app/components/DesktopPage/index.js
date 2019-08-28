@@ -9,24 +9,34 @@ import React from 'react';
 
 import PropTypes from 'prop-types';
 
+import styled from 'styled-components';
+
 import NavigationItems from 'components/NavigationItems';
 import Navigation, { AkContainerTitle } from 'components/MonkeyPatchedNavigation';
 
 import GraphLineIcon from '@atlaskit/icon/glyph/graph-line';
 import Page from '@atlaskit/page';
 
-const DesktopNavigator = ({ title, sections }) => (
-  <Navigation
-    containerHeaderComponent={() => (
-      <AkContainerTitle
-        text={title}
-        href="/"
-        icon={<GraphLineIcon label="Intuitive Math" />}
-      />
-    )}
-  >
-    <NavigationItems sections={sections} />
-  </Navigation>
+const HiddenOnMobile = styled.div`
+  @media(max-width: 1500px) {
+    visibility: hidden;
+  }
+`;
+
+export const DesktopNavigator = ({ title, sections }) => (
+  <HiddenOnMobile>
+    <Navigation
+      containerHeaderComponent={() => (
+        <AkContainerTitle
+          text={title}
+          href="/"
+          icon={<GraphLineIcon label="Intuitive Math" />}
+        />
+      )}
+    >
+      <NavigationItems sections={sections} />
+    </Navigation>
+  </HiddenOnMobile>
 );
 
 DesktopNavigator.propTypes = {
