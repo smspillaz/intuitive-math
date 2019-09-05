@@ -78,8 +78,10 @@ describe('injectReducer decorator', () => {
       </ProvideHistoryAndStore>,
     );
     const {
-      props: { children },
-    } = renderedComponent.root;
+      root: {
+        props: { children },
+      },
+    } = renderedComponent;
 
     expect(children.props).toEqual(props);
   });
