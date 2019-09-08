@@ -33,6 +33,7 @@ const ReactBoilerplate = {
         'minimist',
         'react-snap',
         'sanitize.css',
+        's3-easy-deploy',
         'webpack-node-externals',
         'webpack',
         'webpack-dev-middleware',
