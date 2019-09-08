@@ -4,6 +4,8 @@
  * Some math-related util functions.
  */
 
+export const range = n => ([...new Array(n)]).map((_, i) => i);
+
 export const degreesToRadians = (degrees) => (Math.PI * degrees) / 180;
 
 export const truncate = (num, precision) => {
@@ -42,7 +44,7 @@ export const normalizeVector = (vec) => {
 export const segment1D = (xMin, xMax, segments) => {
   const integerSegments = Math.round(segments);
   const segmentXLength = (xMax - xMin) / integerSegments;
-  return ([...new Array(integerSegments)]).map((v, i) => ([
+  return range(integerSegments).map(i => ([
     (i * segmentXLength) + xMin,
     ((i + 1) * segmentXLength) + xMin,
   ]));
