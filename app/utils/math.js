@@ -6,7 +6,7 @@
 
 import { Quaternion, Vector3, Matrix4 } from 'three';
 
-export const range = n => ([...new Array(n)]).map((_, i) => i);
+export const range = (n) => ([...new Array(n)]).map((_, i) => i);
 
 export const degreesToRadians = (degrees) => (Math.PI * degrees) / 180;
 
@@ -46,7 +46,7 @@ export const normalizeVector = (vec) => {
 export const segment1D = (xMin, xMax, segments) => {
   const integerSegments = Math.round(segments);
   const segmentXLength = (xMax - xMin) / integerSegments;
-  return range(integerSegments).map(i => ([
+  return range(integerSegments).map((i) => ([
     (i * segmentXLength) + xMin,
     ((i + 1) * segmentXLength) + xMin,
   ]));
