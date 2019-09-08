@@ -4,6 +4,8 @@
  * Some math-related util functions.
  */
 
+import { Quaternion, Vector3, Matrix4 } from 'three';
+
 export const range = n => ([...new Array(n)]).map((_, i) => i);
 
 export const degreesToRadians = (degrees) => (Math.PI * degrees) / 180;
@@ -107,4 +109,36 @@ export const scale3D = ([x, y, z], matrix) => {
   ret[2][2] *= z;
 
   return ret;
+};
+
+export const interpolate = (initial, destination, value) => (
+  (value * initial) + ((1 - value) * destination)
+);
+
+export const interpolateArrays = (initial, destination, value) => (
+  range(initial.length).map((i) => (initial[i] * (1 - value)) + (destination[i] * value))
+);
+
+export const interpolateHomogenousMatrixFunc = (initial, destination) => {
+  // Decompose into translation, scale and rotational factors
+  const [initialPosition, initialRotation, initialScale] = [new Vector3(), new Quaternion(), new Vector3()];
+  const [destinationPosition, destinationRotation, destinationScale] = [new Vector3(), new Quaternion(), new Vector3()];
+
+  initial.decompose(initialPosition, initialRotation, initialScale);
+  destination.decompose(destinationPosition, destinationRotation, destinationScale);
+
+  const [lerpPosition, lerpRotation, lerpScale] = [new Vector3(), new Quaternion(), new Vector3()];
+  const lerpMatrix = new Matrix4();
+
+  return (time) => {
+    // Now, interpolate the position and scale vectors, then the quaternion
+    lerpPosition.lerpVectors(initialPosition, destinationPosition, time);
+    lerpScale.lerpVectors(initialScale, destinationScale, time);
+    Quaternion.slerp(initialRotation, destinationRotation, lerpRotation, time);
+
+    // Now that we have that, we can reconstruct a transformation matrix and
+    // return it
+    lerpMatrix.compose(lerpPosition, lerpRotation, lerpScale);
+    return lerpMatrix;
+  };
 };
