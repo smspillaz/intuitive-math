@@ -189,9 +189,9 @@ const TransposeSection = () => (
       title="Matrix transpose times matrix"
     />
     <p>
-      You will notice that space gets flattened into a line. This is called
-      the covariance matrix and specifies a vector where the two matrices
-      transform with each other.
+      Notice that the result shows that we have covariant scaling
+      on the <MathJax.Node inline>y</MathJax.Node> axis and everything
+      else on the other two axes just has a unit covariance.
     </p>
   </Section>
 );
