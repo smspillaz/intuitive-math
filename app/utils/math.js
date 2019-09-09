@@ -15,6 +15,13 @@ export const truncate = (num, precision) => {
   return Math.floor(num * power) / power;
 };
 
+export const round = (num, precision) => {
+  const power = 10 ** precision;
+  return Math.round(num * power) / power;
+};
+
+export const all = (f, array) => array.map(f);
+
 export const cross = (vec1, vec2) => (
   [
     (vec1[1] * vec2[2]) - (vec1[2] * vec2[1]),
