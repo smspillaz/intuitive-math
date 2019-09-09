@@ -71,13 +71,13 @@ export const matmul = (a, b) => {
   const cols = b.length;
   const n = a.length;
 
-  const result = new Array(cols).fill(new Array(rows).fill(0));
+  const result = range(rows).map(() => range(cols).map(() => 0));
 
   // Standard naive matrix multiplication (O(n^3))
   for (let i = 0; i < rows; ++i) { // eslint-disable-line
     for (let j = 0; j < cols; ++j) { // eslint-disable-line
       for (let k = 0; k < n; ++k) { // eslint-disable-line
-        result[j][i] += a[k][j] * b[i][k];
+        result[i][j] += a[i][k] * b[k][j];
       }
     }
   }
