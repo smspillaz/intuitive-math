@@ -326,7 +326,8 @@
     "serverless": "^1.25.0",
     "shelljs": "0.7.7",
     "style-loader": "0.18.1",
-    "url-loader": "0.5.8"
+    "url-loader": "0.5.8",
+    "yargs": "^14.0.0"
   },
   "resolutions": {
     "styled-components": "^2.4.0"
