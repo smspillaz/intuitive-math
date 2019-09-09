@@ -7,31 +7,24 @@ progress() {
   done
 }
 
-# We'll need to set up our credentials
-mkdir -p ../intuimath-credentials/config/app/
-
 text=$(cat <<EOL
-credentials:
-  accessKeyId: ${AWS_ACCESS_KEY_ID}
-  secretAccessKey: ${AWS_SECRET_ACCESS_KEY}
-development:
-  NODE_ENV: production
-staging:
-  NODE_ENV: production
-production:
-  NODE_ENV: production
+{
+  "bucket": "intuitive-math",
+  "source": "rendered/",
+  "region": "us-west-2",
+  "accessKeyId": "${AWS_ACCESS_KEY_ID}",
+  "secretAccessKey": "${AWS_SECRET_ACCESS_KEY}"
+}
 EOL
 )
 
-echo "${text}" > ../intuimath-credentials/config/app/env.yml
+echo "${text}" > ./s3.config.json
 
 progress &
 PROGRESS=$!
 
-yarn install
-yarn build:dll
-yarn build:client
-yarn build:serverless
-yarn serverless-deploy
+npm install
+npm run snapshot
+npm run s3:deploy
 
 kill $PROGRESS >/dev/null 2>&1
