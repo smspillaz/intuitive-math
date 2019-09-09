@@ -21,9 +21,11 @@ import TweenedAffineTransformCube from 'components/TweenedAffineTransformCube';
 import Vector from 'components/Vector';
 
 import {
+  all,
   degreesToRadians,
   matmul,
   rotate3D,
+  round,
   scale3D,
   transpose,
 } from 'utils/math';
@@ -31,6 +33,8 @@ import {
 const CenteredParagraph = styled.p`
   text-align: center;
 `;
+
+const rotate30Scale2 = all((x) => x.map((y) => round(y, 2)), scale3D([0, 2, 1], rotate3D([0, 1, 0], degreesToRadians(90))));
 
 const TransposeSection = () => (
   <Section title="Transposes" anchor="transpose">
@@ -164,10 +168,24 @@ const TransposeSection = () => (
     <p>
       What happens if we premultiply a matrix by its own transpose?
     </p>
+    <div>
+      <MathJaxMatrix
+        inline
+        matrix={transpose(rotate30Scale2)}
+      />
+      <MathJaxMatrix
+        inline
+        matrix={rotate30Scale2}
+      />
+      =
+      <MathJaxMatrix
+        inline
+        matrix={matmul(transpose(rotate30Scale2), rotate30Scale2)}
+      />
+    </div>
     <TweenedAffineTransformCube
       start={[[1, 0, 0], [0, 1, 0], [0, 0, 1]]}
-      end={matmul(transpose(scale3D([0, 2, 1], rotate3D([0, 1, 0], degreesToRadians(90)))),
-                  scale3D([0, 2, 1], rotate3D([0, 1, 0], degreesToRadians(90))))}
+      end={matmul(transpose(rotate30Scale2), rotate30Scale2)}
       title="Matrix transpose times matrix"
     />
     <p>
