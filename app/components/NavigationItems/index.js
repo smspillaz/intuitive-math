@@ -21,13 +21,13 @@ const LinkStyle = styled.span`
   }
 `;
 
-const NavigationItems = ({ sections }) => (
+const NavigationItems = ({ sections, onActivate = null }) => (
   <div>
     {sections.map((section) => (
       <AkNavigationItemGroup title={section.title} key={section.title}>
         {section.children.map((child, index) => (
           <LinkStyle key={child.href}>
-            <Link to={child.href}>
+            <Link to={child.href} onClick={onActivate}>
               <AkNavigationItem
                 text={section.numbered ? `${index + 1}) ${child.text}` : child.text}
               />
@@ -47,6 +47,7 @@ NavigationItems.propTypes = {
       href: PropTypes.string.isRequired,
     })),
   })),
+  onActivate: PropTypes.func,
 };
 
 export default NavigationItems;

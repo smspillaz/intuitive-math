@@ -91,7 +91,10 @@ export const MobileNavigator = ({ title, sections }) => (
             </RightJustifiedButton>
           </FlexboxRow>
           <MobileNavigationItemsDrawer visible={open}>
-            <NavigationItems sections={sections} />
+            <NavigationItems
+              sections={sections}
+              onActivate={toggleOpen}
+            />
           </MobileNavigationItemsDrawer>
         </div>
       )}
