@@ -38,8 +38,6 @@ const config = require('./webpack.prod.babel')({
             ascii_only: true,
           },
         },
-        parallel: true,
-        cache: true,
         sourceMap: true,
       }),
     ],
