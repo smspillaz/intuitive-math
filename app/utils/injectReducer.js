@@ -54,9 +54,12 @@ const useInjectReducer = ({ key, reducer }) => {
   const store = useStore();
   const history = React.useContext(HistoryContext);
 
-  React.useEffect(() => {
+  const isInjected = React.useRef(false);
+
+  if (!isInjected.current) {
     getInjectors(store, history).injectReducer(key, reducer);
-  }, []);
+    isInjected.current = true;
+  }
 };
 
 export { useInjectReducer };
