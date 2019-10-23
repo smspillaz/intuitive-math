@@ -6,10 +6,10 @@ import React from 'react';
 import { render, cleanup, fireEvent } from '@testing-library/react';
 import { IntlProvider } from 'react-intl';
 import { Provider } from 'react-redux';
+import { HelmetProvider } from 'react-helmet-async';
 import { createMemoryHistory } from 'history';
 
 import * as appActions from 'containers/App/actions';
-import { HistoryContext } from '../../../utils/history';
 import configureStore from '../../../configureStore';
 import HomePage from '../index';
 import { initialState } from '../reducer';
@@ -20,7 +20,9 @@ const renderHomePage = (store, memoryHistory) =>
     <HistoryContext.Provider value={memoryHistory}>
       <Provider store={store}>
         <IntlProvider locale="en">
-          <HomePage />
+          <HelmetProvider>
+            <HomePage />
+          </HelmetProvider>
         </IntlProvider>
       </Provider>
     </HistoryContext.Provider>,

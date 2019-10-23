@@ -12,6 +12,7 @@ import 'react-app-polyfill/stable';
 import React from 'react';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
+import { HelmetProvider } from 'react-helmet-async';
 
 import PropTypes from 'prop-types';
 
@@ -31,7 +32,9 @@ const Root = ({ messages, history, store }) => (
     <LanguageProvider messages={messages}>
       <ConnectedRouter history={history}>
         <HistoryContext.Provider value={history}>
-          <App />
+          <HelmetProvider>
+            <App />
+          </HelmetProvider>
         </HistoryContext.Provider>
       </ConnectedRouter>
     </LanguageProvider>

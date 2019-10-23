@@ -13,6 +13,8 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 
+import { HelmetProvider } from 'react-helmet-async';
+
 import PropTypes from 'prop-types';
 
 // Import root app
@@ -28,7 +30,9 @@ const Root = ({ messages, history, store }) => (
   <Provider store={store}>
     <LanguageProvider messages={messages}>
       <ConnectedRouter history={history}>
-        <App />
+        <HelmetProvider>
+          <App />
+        </HelmetProvider>
       </ConnectedRouter>
     </LanguageProvider>
   </Provider>
