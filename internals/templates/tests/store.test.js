@@ -2,7 +2,10 @@
  * Test store addons
  */
 
+<<<<<<< HEAD
 import { createMemoryHistory } from 'history';
+=======
+>>>>>>> 6dcfafb... Fix react-router-dom imports in tests (#2791)
 import configureStore from '../configureStore';
 
 describe('configureStore', () => {
@@ -10,8 +13,12 @@ describe('configureStore', () => {
   let store;
 
   beforeAll(() => {
+<<<<<<< HEAD
     memoryHistory = createMemoryHistory();
     store = configureStore({}, memoryHistory);
+=======
+    store = configureStore({});
+>>>>>>> 6dcfafb... Fix react-router-dom imports in tests (#2791)
   });
 
   describe('injectedReducers', () => {

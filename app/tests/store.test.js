@@ -2,7 +2,6 @@
  * Test store addons
  */
 
-import { createMemoryHistory } from 'history';
 import configureStore from '../configureStore';
 
 describe('configureStore', () => {
@@ -10,8 +9,7 @@ describe('configureStore', () => {
   let store;
 
   beforeAll(() => {
-    memoryHistory = createMemoryHistory();
-    store = configureStore({}, memoryHistory);
+    store = configureStore({});
   });
 
   describe('injectedReducers', () => {
@@ -40,8 +38,7 @@ describe('configureStore params', () => {
     /* eslint-disable no-underscore-dangle */
     const compose = jest.fn();
     window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ = () => compose;
-    memoryHistory = createMemoryHistory();
-    configureStore(undefined, memoryHistory);
+    configureStore();
     expect(compose).toHaveBeenCalled();
     /* eslint-enable */
   });

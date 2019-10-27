@@ -2,7 +2,6 @@
  * Test injectors
  */
 
-import { createMemoryHistory } from 'history';
 import { put } from 'redux-saga/effects';
 
 import configureStore from '../../configureStore';
@@ -25,8 +24,7 @@ describe('injectors', () => {
 
   describe('getInjectors', () => {
     beforeEach(() => {
-      memoryHistory = createMemoryHistory();
-      store = configureStore({}, memoryHistory);
+      store = configureStore({});
     });
 
     it('should return injectors', () => {
@@ -47,8 +45,7 @@ describe('injectors', () => {
 
   describe('ejectSaga helper', () => {
     beforeEach(() => {
-      memoryHistory = createMemoryHistory();
-      store = configureStore({}, memoryHistory);
+      store = configureStore({});
       injectSaga = injectSagaFactory(store, true);
       ejectSaga = ejectSagaFactory(store, true);
     });
@@ -123,8 +120,7 @@ describe('injectors', () => {
 
   describe('injectSaga helper', () => {
     beforeEach(() => {
-      memoryHistory = createMemoryHistory();
-      store = configureStore({}, memoryHistory);
+      store = configureStore({});
       injectSaga = injectSagaFactory(store, true);
       ejectSaga = ejectSagaFactory(store, true);
     });

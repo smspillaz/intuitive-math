@@ -3,7 +3,6 @@
  */
 
 import produce from 'immer';
-import { createMemoryHistory } from 'history';
 import identity from 'lodash/identity';
 
 import configureStore from '../../configureStore';
@@ -28,8 +27,7 @@ describe('reducer injectors', () => {
 
   describe('getInjectors', () => {
     beforeEach(() => {
-      memoryHistory = createMemoryHistory();
-      store = configureStore({}, memoryHistory);
+      store = configureStore({});
     });
 
     it('should return injectors', () => {
@@ -49,9 +47,8 @@ describe('reducer injectors', () => {
 
   describe('injectReducer helper', () => {
     beforeEach(() => {
-      memoryHistory = createMemoryHistory();
-      store = configureStore({}, memoryHistory);
-      injectReducer = injectReducerFactory(store, memoryHistory, true);
+      store = configureStore({});
+      injectReducer = injectReducerFactory(store, true);
     });
 
     it('should check a store if the second argument is falsy', () => {

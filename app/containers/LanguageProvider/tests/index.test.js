@@ -2,7 +2,6 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 import { Provider } from 'react-redux';
-import { createMemoryHistory } from 'history';
 
 import { HistoryContext } from '../../../utils/history';
 import LanguageProvider from '../index';
@@ -23,8 +22,7 @@ describe('<LanguageProvider />', () => {
   let store;
 
   beforeEach(() => {
-    memoryHistory = createMemoryHistory();
-    store = configureStore({}, memoryHistory);
+    store = configureStore({});
   });
 
   it('should render its children', () => {

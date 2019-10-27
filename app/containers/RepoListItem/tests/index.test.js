@@ -6,15 +6,13 @@ import React from 'react';
 import { getByText, render } from '@testing-library/react';
 import { IntlProvider } from 'react-intl';
 import { Provider } from 'react-redux';
-import { createMemoryHistory } from 'history';
 
 import RepoListItem from '../index';
 import configureStore from '../../../configureStore';
 import { HistoryContext } from '../../../../internals/templates/utils/history';
 
 const renderComponent = (item, currentUser) => {
-  const history = createMemoryHistory();
-  const store = configureStore({ global: { currentUser } }, history);
+  const store = configureStore({ global: { currentUser } });
 
   return render(
     <HistoryContext.Provider value={history}>

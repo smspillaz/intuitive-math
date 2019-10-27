@@ -2,7 +2,6 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { IntlProvider } from 'react-intl';
 import { Provider } from 'react-redux';
-import { createMemoryHistory } from 'history';
 
 import Footer from '../index';
 import configureStore from '../../../configureStore';
@@ -13,8 +12,7 @@ describe('<Footer />', () => {
   let memoryHistory;
 
   beforeAll(() => {
-    memoryHistory = createMemoryHistory();
-    store = configureStore({}, memoryHistory);
+    store = configureStore({});
   });
 
   it('should render and match the snapshot', () => {

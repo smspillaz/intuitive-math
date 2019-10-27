@@ -7,7 +7,6 @@ import { render, cleanup, fireEvent } from '@testing-library/react';
 import { IntlProvider } from 'react-intl';
 import { Provider } from 'react-redux';
 import { HelmetProvider } from 'react-helmet-async';
-import { createMemoryHistory } from 'history';
 
 import * as appActions from 'containers/App/actions';
 import configureStore from '../../../configureStore';
@@ -38,8 +37,7 @@ describe('<HomePage />', () => {
   });
 
   beforeEach(() => {
-    memoryHistory = createMemoryHistory();
-    store = configureStore({}, memoryHistory);
+    store = configureStore({});
     appActions.loadRepos.mockClear();
   });
 

@@ -17,7 +17,7 @@ describe('<LocaleToggle />', () => {
   beforeAll(() => {
     memoryHistory = createMemoryHistory();
     actions.changeLocale = jest.fn(() => ({ type: 'test' }));
-    store = configureStore({}, memoryHistory);
+    store = configureStore({});
   });
 
   it('should match the snapshot', () => {

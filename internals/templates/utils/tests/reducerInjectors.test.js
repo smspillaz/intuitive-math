@@ -3,7 +3,10 @@
  */
 
 import produce from 'immer';
+<<<<<<< HEAD
 import { createMemoryHistory } from 'history';
+=======
+>>>>>>> 6dcfafb... Fix react-router-dom imports in tests (#2791)
 import identity from 'lodash/identity';
 
 import configureStore from '../../configureStore';
@@ -28,8 +31,12 @@ describe('reducer injectors', () => {
 
   describe('getInjectors', () => {
     beforeEach(() => {
+<<<<<<< HEAD
       memoryHistory = createMemoryHistory();
       store = configureStore({}, memoryHistory);
+=======
+      store = configureStore({});
+>>>>>>> 6dcfafb... Fix react-router-dom imports in tests (#2791)
     });
 
     it('should return injectors', () => {
@@ -49,9 +56,14 @@ describe('reducer injectors', () => {
 
   describe('injectReducer helper', () => {
     beforeEach(() => {
+<<<<<<< HEAD
       memoryHistory = createMemoryHistory();
       store = configureStore({}, memoryHistory);
       injectReducer = injectReducerFactory(store, memoryHistory, true);
+=======
+      store = configureStore({});
+      injectReducer = injectReducerFactory(store, true);
+>>>>>>> 6dcfafb... Fix react-router-dom imports in tests (#2791)
     });
 
     it('should check a store if the second argument is falsy', () => {
