@@ -14,22 +14,19 @@ import HomePage from '../index';
 import { initialState } from '../reducer';
 import { changeUsername } from '../actions';
 
-const renderHomePage = (store, memoryHistory) =>
+const renderHomePage = store =>
   render(
-    <HistoryContext.Provider value={memoryHistory}>
-      <Provider store={store}>
-        <IntlProvider locale="en">
-          <HelmetProvider>
-            <HomePage />
-          </HelmetProvider>
-        </IntlProvider>
-      </Provider>
-    </HistoryContext.Provider>,
+    <Provider store={store}>
+      <IntlProvider locale="en">
+        <HelmetProvider>
+          <HomePage />
+        </HelmetProvider>
+      </IntlProvider>
+    </Provider>,
   );
 
 describe('<HomePage />', () => {
   let store;
-  let memoryHistory;
 
   beforeAll(() => {
     // loadRepos is mocked so that we can spy on it but also so that it doesn't trigger a network request
@@ -46,18 +43,18 @@ describe('<HomePage />', () => {
   it('should render and match the snapshot', () => {
     const {
       container: { firstChild },
-    } = renderHomePage(store, memoryHistory);
+    } = renderHomePage(store);
     expect(firstChild).toMatchSnapshot();
   });
 
   it("shouldn't fetch repos on mount (if username is empty)", () => {
-    renderHomePage(store, memoryHistory);
+    renderHomePage(store);
     expect(initialState.username).toBe('');
     expect(appActions.loadRepos).not.toHaveBeenCalled();
   });
 
   it("shouldn't fetch repos if the form is submitted when the username is empty", () => {
-    const { container } = renderHomePage(store, memoryHistory);
+    const { container } = renderHomePage(store);
 
     const form = container.querySelector('form');
     fireEvent.submit(form);
@@ -66,7 +63,7 @@ describe('<HomePage />', () => {
   });
 
   it("should fetch repos if the form is submitted when the username isn't empty", () => {
-    const { container } = renderHomePage(store, memoryHistory);
+    const { container } = renderHomePage(store);
 
     store.dispatch(changeUsername('julienben'));
 

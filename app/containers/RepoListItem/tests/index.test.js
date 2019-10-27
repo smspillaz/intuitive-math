@@ -9,19 +9,16 @@ import { Provider } from 'react-redux';
 
 import RepoListItem from '../index';
 import configureStore from '../../../configureStore';
-import { HistoryContext } from '../../../../internals/templates/utils/history';
 
 const renderComponent = (item, currentUser) => {
   const store = configureStore({ global: { currentUser } });
 
   return render(
-    <HistoryContext.Provider value={history}>
-      <Provider store={store}>
-        <IntlProvider locale="en">
-          <RepoListItem item={item} />
-        </IntlProvider>
-      </Provider>
-    </HistoryContext.Provider>,
+    <Provider store={store}>
+      <IntlProvider locale="en">
+        <RepoListItem item={item} />
+      </IntlProvider>
+    </Provider>,
   );
 };
 

@@ -9,7 +9,6 @@ import { HistoryContext } from '../../../utils/history';
 
 describe('<Footer />', () => {
   let store;
-  let memoryHistory;
 
   beforeAll(() => {
     store = configureStore({});
