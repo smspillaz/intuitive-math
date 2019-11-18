@@ -8,7 +8,8 @@ import { IntlProvider } from 'react-intl';
 import { Provider } from 'react-redux';
 import { HelmetProvider } from 'react-helmet-async';
 
-import * as appActions from 'containers/App/actions';
+import * as appActions from 'containers/App/appSlice';
+import { HelmetProvider } from 'react-helmet-async';
 import configureStore from '../../../configureStore';
 import HomePage from '../index';
 import { initialState } from '../reducer';
