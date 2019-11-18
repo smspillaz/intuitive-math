@@ -38,14 +38,9 @@ export default function configureAppStore(initialState = {}, history) {
     }),
   ];
 
-<<<<<<< HEAD
-  const store = createStore(
-    createReducer({}),
-=======
   const store = configureStore({
     reducer: createReducer(),
->>>>>>> 5c558e4... Convert store setup to use configureStore from RTK
-    initialState,
+    initialState: preloadedState,
     middleware: [...getDefaultMiddleware(), ...middlewares],
     enhancers,
   });
