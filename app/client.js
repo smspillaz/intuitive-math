@@ -26,7 +26,7 @@ import withLocation from 'components/CaptureLocation';
 import configureStore from './configureStore';
 
 // Import root containers
-import Root from './app';
+import ConnectedApp from './app';
 
 // Import analytics HOC
 import analytics from './analytics';
@@ -49,7 +49,7 @@ const initialState = window.__SERVER_STATE || {};
 const store = configureStore(initialState, history);
 const MOUNT_NODE = document.getElementById('app');
 
-const AnalyticsRoot = withLocation(analytics(Root));
+const AnalyticsRoot = withLocation(analytics(ConnectedApp));
 const renderOrHydrate = component => {
   if (MOUNT_NODE.hasChildNodes()) {
     ReactDOM.hydrate(component, MOUNT_NODE);

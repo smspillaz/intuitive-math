@@ -20,7 +20,7 @@ import 'file-loader?name=.htaccess!./.htaccess';
 import configureStore from './configureStore';
 
 // Import root containers
-import Root from './app';
+import ConnectedApp from './app';
 
 // Import i18n messages
 import { translationMessages } from './i18n';
@@ -32,7 +32,7 @@ const MOUNT_NODE = document.getElementById('app');
 
 const render = messages => {
   ReactDOM.render(
-    <Root messages={messages} history={history} store={store} />,
+    <ConnectedApp messages={messages} history={history} store={store} />,
     MOUNT_NODE,
   );
 };

@@ -8,7 +8,7 @@
 import 'react-app-polyfill/ie11';
 import 'react-app-polyfill/stable';
 
-// Import all the third party stuff
+import PropTypes from 'prop-types';
 import React from 'react';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
@@ -25,26 +25,22 @@ import LanguageProvider from 'containers/LanguageProvider';
 // Import CSS reset and Global Styles
 import './global-styles';
 
-import { HistoryContext } from './utils/history';
-
-const Root = ({ messages, history, store }) => (
-  <Provider store={store}>
-    <LanguageProvider messages={messages}>
-      <ConnectedRouter history={history}>
-        <HistoryContext.Provider value={history}>
-          <HelmetProvider>
-            <App />
-          </HelmetProvider>
-        </HistoryContext.Provider>
+const ConnectedApp = props => (
+  <Provider store={props.store}>
+    <LanguageProvider messages={props.messages}>
+      <ConnectedRouter history={props.history}>
+        <HelmetProvider>
+          <App />
+        </HelmetProvider>
       </ConnectedRouter>
     </LanguageProvider>
   </Provider>
 );
 
-Root.propTypes = {
+ConnectedApp.propTypes = {
   messages: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
   store: PropTypes.object.isRequired,
 };
 
-export default Root;
+export default ConnectedApp;

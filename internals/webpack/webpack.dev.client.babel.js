@@ -12,6 +12,7 @@ const config = require('./webpack.dev.babel.js')({
   // Add hot reloading in development
   entry: [
     require.resolve('react-app-polyfill/ie11'),
+    'react-hot-loader/patch',
     'webpack-hot-middleware/client?reload=true',
     path.join(process.cwd(), 'app/client.js'), // Start with js/app.js
   ],

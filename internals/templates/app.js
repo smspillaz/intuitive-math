@@ -26,7 +26,7 @@ import LanguageProvider from 'containers/LanguageProvider';
 // Import CSS reset and Global Styles
 import './global-styles';
 
-const Root = ({ messages, history, store }) => (
+const ConnectedApp = ({ messages, history, store }) => (
   <Provider store={store}>
     <LanguageProvider messages={messages}>
       <ConnectedRouter history={history}>
@@ -38,7 +38,7 @@ const Root = ({ messages, history, store }) => (
   </Provider>
 );
 
-Root.propTypes = {
+ConnectedApp.propTypes = {
   messages: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
   store: PropTypes.object.isRequired,
