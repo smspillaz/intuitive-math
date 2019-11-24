@@ -8,7 +8,6 @@
 import 'react-app-polyfill/ie11';
 import 'react-app-polyfill/stable';
 
-// Import all the third party stuff
 import React from 'react';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
@@ -44,4 +43,4 @@ ConnectedApp.propTypes = {
   store: PropTypes.object.isRequired,
 };
 
-export default Root;
+export default ConnectedApp;
