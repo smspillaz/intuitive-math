@@ -6,6 +6,7 @@ const path = require('path');
 
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ErrorOverlayPlugin = require('error-overlay-webpack-plugin');
 const { ReactLoadablePlugin } = require('react-loadable/webpack');
 
 const config = require('./webpack.dev.babel.js')({
@@ -22,9 +23,14 @@ const config = require('./webpack.dev.babel.js')({
     filename: '[name].js',
     chunkFilename: '[name].chunk.js',
   },
+
+  // Emit a source map for easier debugging
+  // See https://webpack.js.org/configuration/devtool/#devtool
+  devtool: 'cheap-module-source-map',
 });
 
 config.plugins.push.apply(config.plugins, [
+  new ErrorOverlayPlugin(),
   new webpack.ProvidePlugin({
     // make fetch available
     fetch: 'exports-loader?self.fetch!whatwg-fetch',
