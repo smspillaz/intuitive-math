@@ -50,7 +50,7 @@ const store = configureStore(initialState, history);
 const MOUNT_NODE = document.getElementById('app');
 
 const AnalyticsRoot = withLocation(analytics(Root));
-const renderOrHydrate = (component) => {
+const renderOrHydrate = component => {
   if (MOUNT_NODE.hasChildNodes()) {
     ReactDOM.hydrate(component, MOUNT_NODE);
   } else {
