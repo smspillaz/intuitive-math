@@ -11,10 +11,6 @@ import PropTypes from 'prop-types';
 
 const withLocation = Component => {
   class WrappedComponentWithLocation extends React.Component {
-    static propTypes = {
-      history: PropTypes.object.isRequired,
-    };
-
     constructor(props) {
       super();
       this.state = {
@@ -39,6 +35,10 @@ const withLocation = Component => {
       return <Component location={this.state.location} {...this.props} />;
     }
   }
+
+  WrappedComponentWithLocation.propTypes = {
+    history: PropTypes.object.isRequired,
+  };
 
   return WrappedComponentWithLocation;
 };
