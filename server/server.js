@@ -13,7 +13,7 @@ const app = express();
 // In production we need to pass these values in instead of relying on webpack
 setup(app, {
   outputPath: resolve(process.cwd(), 'build'),
-  publicPath: '/static/',
+  publicPath: '/',
 });
 
 // Start your app.

@@ -20,6 +20,11 @@ module.exports = function addProdMiddlewares(app, options) {
   //
   // Except that for now it doesn't work on serverless.
   // app.use(compression());
-  app.use(publicPath, express.static(outputPath));
+  //
+  // Add SSR middleware first, then add express.static
+  //
+  // When express.static can't find a file, it will pass control to
+  // the middleware
+  app.use(express.static(outputPath));
   ssr(app, fs, path.join('./build', 'index.html'));
 };
