@@ -26,11 +26,9 @@ s3Controller.listObjects({
   Promise.all(
     data.Contents.map(d => d.Key)
       .filter(k =>
-        k.startsWith('static') && (
-          k.endsWith('.js') ||
-          k.endsWith('.gz') ||
-          k.endsWith('.json)')
-        )
+        k.endsWith('.js') ||
+        k.endsWith('.gz') ||
+        k.endsWith('.json)')
       )
       .map(k => s3Controller.deleteObject({
         Bucket: s3UploadConfig.bucket,
