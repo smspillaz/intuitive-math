@@ -8,13 +8,11 @@ const NO_CACHE_STATIC_REDIRECTS = ['/sw.js', '/favicon.ico'];
 module.exports = (app, options) => {
   const isProd = process.env.NODE_ENV === 'production';
 
-  // redirect favicons and service workers
+  // Set Cache-Control: no-cache on service worker and favicons
   app.use((req, res, next) => {
-    if (NO_CACHE_STATIC_REDIRECTS.some(p => `/static${p}` === req.url)) {
+    if (NO_CACHE_STATIC_REDIRECTS.some(p => p === req.url)) {
       res.setHeader('Cache-Control', 'no-cache');
       next();
-    } else if (NO_CACHE_STATIC_REDIRECTS.some(p => p === req.url)) {
-      res.redirect(`/static${req.url}`);
     } else {
       next();
     }
