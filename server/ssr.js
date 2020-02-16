@@ -68,7 +68,7 @@ module.exports = (app, fs, indexHTMLTemplatePath) => {
           (statsErr, statsData) => {
             const bundles = getBundles(JSON.parse(statsData), modules);
             const bundlesHTML = bundles
-              .map(bundle => `<script src="/static/${bundle.file}"></script>`)
+              .map(bundle => `<script src="/${bundle.file}"></script>`)
               .join('\n');
             const stateHydrationHTML = process.env.DISABLE_SSR_STATE
               ? ''
