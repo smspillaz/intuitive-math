@@ -4,7 +4,6 @@ const fs = require('fs');
 const ssr = require('../ssr');
 
 module.exports = function addProdMiddlewares(app, options) {
-  const publicPath = options.publicPath || '/';
   const outputPath = options.outputPath || path.resolve(process.cwd(), 'build');
 
   // use the gzipped bundle
