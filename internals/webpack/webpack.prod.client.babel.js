@@ -20,7 +20,7 @@ const config = require('./webpack.prod.babel')({
   output: {
     filename: '[name].[chunkhash].js',
     chunkFilename: '[name].[chunkhash].chunk.js',
-    publicPath: '/'
+    publicPath: '/',
   },
 
   optimization: {
