@@ -6,15 +6,15 @@ const { END } = require('redux-saga');
 // Real filesystem
 const physicalFS = require('fs');
 
-// Memory history
-const { createMemoryHistory } = require('history');
-
 // Server rendering for styled-components
 const { ServerStyleSheet } = require('styled-components');
 
 // Server rendering for react-loadable
 const Loadable = require('react-loadable');
 const { getBundles } = require('react-loadable/webpack');
+
+// Server side history object
+const history = require('utils/history').default;
 
 // Import root containers
 const Root = require('../app/app').default;
@@ -37,9 +37,8 @@ module.exports = (app, fs, indexHTMLTemplatePath) => {
       return;
     }
 
-    const memoryHistory = createMemoryHistory(req.url);
-    memoryHistory.push(req.originalUrl);
-    const store = configureStore({}, memoryHistory);
+    history.push(req.originalUrl);
+    const store = configureStore({}, history);
 
     // Once the sagas have run, render again
     store
@@ -55,7 +54,7 @@ module.exports = (app, fs, indexHTMLTemplatePath) => {
             <Loadable.Capture report={moduleName => modules.push(moduleName)}>
               <AnalyticsRoot
                 messages={messages}
-                history={memoryHistory}
+                history={history}
                 store={store}
               />
             </Loadable.Capture>,
@@ -102,7 +101,7 @@ module.exports = (app, fs, indexHTMLTemplatePath) => {
     ReactDOMServer.renderToString(
       <AnalyticsRoot
         messages={messages}
-        history={memoryHistory}
+        history={history}
         store={store}
       />,
     );
