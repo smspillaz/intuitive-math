@@ -99,11 +99,7 @@ module.exports = (app, fs, indexHTMLTemplatePath) => {
     // everything. Then dispatch END. This is a special action
     // which will cause all sagas to terminate.
     ReactDOMServer.renderToString(
-      <AnalyticsRoot
-        messages={messages}
-        history={history}
-        store={store}
-      />,
+      <AnalyticsRoot messages={messages} history={history} store={store} />,
     );
     store.dispatch(END);
   });
