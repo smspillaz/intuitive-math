@@ -104,6 +104,8 @@
     "react-hot-loader": "4.12.18",
     "react-intl": "2.9.0",
     "react-loadable": "5.4.0",
+    "react-mathjax": "1.0.1",
+    "react-media": "1.10.0",
     "react-metrics": "^2.4.0",
     "react-redux": "7.1.3",
     "react-router-dom": "5.1.2",
