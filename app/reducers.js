@@ -4,10 +4,8 @@
 
 import { combineReducers } from '@reduxjs/toolkit';
 import { connectRouter } from 'connected-react-router';
-
 import history from 'utils/history';
 import { reducer as languageProviderReducer } from 'containers/LanguageProvider/slice';
-import { reducer as reposManagerReducer } from 'containers/ReposManager/slice';
 
 /**
  * Merges the main reducer with the router state and dynamically injected reducers
@@ -15,7 +13,6 @@ import { reducer as reposManagerReducer } from 'containers/ReposManager/slice';
 export default function createReducer(injectedReducers = {}) {
   const rootReducer = combineReducers({
     language: languageProviderReducer,
-    reposManager: reposManagerReducer,
     router: connectRouter(history),
     ...injectedReducers,
   });

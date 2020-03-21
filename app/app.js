@@ -11,6 +11,7 @@ import 'react-app-polyfill/stable';
 import React from 'react';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
+
 import { HelmetProvider } from 'react-helmet-async';
 
 import PropTypes from 'prop-types';
@@ -24,10 +25,10 @@ import LanguageProvider from 'containers/LanguageProvider';
 // Import CSS reset and Global Styles
 import './global-styles';
 
-const ConnectedApp = props => (
-  <Provider store={props.store}>
-    <LanguageProvider messages={props.messages}>
-      <ConnectedRouter history={props.history}>
+const ConnectedApp = ({ messages, history, store }) => (
+  <Provider store={store}>
+    <LanguageProvider messages={messages}>
+      <ConnectedRouter history={history}>
         <HelmetProvider>
           <App />
         </HelmetProvider>

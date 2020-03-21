@@ -12,7 +12,7 @@
  */
 
 import { createSlice } from '@reduxjs/toolkit';
-import { DEFAULT_LOCALE } from '../../locales';
+import { DEFAULT_LOCALE } from '../../i18n';
 
 // The initial state of the LanguageProvider
 export const initialState = {
