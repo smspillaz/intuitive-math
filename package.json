@@ -103,6 +103,7 @@
     "react-redux": "7.1.3",
     "react-router-dom": "5.1.2",
     "react-snapshot": "^1.3.0",
+    "react-three-fiber": "4.0.22",
     "redux-injectors": "1.2.0",
     "redux-saga": "1.1.3",
     "reselect": "4.0.0",
