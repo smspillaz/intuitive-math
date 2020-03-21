@@ -110,6 +110,7 @@
     "sanitize.css": "11.0.0",
     "serverless-http": "^1.5.2",
     "styled-components": "4.4.0",
+    "three": "0.114.0",
     "uid": "0.0.2",
     "warning": "4.0.2",
     "webpack": "4.41.2",
