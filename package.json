@@ -69,6 +69,9 @@
     "babel-core": "7.0.0-bridge.0"
   },
   "dependencies": {
+    "@atlaskit/navigation": "36.0.3",
+    "@atlaskit/page": "11.0.12",
+    "@atlaskit/theme": "9.5.2",
     "@babel/polyfill": "7.4.3",
     "@hot-loader/react-dom": "16.11.0",
     "@reduxjs/toolkit": "1.0.4",
