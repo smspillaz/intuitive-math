@@ -19,20 +19,18 @@ class SegmentAnalyticsApi {
     hasKey(window, 'analytics', () =>
       hasKey(window.analytics, 'load', () =>
         window.analytics.load(SEGMENT_CLIENT_ID),
-      )
+      ),
     );
   }
 
   pageView(category, name, props, options) {
     hasKey(window, 'analytics', () =>
-      window.analytics.page(category, name, props, options)
+      window.analytics.page(category, name, props, options),
     );
   }
 
   track(event, props) {
-    hasKey(window, 'analytics', () =>
-      window.analytics.track(event, props)
-    );
+    hasKey(window, 'analytics', () => window.analytics.track(event, props));
   }
 }
 
