@@ -80,6 +80,7 @@
     "analytics-node": "^3.2.0",
     "chalk": "3.0.0",
     "circular-dependency-plugin": "5.2.0",
+    "clsx": "1.1.0",
     "compression": "1.7.4",
     "connected-react-router": "6.6.1",
     "cross-env": "6.0.3",
