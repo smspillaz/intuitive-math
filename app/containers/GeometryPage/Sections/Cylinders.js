@@ -163,7 +163,7 @@ const CylindersSection = () => (
             1 * u,
           )
         }
-        uGradientVecFunc={(u, v) => new Vector3(0, 0, 1)}
+        uGradientVecFunc={() => new Vector3(0, 0, 1)}
         vGradientVecFunc={(u, v) =>
           new Vector3(
             -8 *

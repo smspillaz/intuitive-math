@@ -149,9 +149,9 @@ export const NavigationDrawer = ({ sections, children }) => {
           defaultCollapseIcon={<ExpandMoreIcon />}
           defaultExpandIcon={<ChevronRightIcon />}
         >
-          {sections.map(({ title, children }) => (
+          {sections.map(({ title, children: sectionChildren }) => (
             <TreeItem nodeId={title} label={title}>
-              {children.map(({ text, href }) => (
+              {sectionChildren.map(({ text, href }) => (
                 <LinkStyle>
                   <Link to={href}>
                     <TreeItem label={text} nodeId={text} />

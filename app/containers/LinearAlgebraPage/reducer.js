@@ -9,10 +9,9 @@
  * case YOUR_ACTION_CONSTANT:
  *   return state.set('yourStateVariable', true);
  */
-import { fromJS } from 'immutable';
 
 // The initial state of the App
-const initialState = fromJS({});
+const initialState = {};
 
 function linearAlgebraReducer(state = initialState) {
   return state;

@@ -5,26 +5,104 @@
  */
 
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import MathJax from 'react-mathjax';
 
-import { Vector3 } from 'three';
-
-import { XAxis, YAxis } from 'components/Axis';
 import AxisVisualization1D from 'components/AxisVisualization1D';
 import AxisVisualization2D from 'components/AxisVisualization2D';
 import AxisVisualization3D from 'components/AxisVisualization3D';
 import CenteredParagraph from 'components/CenteredParagraph';
 import MathJaxMatrix from 'components/MathJaxMatrix';
-import InterpolatedAnimation, {
+import {
+  InterpolatedAnimationGroup,
   cosineInterpolator,
   sineInterpolator,
 } from 'components/InterpolatedAnimation';
 import Section from 'components/Section';
 import Strong from 'components/Strong';
-import Tweakable from 'components/Tweakable';
 import Vector from 'components/Vector';
-import Visualization, { TweakablesBox } from 'components/Visualization';
+
+class DerivedValue extends Object {
+  constructor(state, func) {
+    super();
+    this.state = state;
+    this.func = func;
+  }
+
+  get value() {
+    return this.func({ state: this.state });
+  }
+}
+
+const FunctionalDerivedState = ({ state, functions, render }) => {
+  const nextState = {
+    ...Object.fromEntries(
+      Object.entries(functions).map(([k, v]) => [
+        k,
+        new DerivedValue(state, v),
+      ]),
+    ),
+    ...state,
+  };
+
+  return <>{render({ state: nextState })}</>;
+};
+
+FunctionalDerivedState.propTypes = {
+  state: PropTypes.object.isRequired,
+  functions: PropTypes.arrayOf(PropTypes.object).isRequired,
+  render: PropTypes.func.isRequired,
+};
+
+const AnimatedVectorGroup = ({ values, bindings, functions = {} }) => (
+  <InterpolatedAnimationGroup
+    values={values}
+    render={({ state }) => (
+      <FunctionalDerivedState
+        state={state}
+        functions={functions}
+        render={({ state: derivedState }) => (
+          <group>
+            {bindings.map(
+              (
+                {
+                  color,
+                  base: baseKeys = [0, 0, 0],
+                  position: positionKeys = [0, 0, 0],
+                },
+                i,
+              ) => (
+                <Vector
+                  color={color}
+                  update={({ base, position }) => {
+                    ['x', 'y', 'z'].forEach((k, j) => {
+                      base[k] =
+                        typeof baseKeys[j] === 'string'
+                          ? derivedState[baseKeys[j]].value
+                          : baseKeys[j];
+                      position[k] =
+                        typeof positionKeys[j] === 'string'
+                          ? derivedState[positionKeys[j]].value
+                          : positionKeys[j];
+                    });
+                  }}
+                  key={i} // eslint-disable-line react/no-array-index-key
+                />
+              ),
+            )}
+          </group>
+        )}
+      />
+    )}
+  />
+);
+
+AnimatedVectorGroup.propTypes = {
+  values: PropTypes.object.isRequired,
+  bindings: PropTypes.arrayOf(PropTypes.object).isRequired,
+  functions: PropTypes.object,
+};
 
 const VectorsSection = () => (
   <Section title="Vectors" anchor="vectors">
@@ -34,7 +112,16 @@ const VectorsSection = () => (
     </p>
     <AxisVisualization3D
       title="A single vector in 3D space"
-      render={() => <Vector position={new Vector3(2, 2, 2)} color={0xff8800} />}
+      render={() => (
+        <Vector
+          update={({ position }) => {
+            position.x = 1;
+            position.y = 2;
+            position.z = 2;
+          }}
+          color={0xff8800}
+        />
+      )}
     />
     <p>
       There is a few different ways to think about vectors. It is not quite
@@ -71,33 +158,19 @@ const VectorsSection = () => (
       build up. For instance, take a one-dimensional space, the number line,
       where we only have an <MathJax.Node inline formula="x" /> axis.
     </p>
-    <InterpolatedAnimation
-      values={{
-        xPosition: { begin: -1, end: 1 },
-      }}
-      render={({ xPosition }) => (
-        <div>
-          <AxisVisualization1D
-            title="A vector in 1D space"
-            render={() => (
-              <Vector
-                position={new Vector3(xPosition.value, 0, 0)}
-                color={0xff8800}
-              />
-            )}
-            renderExtras={({ width }) => (
-              <TweakablesBox width={width}>
-                <div>
-                  <Tweakable {...xPosition}>
-                    <MathJax.Node inline formula="x =" />{' '}
-                  </Tweakable>
-                </div>
-              </TweakablesBox>
-            )}
+    <div>
+      <AxisVisualization1D
+        title="A vector in 1D space"
+        render={() => (
+          <AnimatedVectorGroup
+            values={{
+              xPosition: { begin: -1, end: 1 },
+            }}
+            bindings={[{ color: 0xff8800, position: ['xPosition', 0, 0] }]}
           />
-        </div>
-      )}
-    />
+        )}
+      />
+    </div>
     <p>
       Now let us have a look at a vector which ranges around a circle on the
       <MathJax.Node inline formula="x" /> and{' '}
@@ -105,6 +178,37 @@ const VectorsSection = () => (
       the same thing along the x axis, but we are sort of translating the whole
       line up and down whilst the vector move along the same line.
     </p>
+    <div>
+      <AxisVisualization2D
+        title="A vector ranging around a circle"
+        render={() => (
+          <AnimatedVectorGroup
+            values={{
+              xPosition: { begin: -1, end: 1, interpolator: sineInterpolator },
+              yPosition: {
+                begin: -1,
+                end: 1,
+                interpolator: cosineInterpolator,
+              },
+            }}
+            bindings={[
+              { color: 0xff8800, position: ['xPosition', 'yPosition', 0] },
+              {
+                color: 0xff8800,
+                position: ['xPosition', 'yPosition', 0],
+                base: ['xPosition', 0, 0],
+              },
+              {
+                color: 0xff8800,
+                position: ['xPosition', 'yPosition', 0],
+                base: [0, 'yPosition', 0],
+              },
+            ]}
+          />
+        )}
+      />
+    </div>
+    {/*
     <InterpolatedAnimation
       values={{
         xPosition: { begin: -1, end: 1, interpolator: sineInterpolator },
@@ -149,12 +253,52 @@ const VectorsSection = () => (
           />
         </div>
       )}
-    />
+    /> */}
     <p>
       Extending this to the third dimension is fairly straightforward. If we can
       imagine our 2D animation running on a flat surface, then in 3D all we are
       really doing is moving the plane which is that flat surface, around.
     </p>
+    <div>
+      <AxisVisualization3D
+        title="A vector ranging around a circle in 3D space"
+        render={() => (
+          <AnimatedVectorGroup
+            values={{
+              xPosition: { begin: -1, end: 1, interpolator: sineInterpolator },
+              yPosition: {
+                begin: -1,
+                end: 1,
+                interpolator: cosineInterpolator,
+              },
+              zPosition: { begin: -1, end: 1, interpolator: sineInterpolator },
+            }}
+            bindings={[
+              {
+                color: 0xff8800,
+                position: ['xPosition', 'yPosition', 'zPosition'],
+              },
+              {
+                color: 0xff8800,
+                position: ['xPosition', 'yPosition', 'zPosition'],
+                base: ['xPosition', 'yPosition', 0],
+              },
+              {
+                color: 0xff8800,
+                position: ['xPosition', 'yPosition', 'zPosition'],
+                base: ['xPosition', 0, 'zPosition'],
+              },
+              {
+                color: 0xff8800,
+                position: ['xPosition', 'yPosition', 'zPosition'],
+                base: [0, 'yPosition', 'zPosition'],
+              },
+            ]}
+          />
+        )}
+      />
+    </div>
+    {/*
     <InterpolatedAnimation
       values={{
         xPosition: { begin: -1, end: 1, interpolator: sineInterpolator },
@@ -235,6 +379,7 @@ const VectorsSection = () => (
         </div>
       )}
     />
+    */}
     <p>
       Addition and subtraction on vectors is defined in the usual sense.
       Analytically we just add each component and create a new vector.
@@ -251,7 +396,33 @@ const VectorsSection = () => (
       the steps indicated by the first vector, then following the steps
       indicated by the second
     </p>
-    <InterpolatedAnimation
+    <div>
+      <AxisVisualization2D
+        title="Adding two vectors"
+        render={() => (
+          <AnimatedVectorGroup
+            values={{
+              xAdd: { begin: 0, end: 2 },
+              yAdd: { begin: 0, end: 1 },
+            }}
+            functions={{
+              addedX: ({ state }) => state.xAdd.value + 1,
+              addedY: ({ state }) => state.yAdd.value + 2,
+            }}
+            bindings={[
+              { color: 0xffff00, position: [1, 2, 0] },
+              {
+                color: 0xff00ff,
+                position: ['addedX', 'addedY', 0],
+                base: [1, 2, 0],
+              },
+              { color: 0x00ffff, position: ['addedX', 'addedY', 0] },
+            ]}
+          />
+        )}
+      />
+    </div>
+    {/* <InterpolatedAnimation
       values={{
         xAdd: { begin: 0, end: 2 },
         yAdd: { begin: 0, end: 1 },
@@ -303,7 +474,7 @@ const VectorsSection = () => (
           </div>
         );
       }}
-    />
+    /> */}
     <p>
       Of course, note that this only works if the two vectors have the same
       number of dimensions.
@@ -315,7 +486,29 @@ const VectorsSection = () => (
       what you are really doing in that case is scaling each component by a
       different number.
     </p>
-    <InterpolatedAnimation
+    <div>
+      <AxisVisualization2D
+        title="Component-wise multiplication, scaling information is lost"
+        render={() => (
+          <AnimatedVectorGroup
+            values={{
+              xMul: { begin: 0, end: 2 },
+              yMul: { begin: 0, end: 1 },
+            }}
+            functions={{
+              resultX: ({ state }) => state.xMul.value * 1,
+              resultY: ({ state }) => state.yMul.value * 2,
+            }}
+            bindings={[
+              { color: 0xffff00, position: [1, 2, 0] },
+              { color: 0xff00ff, position: ['xMul', 'yMul', 0] },
+              { color: 0x00ffff, position: ['resultX', 'resultY', 0] },
+            ]}
+          />
+        )}
+      />
+    </div>
+    {/* <InterpolatedAnimation
       values={{
         xMul: { begin: 0, end: 2 },
         yMul: { begin: 0, end: 1 },
@@ -365,7 +558,7 @@ const VectorsSection = () => (
           </div>
         );
       }}
-    />
+    /> */}
   </Section>
 );
 

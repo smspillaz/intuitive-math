@@ -37,7 +37,8 @@ const IntegralsSection = () => (
       and also does not inspire students to think about what else it could be
       used for other than finding the area underneath curves. Part of the reason
       why this is the case is that the integral is taught in the context of
-      calculus, where it is typically referred to as the "antiderivative".
+      calculus, where it is typically referred to as the
+      &quot;antiderivative&quot;.
     </p>
     <p>
       While the fundamental theorem of calculus shows that this is technically

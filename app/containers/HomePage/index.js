@@ -11,18 +11,15 @@ import styled from 'styled-components';
 
 import CDNMathJaxContext from 'components/CDNMathJaxContext';
 import CancelPresentationIcon from '@material-ui/icons/CancelPresentation';
-import MathJax from 'react-mathjax';
-import { Vector3 } from 'three';
 
 import AxisVisualization3D from 'components/AxisVisualization3D';
-import InterpolatedAnimation, {
+import {
+  InterpolatedAnimationGroup,
   sineInterpolator,
   cosineInterpolator,
 } from 'components/InterpolatedAnimation';
 import Section from 'components/Section';
-import Tweakable from 'components/Tweakable';
 import Vector from 'components/Vector';
-import { TweakablesBox } from 'components/Visualization';
 
 import logo from '../../images/banner.png';
 
@@ -53,90 +50,66 @@ export const HomePage = () => (
             help you develop a visual intuition for what is going on. More
             fields will be added as time goes on.
           </p>
-          <InterpolatedAnimation
-            values={{
-              xPosition: { begin: -1, end: 1, interpolator: sineInterpolator },
-              yPosition: {
-                begin: -1,
-                end: 1,
-                interpolator: cosineInterpolator,
-              },
-              zPosition: { begin: -1, end: 1, interpolator: sineInterpolator },
-            }}
-            render={({ xPosition, yPosition, zPosition }) => (
-              <div>
-                <AxisVisualization3D
-                  title="Home page visualization"
-                  render={() => (
+          <div>
+            <AxisVisualization3D
+              title="Home page visualization"
+              render={() => (
+                <InterpolatedAnimationGroup
+                  values={{
+                    xPosition: {
+                      begin: -1,
+                      end: 1,
+                      interpolator: sineInterpolator,
+                    },
+                    yPosition: {
+                      begin: -1,
+                      end: 1,
+                      interpolator: cosineInterpolator,
+                    },
+                    zPosition: {
+                      begin: -1,
+                      end: 1,
+                      interpolator: sineInterpolator,
+                    },
+                  }}
+                  render={({ state }) => (
                     <group>
                       <Vector
-                        position={
-                          new Vector3(
-                            xPosition.value,
-                            yPosition.value,
-                            zPosition.value,
-                          )
-                        }
+                        update={({ position }) => {
+                          position.x = state.xPosition.value;
+                          position.y = state.yPosition.value;
+                          position.z = state.zPosition.value;
+                        }}
                         color={0xff8800}
                       />
                       <Vector
-                        position={
-                          new Vector3(
-                            xPosition.value,
-                            yPosition.value,
-                            zPosition.value,
-                          )
-                        }
-                        base={new Vector3(0, yPosition.value, zPosition.value)}
+                        update={({ base, position }) => {
+                          position.x = state.xPosition.value;
+                          position.y = state.yPosition.value;
+                          position.z = state.zPosition.value;
+
+                          base.y = state.yPosition.value;
+                          base.z = state.zPosition.value;
+                        }}
                         color={0xff8800}
                       />
                       <Vector
-                        position={
-                          new Vector3(
-                            xPosition.value,
-                            yPosition.value,
-                            zPosition.value,
-                          )
-                        }
-                        base={new Vector3(xPosition.value, 0, zPosition.value)}
-                        color={0xff8800}
-                      />
-                      <Vector
-                        position={
-                          new Vector3(
-                            xPosition.value,
-                            yPosition.value,
-                            zPosition.value,
-                          )
-                        }
-                        base={new Vector3(0, yPosition.value, zPosition.value)}
+                        update={({ base, position }) => {
+                          position.x = state.xPosition.value;
+                          position.y = state.yPosition.value;
+                          position.z = state.zPosition.value;
+
+                          base.x = state.xPosition.value;
+                          base.z = state.zPosition.value;
+                        }}
                         color={0xff8800}
                       />
                     </group>
                   )}
-                  renderExtras={({ width }) => (
-                    <TweakablesBox width={width}>
-                      <div>
-                        <Tweakable {...xPosition}>
-                          <MathJax.Node inline formula="x =" />{' '}
-                        </Tweakable>
-                      </div>
-                      <div>
-                        <Tweakable {...yPosition}>
-                          <MathJax.Node inline formula="y =" />{' '}
-                        </Tweakable>
-                      </div>
-                      <div>
-                        <Tweakable {...zPosition}>
-                          <MathJax.Node inline formula="z =" />{' '}
-                        </Tweakable>
-                      </div>
-                    </TweakablesBox>
-                  )}
                 />
-              </div>
-            )}
-          />
+              )}
+            />
+          </div>
           <p>
             The visualizations are partially interactive. They are done on
             sine-wave interpolations by default, but if a value is shown below

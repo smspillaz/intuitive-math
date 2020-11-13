@@ -6,22 +6,16 @@
  *
  */
 
-import React, { useContext } from 'react';
+import React, { useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { AnimationContext } from 'components/Animation';
+import AnimationController from 'components/AnimationController';
 
-const ClickToAnimate = ({ children }) => {
-  const { animationIsRunning, startAnimation, stopAnimation } = useContext(
-    AnimationContext,
-  );
-  const handleClick = () => {
-    if (!!animationIsRunning && stopAnimation) {
-      stopAnimation();
-    } else if (startAnimation) {
-      startAnimation();
-    }
-  };
+const ClickToAnimate = ({ isVisible, children }) => {
+  const [animating, setAnimating] = useState(false);
+  const handleClick = useMemo(() => () => setAnimating(!animating), [
+    animating,
+  ]);
 
   return (
     <div
@@ -30,12 +24,15 @@ const ClickToAnimate = ({ children }) => {
       role="button"
       tabIndex={0}
     >
-      {children}
+      <AnimationController isVisible={isVisible} running={animating}>
+        {children}
+      </AnimationController>
     </div>
   );
 };
 
 ClickToAnimate.propTypes = {
+  isVisible: PropTypes.bool.isRequired,
   children: PropTypes.oneOfType([
     PropTypes.node,
     PropTypes.arrayOf(PropTypes.node),

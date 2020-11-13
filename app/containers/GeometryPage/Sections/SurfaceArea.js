@@ -265,7 +265,8 @@ const SurfaceAreaSection = () => (
         return <CubeVectors3D matrix={mat} wireframe />;
       }}
     />
-    <MathJax.Node formula={`
+    <MathJax.Node
+      formula={`
       \\det \\begin{pmatrix} a_1 & a_2 & a_3 \\\\
                            b_1 & b_2 & b_3 \\\\
                            c_1 & c_2 & c_3 \\\\
@@ -273,10 +274,10 @@ const SurfaceAreaSection = () => (
       c_1(a_2b_3 - a_3b_2) - c_2(a_1b_3 - a_3b_1) + c_3(a_1b_2 - a_2b_1)
       `}
     />
-    <MathJax.Node formula={
-      `\\left\| (a \\times b) \\cdot c \\right\|  =
-        c_1(a_2b_3 - a_3b_2) - c_2(a_1b_3 - a_3b_1) + c_3(a_1b_2 - a_2b_1)`
-    } />
+    <MathJax.Node
+      formula={`\\left\\| (a \\times b) \\cdot c \\right\\|  =
+        c_1(a_2b_3 - a_3b_2) - c_2(a_1b_3 - a_3b_1) + c_3(a_1b_2 - a_2b_1)`}
+    />
     <p>
       So if we divide by <MathJax.Node inline formula="c" /> and drop the depth
       dimension, we are just left with area, which is the cross product between

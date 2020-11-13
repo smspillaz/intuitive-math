@@ -9,8 +9,6 @@ import React from 'react';
 
 import MathJax from 'react-mathjax';
 
-import { Vector3 } from 'three';
-
 import {
   Parametric2DPositionVisualization,
   Parametric3DPositionVisualization,
@@ -56,7 +54,7 @@ const ParametricSurfacesSection = () => (
       max={Math.PI * 2}
     />
     <p>
-      Thus, we have a sort of "hidden" parameter{' '}
+      Thus, we have a sort of &quot;hidden&quot; parameter{' '}
       <MathJax.Node inline formula="t" /> which does not get its own axis in the
       output space, but still defines where a particle is over time.
     </p>

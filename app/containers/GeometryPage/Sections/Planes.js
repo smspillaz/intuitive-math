@@ -72,7 +72,7 @@ const PlanesSection = () => (
       most other mathematics visualisations may use, where the
       <MathJax.Node inline formula="z" /> axis appears to go up and down.
       Instead, the <MathJax.Node inline formula="z" /> axis here extends{' '}
-      {'"inwards"'} and "outwards", just like it does in OpenGL.
+      &quot;inwards&quot; and &quot;outwards&quot;, just like it does in OpenGL.
     </p>
     <p>
       Considering the dependencies that are at play here, also note that we can
@@ -145,9 +145,9 @@ const PlanesSection = () => (
       )}
     />
     <p>
-      Note also that in order for the lines to appear to be "on" the plane, we
-      had to shift their <MathJax.Node inline formula="y" /> co-ordinates too -
-      it would not work if we just applied an{' '}
+      Note also that in order for the lines to appear to be &quot;on&quot; the
+      plane, we had to shift their <MathJax.Node inline formula="y" />{' '}
+      co-ordinates too - it would not work if we just applied an{' '}
       <MathJax.Node inline formula="x" /> translation to the same line. The
       requisite shift here was to ensure that the lines continued to satisfy the
       equation defining the plane itself:
@@ -166,8 +166,8 @@ const PlanesSection = () => (
     </p>
     <MathJax.Node formula="3 \times 1 + 2 \times 0 - 0 = 3 \ne 0" />
     <p>
-      In order to make the equality "work", we have to adjust either the{' '}
-      <MathJax.Node inline formula="y" /> co-ordinate or the{' '}
+      In order to make the equality &quot;work&quot;, we have to adjust either
+      the <MathJax.Node inline formula="y" /> co-ordinate or the{' '}
       <MathJax.Node inline formula="z" /> co-ordinate such that{' '}
       <MathJax.Node inline formula="2y - z = -3" />. In this case, we can just
       tweak the <MathJax.Node inline formula="y" /> co-ordinate and make that{' '}

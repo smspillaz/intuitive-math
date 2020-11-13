@@ -62,11 +62,6 @@ const FlexboxRow = styled.div`
   flex: 1 1 auto;
 `;
 
-const FlexboxFill = styled.div`
-  width: auto;
-  flex: 1;
-`;
-
 const RightJustifiedButton = styled.div`
   margin: auto;
   padding-right: 10px;
@@ -78,15 +73,13 @@ const HiddenOnDesktop = styled.div`
   }
 `;
 
-export const MobileNavigator = ({ title, sections }) => (
+export const MobileNavigator = ({ sections }) => (
   <HiddenOnDesktop>
     <MobileNavigationItemsDrawerState
       render={({ open, toggleOpen }) => (
         <div>
           <FlexboxRow>
-            <RightJustifiedButton>
-              <MenuIcon onClick={toggleOpen} />
-            </RightJustifiedButton>
+            <RightJustifiedButton />
           </FlexboxRow>
           <MobileNavigationItemsDrawer visible={open}>
             <NavigationItems sections={sections} onActivate={toggleOpen} />
@@ -98,7 +91,6 @@ export const MobileNavigator = ({ title, sections }) => (
 );
 
 MobileNavigator.propTypes = {
-  title: PropTypes.string.isRequired,
   sections: PropTypes.arrayOf(
     PropTypes.shape({
       title: PropTypes.string.isRequired,

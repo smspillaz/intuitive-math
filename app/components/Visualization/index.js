@@ -1,5 +1,6 @@
 // eslint-disable too-many-classes
-import React, { useContext, useEffect } from 'react';
+// eslint-disable max-classes-per-file
+import React, { useContext, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { exposeMetrics } from 'react-metrics';
 
@@ -8,8 +9,9 @@ import styled from 'styled-components';
 import Media from 'react-media';
 import TrackVisibility from 'react-on-screen';
 import { Canvas, useFrame, useThree } from 'react-three-fiber';
-import { Color, Vector3 } from 'three';
+import { Color } from 'three';
 
+import { AnimationControllerContext } from 'components/AnimationController';
 import { AnimationContext } from 'components/Animation';
 import ClickToAnimate from 'components/ClickToAnimate';
 
@@ -46,7 +48,6 @@ const Overlay = styled.div`
 
 const OverlayParent = styled.div`
   position: relative;
-  width: ${props => props.width};
 `;
 
 OverlayParent.propTypes = {
@@ -129,144 +130,65 @@ TweakablesBox.propTypes = {
 };
 
 const Element = ({
-  onAnimationFrame,
-  children,
-  position,
-  rotation,
-  matrix,
+  onAnimationFrame = null,
   animationIsRunning,
+  children,
+  update = null,
+  rotation = null,
+  matrix = null,
 }) => {
-  const { camera, size } = useThree();
+  const mesh = useRef();
+  const { camera, size, scene } = useThree();
 
   camera.aspect = size.width / size.height;
-  camera.position.set(position || new Vector3(0, 0, 5));
+  scene.background = new Color(0x000000);
 
-  useFrame(() => {
-    if (animationIsRunning) {
-      onAnimationFrame();
+  useFrame(props => {
+    // Skip calling frame callback if animation is not meant to be run
+    if (!animationIsRunning) {
+      return;
+    }
+
+    if (onAnimationFrame) {
+      onAnimationFrame({ ...props });
+    }
+
+    if (update) {
+      update({ mesh });
     }
   });
 
   return (
-    <group {...(rotation ? { rotation } : {})} {...(matrix ? { matrix } : {})}>
+    <group
+      ref={mesh}
+      {...(rotation ? { rotation } : {})}
+      {...(matrix ? { matrix } : {})}
+    >
       {children}
     </group>
   );
 };
 
 Element.propTypes = {
-  onAnimationFrame: PropTypes.func.isRequired,
+  onAnimationFrame: PropTypes.func,
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.element),
     PropTypes.element,
   ]).isRequired,
-  position: PropTypes.object.isRequired,
-  rotation: PropTypes.object.isRequired,
-  matrix: PropTypes.object.isRequired,
-  animationIsRunning: PropTypes.bool.isRequired,
-};
-
-const React3Visualization = ({
-  children,
-  onAnimationFrame,
-  animationIsRunning,
-  position,
-  width,
-  height,
-  curvedBottomCorners,
-  rotation,
-  matrix,
-}) => (
-  <div
-    style={{
-      width,
-      height,
-      borderRadius: curvedBottomCorners ? '1em' : '1em 1em 0 0',
-    }}
-  >
-    <Canvas>
-      <Element
-        onAnimationFrame={onAnimationFrame}
-        animationIsRunning={animationIsRunning}
-        position={position}
-        rotation={rotation}
-        matrix={matrix}
-      >
-        {children}
-      </Element>
-    </Canvas>
-  </div>
-);
-
-React3Visualization.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.element,
-    PropTypes.arrayOf(PropTypes.element),
-  ]),
-  animationIsRunning: PropTypes.bool.isRequired,
-  curvedBottomCorners: PropTypes.bool.isRequired,
-  width: PropTypes.number.isRequired,
-  height: PropTypes.number.isRequired,
   rotation: PropTypes.object,
   matrix: PropTypes.object,
-  position: PropTypes.object,
-  onAnimationFrame: PropTypes.func,
-  onRegisterManualRenderCallback: PropTypes.func,
-};
-
-const TransformGroup = ({ rotation, matrix, children }) => (
-  <group {...(rotation ? { rotation } : {})} {...(matrix ? { matrix } : {})}>
-    {children}
-  </group>
-);
-
-const Scene = ({
-  onAnimationFrame,
-  animationIsRunning,
-  startAnimation,
-  stopAnimation,
-  children,
-}) => {
-  useEffect(() => {
-    if (animationIsRunning) {
-      if (startAnimation) {
-        startAnimation();
-      }
-    } else if (stopAnimation) {
-      stopAnimation();
-    }
-  }, [animationIsRunning]);
-  useFrame(() => {
-    if (animationIsRunning) {
-      onAnimationFrame();
-    }
-  });
-
-  const { scene } = useThree();
-  scene.background = new Color(0x000000);
-
-  return <>{children}</>;
-};
-
-Scene.propTypes = {
   animationIsRunning: PropTypes.bool.isRequired,
-  onAnimationFrame: PropTypes.func,
-  startAnimation: PropTypes.func,
-  stopAnimation: PropTypes.func,
-  children: PropTypes.oneOfType([
-    PropTypes.element,
-    PropTypes.arrayOf(PropTypes.element),
-  ]),
+  update: PropTypes.func,
 };
 
 const AnimatedReact3Visualization = ({
   width,
   height,
-  rotation,
-  matrix,
   children,
-  curvedBottomCorners,
+  curvedBottomCorners = true,
+  ...props
 }) => {
+  const animationControllerContext = useContext(AnimationControllerContext);
   const animationContext = useContext(AnimationContext);
 
   return (
@@ -277,15 +199,32 @@ const AnimatedReact3Visualization = ({
         margin: 'auto',
         borderRadius: curvedBottomCorners ? '1em' : '1em 1em 0 0',
       }}
-      invalidateFrameloop={!animationContext.isAnimationRunning}
+      invalidateFrameloop={!animationControllerContext.animationIsRunning}
     >
-      <Scene {...animationContext}>
-        <TransformGroup rotation={rotation} matrix={matrix}>
+      {/* Need to re-provide the animation context */}
+      <AnimationControllerContext.Provider value={animationControllerContext}>
+        <ambientLight />
+        <pointLight position={[10, 10, 10]} />
+        <Element
+          {...animationControllerContext}
+          {...animationContext}
+          {...props}
+        >
           {children}
-        </TransformGroup>
-      </Scene>
+        </Element>
+      </AnimationControllerContext.Provider>
     </Canvas>
   );
+};
+
+AnimatedReact3Visualization.propTypes = {
+  width: PropTypes.number.isRequired,
+  height: PropTypes.number.isRequired,
+  children: PropTypes.oneOfType([
+    PropTypes.node,
+    PropTypes.arrayOf(PropTypes.node),
+  ]).isRequired,
+  curvedBottomCorners: PropTypes.bool,
 };
 
 const SVGPlayButton = () => (
@@ -433,16 +372,6 @@ TweenOverlayVisualization.propTypes = {
 
 // eslint-disable-next-line react/no-multi-comp
 class OverlayTweenFromVisibility extends React.Component {
-  static propTypes = {
-    fadeTime: PropTypes.number,
-    isVisible: PropTypes.bool,
-    render: PropTypes.func.isRequired,
-  };
-
-  static defaultProps = {
-    fadeTime: 3000,
-  };
-
   constructor() {
     super();
     this.state = {
@@ -458,7 +387,8 @@ class OverlayTweenFromVisibility extends React.Component {
     this.mounted = true;
   }
 
-  componentWillReceiveProps(nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.isVisible !== this.props.isVisible) {
       if (nextProps.isVisible) {
         this.setState({
@@ -510,9 +440,9 @@ class OverlayTweenFromVisibility extends React.Component {
           this.state.overlayOpacityTarget,
         ),
       );
-      this.setState({
+      this.setState(() => ({
         overlayOpacity: nextOpacity,
-      });
+      }));
 
       if (nextOpacity !== this.state.overlayOpacityTarget && this.mounted) {
         this.rafID = requestAnimationFrame(callback);
@@ -526,9 +456,36 @@ class OverlayTweenFromVisibility extends React.Component {
   }
 }
 
+OverlayTweenFromVisibility.propTypes = {
+  fadeTime: PropTypes.number,
+  isVisible: PropTypes.bool,
+  render: PropTypes.func.isRequired,
+};
+
+OverlayTweenFromVisibility.defaultProps = {
+  fadeTime: 3000,
+};
+
+const PlayableListener = ({ isAnimated, overlayOpacity, children }) => {
+  const { animationIsRunning } = useContext(AnimationControllerContext);
+
+  return (
+    <>
+      {children({
+        playable: !animationIsRunning && isAnimated && overlayOpacity === 0.0,
+      })}
+    </>
+  );
+};
+
+PlayableListener.propTypes = {
+  isAnimated: PropTypes.bool.isRequired,
+  overlayOpacity: PropTypes.number.isRequired,
+  children: PropTypes.func.isRequired,
+};
+
 const Visualization = ({
-  animationIsRunning,
-  isAnimated,
+  isAnimated = true,
   fadeTime,
   isVisible,
   width,
@@ -548,23 +505,26 @@ const Visualization = ({
           overlayOpacity={overlayOpacity}
           curvedBottomCorners={!renderExtras}
         >
-          <ClickToAnimate>
-            <PlayableVisualization
-              width={width}
-              height={height}
-              playable={
-                animationIsRunning === false &&
-                isAnimated &&
-                overlayOpacity === 0.0
-              }
-              curvedBottomCorners={!renderExtras}
-              {...props}
+          <ClickToAnimate isVisible>
+            <PlayableListener
+              isAnimated={isAnimated}
+              overlayOpacity={overlayOpacity}
             >
-              {children}
-            </PlayableVisualization>
+              {({ playable }) => (
+                <PlayableVisualization
+                  width={width}
+                  height={height}
+                  playable={playable}
+                  curvedBottomCorners={!renderExtras}
+                  {...props}
+                >
+                  {children}
+                </PlayableVisualization>
+              )}
+            </PlayableListener>
           </ClickToAnimate>
         </TweenOverlayVisualization>
-        {renderExtras && renderExtras({ width, animationIsRunning })}
+        {renderExtras && renderExtras({ width })}
       </Centered>
     )}
   />
@@ -585,27 +545,30 @@ Visualization.propTypes = {
 };
 
 // eslint-disable-next-line react/prop-types
-const SizesForMediaQueries = Component => ({ queries, ...props }) => (
-  <div>
-    {__SERVER__ ||
-    !window ||
-    Object.keys(window).indexOf('matchMedia') === -1 ? (
-      <div />
-    ) : (
-      queries.map(({ query, width, height }) => (
-        <Media query={query} key={query}>
-          {matches =>
-            matches ? (
-              <Component width={width} height={height} {...props} />
-            ) : (
-              <span />
-            )
-          }
-        </Media>
-      ))
-    )}
-  </div>
-);
+const SizesForMediaQueries = Component => ({ queries, ...props }) => {
+  const noMediaQuery =
+    __SERVER__ || !window || Object.keys(window).indexOf('matchMedia') === -1;
+
+  return (
+    <div>
+      {noMediaQuery ? (
+        <div />
+      ) : (
+        queries.map(({ query, width, height }) => (
+          <Media query={query} key={query}>
+            {matches =>
+              matches ? (
+                <Component width={width} height={height} {...props} />
+              ) : (
+                <span />
+              )
+            }
+          </Media>
+        ))
+      )}
+    </div>
+  );
+};
 
 SizesForMediaQueries.propTypes = {
   queries: PropTypes.arrayOf(
@@ -655,14 +618,8 @@ OptionallySizedVisualization.propTypes = {
 const recordVisibilityMetric = Component => {
   // eslint-disable-next-line react/no-multi-comp
   class VisibilityMetricRecorder extends React.Component {
-    static propTypes = {
-      animationIsRunning: PropTypes.bool.isRequired,
-      isVisible: PropTypes.bool.isRequired,
-      metrics: PropTypes.object.isRequired,
-      title: PropTypes.string,
-    };
-
-    componentWillReceiveProps(nextProps) {
+    // eslint-disable-next-line camelcase
+    UNSAFE_componentWillReceiveProps(nextProps) {
       if (!this.props.metrics) {
         return;
       }
@@ -674,21 +631,19 @@ const recordVisibilityMetric = Component => {
       } else if (!nextProps.isVisible && this.props.isVisible) {
         this.props.metrics.track('becameInvisible', { title });
       }
-
-      if (nextProps.animationIsRunning && !this.props.animationIsRunning) {
-        this.props.metrics.track('animationStartedRunning', { title });
-      } else if (
-        !nextProps.animationIsRunning &&
-        this.props.animationIsRunning
-      ) {
-        this.props.metrics.track('animationStoppedRunning', { title });
-      }
     }
 
     render() {
       return <Component {...this.props} />;
     }
   }
+
+  VisibilityMetricRecorder.propTypes = {
+    isVisible: PropTypes.bool.isRequired,
+    metrics: PropTypes.object.isRequired,
+    title: PropTypes.string,
+  };
+
   return VisibilityMetricRecorder;
 };
 
@@ -699,12 +654,7 @@ const ExposedMetricsVisualization = exposeMetrics(
 // eslint-disable-next-line react/no-multi-comp
 export class BlankableVisualization extends React.Component {
   renderChild = ({ isVisible }) => (
-    <ExposedMetricsVisualization
-      {...this.props}
-      animationIsRunning={!!this.props.animationIsRunning}
-      isAnimated={!!this.props.isAnimated}
-      isVisible={isVisible}
-    />
+    <ExposedMetricsVisualization {...this.props} isVisible={isVisible} />
   );
 
   render() {
@@ -713,29 +663,7 @@ export class BlankableVisualization extends React.Component {
 }
 
 BlankableVisualization.propTypes = {
-  animationIsRunning: PropTypes.bool,
   isAnimated: PropTypes.bool,
 };
 
-const BlankableByContextVisualization = props => {
-  const { animationIsRunning, withinAnimation, isVisible } = useContext(
-    AnimationContext,
-  );
-
-  return (
-    <ExposedMetricsVisualization
-      animationIsRunning={animationIsRunning}
-      isAnimated={withinAnimation}
-      isVisible={isVisible}
-      {...props}
-    />
-  );
-};
-
-BlankableByContextVisualization.contextTypes = {
-  animationIsRunning: PropTypes.bool,
-  isVisible: PropTypes.bool,
-  withinAnimation: PropTypes.bool,
-};
-
-export default BlankableByContextVisualization;
+export default BlankableVisualization;

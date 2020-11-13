@@ -140,7 +140,7 @@ const PathsSection = () => (
       can simplify:
     </p>
     <MathJax.Node
-      formula={`\\int_0^t \\sqrt{4\\pi^2 sin^2(2\\pi t) + 4\\pi^2 cos^2(2\\pi t) + 1} \, dt`}
+      formula={`\\int_0^t \\sqrt{4\\pi^2 sin^2(2\\pi t) + 4\\pi^2 cos^2(2\\pi t) + 1} \\, dt`}
     />
     <MathJax.Node formula="\int_0^t \sqrt{4\pi^2 (sin^2(2\pi t) + cos^2(2\pi t)) + 1} \, dt" />
     <MathJax.Node formula="\int_0^t \sqrt{4\pi^2 + 1} \, dt = 6.36" />

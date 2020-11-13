@@ -10,10 +10,11 @@ import Spinner from 'components/MonkeyPatchedSpinKit';
 import Section from 'components/Section';
 
 export default Loadable({
-  loader: () => import('./index'),
+  loader: () => import('./index').catch(e => console.error(e)),
   loading: () => (
     <Section title="" anchor="none">
       <CenteredParagraph>
+        <p>Loading</p>
         <Spinner name="folding-cube" />
       </CenteredParagraph>
     </Section>

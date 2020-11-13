@@ -10,7 +10,6 @@ import PropTypes from 'prop-types';
 
 import { Euler } from 'three';
 
-import Animation from 'components/Animation';
 import { XAxis, YAxis, ZAxis } from 'components/Axis';
 import Visualization from 'components/Visualization';
 
@@ -20,29 +19,20 @@ const AxisVisualization3D = ({
   renderExtras,
   title = null,
 }) => (
-  <Animation
-    initial={{ rotation: new Euler(0.5, 0.5, 0) }}
-    update={state => ({
-      rotation: new Euler(
-        state.rotation.x,
-        state.rotation.y + rotationRate,
-        state.rotation.z,
-      ),
-    })}
-    render={state => (
-      <Visualization
-        rotation={state.rotation}
-        renderExtras={renderExtras}
-        title={title}
-      >
-        <XAxis />
-        <YAxis />
-        <ZAxis />
-        {render ? render() : null}
-      </Visualization>
-    )}
+  <Visualization
+    isAnimated
     renderExtras={renderExtras}
-  />
+    title={title}
+    rotation={new Euler(0.5, 0.5, 0)}
+    update={({ mesh }) => {
+      mesh.current.rotation.y += rotationRate;
+    }}
+  >
+    <XAxis />
+    <YAxis />
+    <ZAxis />
+    {render ? render() : null}
+  </Visualization>
 );
 
 AxisVisualization3D.propTypes = {

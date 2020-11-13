@@ -19,10 +19,9 @@ SectionContent.propTypes = {
 
 const Section = ({ title, anchor, children }) => (
   <div>
-    <a // eslint-disable-line jsx-a11y/anchor-has-content jsx-a11y/anchor-is-valid
-      name={anchor}
-      aria-hidden
-    />
+    {/* eslint-disable-next-line jsx-a11y/anchor-has-content, jsx-a11y/anchor-is-valid */}
+
+    <a name={anchor} aria-hidden />
     <SectionContent>
       {title ? <h1>{title}</h1> : <span />}
       <div>{children}</div>

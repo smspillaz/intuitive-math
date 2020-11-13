@@ -7,8 +7,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
-import { withRouter } from 'react-router';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, withRouter } from 'react-router-dom';
 
 import CDNMathJaxContext from 'components/CDNMathJaxContext';
 

@@ -4,11 +4,12 @@
  * Animate a few variables and keep track of their animation states.
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import PropTypes from 'prop-types';
 
 import Animation from 'components/Animation';
+import { useAnimationFrame } from 'components/AnimationController';
 
 const sineInterpolator = (begin, end, value, time) => {
   const wave = (Math.sin(time * 0.05) + 1) / 2;
@@ -30,6 +31,58 @@ const interpolateValue = (values, key, value, time) =>
     value,
     time,
   );
+
+class InterpolatedValue extends Object {
+  constructor(begin, end) {
+    super();
+    this._value = begin;
+    this.override = null;
+    this.begin = begin;
+    this.end = end;
+  }
+
+  get value() {
+    return this.override === null ? this._value : this.override;
+  }
+}
+
+export const InterpolatedAnimationGroup = ({ values, render }) => {
+  const state = useMemo(
+    () =>
+      Object.fromEntries(
+        Object.entries(values).map(([k, v]) => [
+          k,
+          new InterpolatedValue(v.begin, v.end),
+        ]),
+      ),
+    [],
+  );
+  const timing = useMemo(() => ({ time: 0 }), []);
+  const renderFrame = useMemo(() => () => {
+    timing.time += 1;
+
+    // Perform updates in one place
+    Object.keys(state).forEach(k => {
+      if (state[k].override == null) {
+        state[k]._value = interpolateValue(
+          values,
+          k,
+          state[k]._value,
+          timing.time,
+        );
+      }
+    });
+  });
+
+  useAnimationFrame(renderFrame);
+
+  return <>{render({ state })}</>;
+};
+
+InterpolatedAnimationGroup.propTypes = {
+  values: PropTypes.object.isRequired,
+  render: PropTypes.func.isRequired,
+};
 
 export default class InterpolatedAnimation extends React.Component {
   constructor(props) {
