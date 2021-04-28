@@ -351,7 +351,7 @@ const MatricesSection = () => (
     <p>
       What about multiplying two matrices? Well, we can take what we know about
       matrices - the fact that they are sets of vectors, the rows represent
-      the input space and the columsn represent the output space and our
+      the input space and the columns represent the output space and our
       definition of matrix-vector multiplication to multiply two matricies by{' '}
       ...multiplying each column vector in the right hand
       matrix by the left hand side matrix.
